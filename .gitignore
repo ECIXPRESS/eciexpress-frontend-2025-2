@@ -9,6 +9,7 @@ lerna-debug.log*
 
 eciexpress-frontend/node_modules
 dist
+dist/
 dist-ssr
 *.local
 
