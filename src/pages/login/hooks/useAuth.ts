@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { AuthContext } from '../../../../../squad-genesis-frontend-2025-2/src/context/AuthContext';
+import { AuthContext } from '@/utils/context/AuthContext';
 
 export const useAuth = () => {
     const context = useContext(AuthContext);

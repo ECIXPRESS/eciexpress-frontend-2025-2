@@ -2,33 +2,72 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import logotipo from '@/assets/logotipo.svg';
 import StandardInput from '@/lib/input/standarInput';
+import {toast, ToastContainer} from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import {useAuth} from "@/pages/login/hooks/useAuth";
+import apiClient from "@/lib/interceptors/apiClient";
+import banner from '@/assets/login/loginBanner.png';
+
+const roleRoutes: Record<string, string> = {
+    STUDENT: "/dashboard",
+    TEACHER: "/dashboard",
+    DEAN: "/dashboard",
+};
 
 const Login = () => {
-    const [signInForm, setSignInForm] = useState({
-        username: "",
-        password: "",
-    });
+    const {login} = useAuth();
+    const navigate = useNavigate();
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [loading, setLoading] = useState(false);
 
-    const handleInputChange = (field: string) => (value: string) => {
-        setSignInForm(prev => ({
-            ...prev,
-            [field]: value
-        }));
-    };
-
-    const handleSignInSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        console.log("Sign in form submitted:", signInForm);
+        setLoading(true);
+
+        if (!email || !password) {
+            toast.error("Please fill in all fields");
+            setLoading(false);
+            return;
+        }
+
+        try {
+            const response = await apiClient.post("/auth/login", { email, password });
+            const { token, user } = response.data;
+
+            login(token, user);
+            const redirectPath = roleRoutes[user.role] || "/dashboard";
+            navigate(redirectPath, { replace: true });
+        } catch (err: any) {
+            toast.error(err.response?.data?.message || "Error al iniciar sesión");
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
-        <div className="h-screen w-screen flex bg-[url(@/assets/lightBackground.png)] bg-cover">
+        <div className="max-h-screen w-screen flex bg-[url(@/assets/lightBackground.png)] bg-cover">
+            <ToastContainer
+                position="top-right"
+                autoClose={3000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="colored"
+                toastClassName="rounded-lg shadow-md"
+            />
             {/* Banner */}
-            <div className="flex-1 bg-[url(@/assets/login/loginBanner.png)] bg-cover bg-center"/>
+            <div className="w-1/2 flex-1 bg-[url(@/assets/login/loginBanner.png)] bg-cover bg-center">
+                <img src={banner} alt="banner"/>
+            </div>
 
             {/* Login */}
-            <div className="w-3/5 flex flex-col items-center justify-center">
-                <div className="w-1/2 max-w-md flex flex-col items-center gap-8 py-8 px-10 bg-white/90 backdrop-blur-sm rounded-3xl shadow-xl">
+            <div className="w-1/2 pr-[150px] flex flex-col items-center justify-center">
+                <div className="w-1/2 max-w-[350px] max-w-md h-screen flex flex-col justify-center items-center gap-[20px] p-[20px] bg-white/90 backdrop-blur-sm rounded-3xl shadow-xl">
                     {/* Logo */}
                     <div className="flex items-center justify-center mb-4">
                         <img
@@ -39,14 +78,14 @@ const Login = () => {
                     </div>
 
                     {/* Header */}
-                    <h2 className="text-gray-600 text-2xl font-bold text-center mb-2">
+                    <h1 className="text-gray-600 text-[24px] font-arial-rounded text-center mb-2">
                         Iniciar sesión
-                    </h2>
+                    </h1>
 
                     {/* Form */}
                     <form
-                        onSubmit={handleSignInSubmit}
-                        className="w-full flex flex-col gap-6 items-center p-12"
+                        onSubmit={handleSubmit}
+                        className="w-full flex flex-col gap-[15px] items-center p-12"
                     >
                         {/* Campo Email */}
                         <div className="w-full flex flex-col gap-3">
@@ -58,8 +97,8 @@ const Login = () => {
                             </label>
                             <StandardInput
                                 id="signin-username"
-                                value={signInForm.username}
-                                onChange={handleInputChange('username')}
+                                value={email}
+                                onChange={setEmail}
                                 required
                                 placeholder="Ingresa tu email"
                                 type="email"
@@ -77,8 +116,8 @@ const Login = () => {
                             </label>
                             <StandardInput
                                 id="signin-password"
-                                value={signInForm.password}
-                                onChange={handleInputChange('password')}
+                                value={password}
+                                onChange={setPassword}
                                 required
                                 placeholder="Ingresa tu contraseña"
                                 type="password"
@@ -89,32 +128,35 @@ const Login = () => {
                         {/* Submit Button */}
                         <button
                             type="submit"
-                            className="w-1/3 h-16 bg-cyan-400 rounded-2xl shadow-md cursor-pointer hover:bg-cyan-500 transition-colors text-white text-xl font-semibold mt-4"
+                            disabled={loading}
+                            className="w-1/3 h-[40px] bg-[#5AC7E1] border-none rounded-[10px] text-[#ffffff] rounded-2xl shadow-md cursor-pointer hover:bg-cyan-500 transition-colors text-white text-xl font-semibold mt-4"
                         >
-                            Iniciar sesión
+                            Iniciar
                         </button>
                     </form>
 
-                    {/* SignIn button */}
-                    <div className="flex items-center gap-2 mt-4">
-                        <p className="text-gray-600 font-medium">
-                            ¿No tienes una cuenta?
-                        </p>
+                    <div className="flex flex-col items-center">
+                        {/* SignIn button */}
+                        <div className="flex items-center h-fit gap-[5px]">
+                            <p className="text-gray-600 font-medium m-[0px]">
+                                ¿No tienes una cuenta?
+                            </p>
+                            <Link
+                                to="/signup"
+                                className="font-semibold text-cyan-400 underline hover:text-cyan-500 transition-colors"
+                            >
+                                Crea una
+                            </Link>
+                        </div>
+
+                        {/* Password recovery */}
                         <Link
-                            to="/signup"
+                            to="/forgot-password"
                             className="font-semibold text-cyan-400 underline hover:text-cyan-500 transition-colors"
                         >
-                            Crea una
+                            ¿Olvidaste tu contraseña?
                         </Link>
                     </div>
-
-                    {/* Password recovery */}
-                    <Link
-                        to="/forgot-password"
-                        className="font-semibold text-cyan-400 underline hover:text-cyan-500 transition-colors mt-2"
-                    >
-                        ¿Olvidaste tu contraseña?
-                    </Link>
                 </div>
             </div>
         </div>

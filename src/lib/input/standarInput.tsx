@@ -36,7 +36,7 @@ const StandarInput: React.FC<StandarInputProps> = ({
             placeholder={placeholder}
             disabled={disabled}
             required={required}
-            className="h-[60px] w-full border rounded-lg shadow-inner px-4 bg-[#f1f1f1] font-semibold text-neutral-800 border-none outline-none transition-all duration-200 focus:ring-2 focus:ring-blue-400 focus:bg-white disabled:opacity-50 disabled:cursor-not-allowed placeholder:text-gray-400"
+            className="h-[50px] w-full border rounded-[20px] shadow-inner px-[20px] bg-[#f1f1f1] font-semibold text-neutral-800 border-none outline-none transition-all duration-200 focus:ring-2 focus:ring-blue-400 focus:bg-white disabled:opacity-50 disabled:cursor-not-allowed placeholder:text-gray-400"
         />
     );
 };
