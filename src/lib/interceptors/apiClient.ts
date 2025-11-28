@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const apiClient = axios.create({
-    baseURL: 'http://localhost:8080/api',
+    baseURL: 'https://api-gateway-despliegue.onrender.com/api',
 });
 
 apiClient.interceptors.request.use((config) => {

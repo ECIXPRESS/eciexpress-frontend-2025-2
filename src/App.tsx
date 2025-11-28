@@ -3,12 +3,15 @@ import {ProtectedRoute} from "./utils/ProtectedRoute";
 import Login from "./pages/login/login";
 import Layout from "./utils/Layout";
 import {AuthProvider} from "@/utils/context/AuthProvider";
+import Auth from "@/pages/login/hooks/Auth";
 
 function App() {
     return (
         <AuthProvider>
             <Routes>
-                <Route path="/login" element={<Login/>}/>
+                <Route path="/auth" element={<Auth/>}/>
+                <Route path="/login" element={<Navigate to="/auth" replace/>}/>
+                <Route path="/signup" element={<Navigate to="/auth" replace/>}/>
                 <Route element={<ProtectedRoute/>}>
                     <Route element={<Layout/>}>
                         <Route path="/catalog" element={<div>Catalog</div>}/>

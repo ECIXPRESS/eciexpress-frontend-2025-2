@@ -9,7 +9,7 @@ interface StandarInputProps {
     className?: string;
     disabled?: boolean;
     required?: boolean;
-    name?: string; // Añadimos la prop name
+    name?: string;
 }
 
 const StandarInput: React.FC<StandarInputProps> = ({
@@ -36,7 +36,7 @@ const StandarInput: React.FC<StandarInputProps> = ({
             placeholder={placeholder}
             disabled={disabled}
             required={required}
-            className="h-[50px] w-full border rounded-[20px] shadow-inner px-[20px] bg-[#f1f1f1] font-semibold text-neutral-800 border-none outline-none transition-all duration-200 focus:ring-2 focus:ring-blue-400 focus:bg-white disabled:opacity-50 disabled:cursor-not-allowed placeholder:text-gray-400"
+            className="h-[50px] w-full border rounded-2xl shadow-inner px-6 bg-[#f1f1f1] text-foreground border-none outline-none transition-all duration-200 focus:ring-2 focus:ring-[#5AC7E1] focus:bg-white disabled:opacity-50 disabled:cursor-not-allowed placeholder:text-gray-400"
         />
     );
 };
