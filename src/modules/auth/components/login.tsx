@@ -4,7 +4,7 @@ import logotipo from '@/assets/logotipo.svg';
 import StandardInput from '@/lib/input/standarInput';
 import {toast, ToastContainer} from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import {useAuth} from "@/pages/login/hooks/useAuth";
+import {useAuth} from "@/modules/auth/hooks/useAuth";
 import apiClient from "@/lib/interceptors/apiClient";
 import banner from '@/assets/login/loginBanner.png';
 

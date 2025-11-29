@@ -1,6 +1,6 @@
 import {ToastContainer} from "react-toastify";
 import {Outlet} from "react-router-dom";
-import Navbar from "@/pages/Navbar/Navbar";
+import Navbar from "@/modules/auth/utils/Navbar";
 
 const Layout = () => (
     <div className="flex h-screen bg-pattern-foreground overflow-hidden">
