@@ -1,6 +1,4 @@
-/* jshint esversion: 8, node: true, browser: false */
 module.exports = {
-    mode: 'jit',
     content: [
         "./index.html",
         "./src/**/*.{js,ts,jsx,tsx}",
@@ -8,30 +6,31 @@ module.exports = {
     theme: {
         extend: {
             colors: {
-                foregroundBackground: '#f6f6f6',
+                acento: '#5AC7E1',
+                'acento-hover': '#4AB5CF',
+                background: '#FDDF65',
+                'background-home': '#F6F6F6',
                 primary: '#262626',
-                acento: 'rgba(90, 199, 225, 1)',
-                background: 'rgba(253, 223, 101, 1)',
-                'background-home': 'rgba(246, 246, 246, 1)',
-                'blanco-eciexpress': 'rgba(255, 255, 255, 1)',
-                'coleccion-de-variables-color-seleccion': 'rgba(238, 135, 32, 0.31)',
-                primario: 'rgba(38, 38, 38, 1)'
+                'blanco-eciexpress': '#FFFFFF',
+                seleccion: 'rgba(238, 135, 32, 0.31)',
+                'gray-text': '#6B7280',
             },
             fontFamily: {
-                sans: ['ArialRoundedMT', 'sans-serif'],
-                custom: ['ArialRoundedMT', 'Arial', 'sans-serif'],
+                sans: ['OpenSans', 'system-ui', 'Avenir', 'Helvetica', 'Arial', 'sans-serif'],
+                heading: ['ArialRoundedMT', 'Arial', 'sans-serif'],
+            },
+            fontSize: {
+                'heading-lg': '24px',
+                'button': '16px',
+                'label': '18px',
             },
             borderRadius: {
-                '4xl': '2rem',
-                '5xl': '2.5rem',
+                'standard': '10px',
+                'card': '24px',
             },
-        },
-    },
-    variants: {
-        extend: {
-            opacity: ['disabled'],
-            backgroundColor: ['disabled'],
-            cursor: ['disabled'],
+            boxShadow: {
+                'card': '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+            },
         },
     },
     plugins: [],

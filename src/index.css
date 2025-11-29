@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+/* FUENTES */
 @font-face {
     font-family: 'ArialRoundedMT';
     src: url('@/assets/fonts/ArialRoundedMTRegular.ttf') format('truetype');
@@ -23,57 +24,133 @@
     font-style: normal;
 }
 
+/* ESTILOS BASE GLOBALES */
+@layer base {
+    :root {
+        font-family: "OpenSans", system-ui, Avenir, Helvetica, Arial, sans-serif;
+        font-size: 16px;
+        color: #262626;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
 
+    body {
+        background-color: #F6F6F6;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+    }
 
-:root {
-    font-family: "OpenSans", system-ui, Avenir, Helvetica, Arial, sans-serif;
-    font-size: 16px;
-    color: #262626;
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
-h1 {
-    font-family: "ArialRoundedMT";
-    font-size: 24px;
-}
+    h1 {
+        font-family: 'ArialRoundedMT', Arial, sans-serif;
+        font-size: 24px;
+    }
 
-button {
-    font-family: "ArialRoundedMT";
-    font-weight: 600;
-    font-size: 16px;
-}
+    label {
+        font-family: 'OpenSans', sans-serif;
+        font-weight: 600;
+    }
 
-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
 
-a {
-    font-weight: 800;
-    color: #5AC7E1;
-    text-decoration: inherit;
-}
-a:hover {
-    color: #5AC7E1;
-}
+    a {
+        font-weight: 800;
+        color: #5AC7E1;
+        text-decoration: none;
+    }
+    
+    a:hover {
+        color: #4AB5CF;
+        transition: color 0.3s;
+    }
 
-body {
-    background-color: #F1F1F1;
-  margin: 0;
-  display: flex;
-  place-items: center;
-    height: 100%;
-    width: 100%;
-}
-
-label {
-    font-family: "OpenSans";
-    font-weight: 600;
+    button {
+        font-family: 'ArialRoundedMT', Arial, sans-serif;
+        font-weight: 600;
+        font-size: 16px;
+    }
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+/* COMPONENTES REUTILIZABLES */
+@layer components {
+    /* Botón primario estándar */
+    .btn-primary {
+        background-color: #5AC7E1;
+        border: none;
+        border-radius: 10px;
+        color: #FFFFFF;
+        font-family: 'ArialRoundedMT', Arial, sans-serif;
+        font-weight: 600;
+        font-size: 16px;
+        cursor: pointer;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        transition: background-color 0.3s;
+    }
+    
+    .btn-primary:hover:not(:disabled) {
+        background-color: #4AB5CF;
+    }
+    
+    .btn-primary:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    /* Enlace estándar */
+    .link-primary {
+        font-weight: 600;
+        color: #5AC7E1;
+        text-decoration: underline;
+        transition: color 0.3s;
+    }
+    
+    .link-primary:hover {
+        color: #4AB5CF;
+    }
+
+    /* Card contenedor */
+    .card-container {
+        background-color: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(8px);
+        border-radius: 24px;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        padding: 20px;
+    }
+
+    /* Texto de etiqueta */
+    .label-text {
+        color: #6B7280;
+        font-weight: 600;
+        font-size: 18px;
+    }
+
+    /* Texto de párrafo */
+    .paragraph-text {
+        color: #6B7280;
+        font-weight: 500;
+        margin: 0;
+    }
+
+    /* Título de página */
+    .page-title {
+        color: #6B7280;
+        font-size: 24px;
+        font-family: 'ArialRoundedMT', Arial, sans-serif;
+        text-align: center;
+    }
+}
+
+/* UTILIDADES PERSONALIZADAS */
+@layer utilities {
+    .bg-pattern-light {
+        background-image: url('@/assets/lightBackground.png');
+        background-size: cover;
+    }
 }

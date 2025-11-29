@@ -46,7 +46,7 @@ const Login = () => {
     };
 
     return (
-        <div className="max-h-screen w-screen flex bg-[url(@/assets/lightBackground.png)] bg-cover">
+        <div className="max-h-screen w-screen flex bg-pattern-light">
             <ToastContainer
                 position="top-right"
                 autoClose={3000}
@@ -60,14 +60,15 @@ const Login = () => {
                 theme="colored"
                 toastClassName="rounded-lg shadow-md"
             />
+            
             {/* Banner */}
-            <div className="w-1/2 flex-1 bg-[url(@/assets/login/loginBanner.png)] bg-cover bg-center">
+            <div className="w-1/2 flex-1 bg-[banner] bg-cover bg-center">
                 <img src={banner} alt="banner"/>
             </div>
 
             {/* Login */}
             <div className="w-1/2 pr-[150px] flex flex-col items-center justify-center">
-                <div className="w-1/2 max-w-[350px] max-w-md h-screen flex flex-col justify-center items-center gap-[20px] p-[20px] bg-white/90 backdrop-blur-sm rounded-3xl shadow-xl">
+                <div className="flex flex-col items-center">
                     {/* Logo */}
                     <div className="flex items-center justify-center mb-4">
                         <img
@@ -78,7 +79,7 @@ const Login = () => {
                     </div>
 
                     {/* Header */}
-                    <h1 className="text-gray-600 text-[24px] font-arial-rounded text-center mb-2">
+                    <h1 className="page-title mb-2">
                         Iniciar sesión
                     </h1>
 
@@ -91,7 +92,7 @@ const Login = () => {
                         <div className="w-full flex flex-col gap-3">
                             <label
                                 htmlFor="signin-username"
-                                className="text-gray-600 font-semibold text-lg"
+                                className="label-text"
                             >
                                 Email
                             </label>
@@ -110,7 +111,7 @@ const Login = () => {
                         <div className="w-full flex flex-col gap-3">
                             <label
                                 htmlFor="signin-password"
-                                className="text-gray-600 font-semibold text-lg"
+                                className="label-text"
                             >
                                 Contraseña
                             </label>
@@ -129,7 +130,7 @@ const Login = () => {
                         <button
                             type="submit"
                             disabled={loading}
-                            className="w-1/3 h-[40px] bg-[#5AC7E1] border-none rounded-[10px] text-[#ffffff] rounded-2xl shadow-md cursor-pointer hover:bg-cyan-500 transition-colors text-white text-xl font-semibold mt-4"
+                            className="w-1/3 h-[40px] btn-primary rounded-2xl mt-4 text-xl"
                         >
                             Iniciar
                         </button>
@@ -138,12 +139,12 @@ const Login = () => {
                     <div className="flex flex-col items-center">
                         {/* SignIn button */}
                         <div className="flex items-center h-fit gap-[5px]">
-                            <p className="text-gray-600 font-medium m-[0px]">
+                            <p className="paragraph-text">
                                 ¿No tienes una cuenta?
                             </p>
                             <Link
                                 to="/signup"
-                                className="font-semibold text-cyan-400 underline hover:text-cyan-500 transition-colors"
+                                className="link-primary"
                             >
                                 Crea una
                             </Link>
@@ -152,7 +153,7 @@ const Login = () => {
                         {/* Password recovery */}
                         <Link
                             to="/forgot-password"
-                            className="font-semibold text-cyan-400 underline hover:text-cyan-500 transition-colors"
+                            className="link-primary"
                         >
                             ¿Olvidaste tu contraseña?
                         </Link>
