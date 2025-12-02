@@ -73,7 +73,7 @@ export default function Home() {
           </button>
         </div>
 
-        <div className="bg-gradient-to-r from-[#FDDF65] to-[#FDDF65] rounded-[32px] mb-8 relative overflow-hidden shadow-lg">
+        <div className="rounded-[32px] mb-8 relative overflow-hidden shadow-lg">
           <img 
             src={bannerImage} 
             alt="Banner ECIEXPRESS" 
