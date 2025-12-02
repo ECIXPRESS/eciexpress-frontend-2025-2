@@ -6,7 +6,7 @@ import Auth from "@/pages/login/hooks/Auth";
 import { PasswordRecoveryContainer } from "@/pages/password-recovery/passwordRecoveryContainer";
 import { AnimatePresence, motion } from "framer-motion";
 
-import Home from "@/pages/home/Home";
+import Home from "@/pages/home/components/Home";
 function App() {
   return <Home />;
 }
