@@ -104,7 +104,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
 
                     <Link
                         to="/forgot-password"
-                        className="font-semibold text-[#5AC7E1] underline hover:text-[#1A97A1] transition-colors"
+                        className="font-semibold text-[#5AC7E1] underline hover:text-[#1A97A1] transition-colors underline"
                     >
                         ¿Olvidaste tu contraseña?
                     </Link>

@@ -9,7 +9,7 @@ const Navbar = () => {
                         <img src="" alt="" />
                     </button>
                     <button className="flex flex-col">
-                        <Bell className="w-5 h-5" />
+                        <Bell className="w-5 h-5 text-foreground" />
                     </button>
                 </header>
 
