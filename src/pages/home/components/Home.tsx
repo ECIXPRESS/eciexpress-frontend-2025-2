@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { Heart, Star, Clock, Plus } from 'lucide-react';
 import bannerImage from '@/assets/home/advertisement.png';
+import Sidebar from '../components/Sidebar';
 
-export default function HomePage() {
+export default function Home() {
   const [activeCategory, setActiveCategory] = useState('cafeteria');
   const [activeTab, setActiveTab] = useState('populares');
 
@@ -45,8 +46,10 @@ export default function HomePage() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#F6F6F6] p-8">
-      <div className="max-w-7xl mx-auto">
+    <>
+      <Sidebar />
+      <div className="min-h-screen bg-[#F6F6F6] p-8 ml-20">
+        <div className="max-w-7xl mx-auto">
         <div className="flex justify-center gap-4 mb-8">
           <button
             onClick={() => setActiveCategory('cafeteria')}
@@ -70,7 +73,7 @@ export default function HomePage() {
           </button>
         </div>
 
-        <div className="rounded-[32px] mb-8 relative overflow-hidden shadow-lg">
+        <div className="bg-gradient-to-r from-[#FDDF65] to-[#FDDF65] rounded-[32px] mb-8 relative overflow-hidden shadow-lg">
           <img 
             src={bannerImage} 
             alt="Banner ECIEXPRESS" 
@@ -177,5 +180,6 @@ export default function HomePage() {
         </div>
       </div>
     </div>
+    </>
   );
 }
