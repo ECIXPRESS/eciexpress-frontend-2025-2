@@ -5,6 +5,7 @@ export interface User {
     email: string,
     role: string,
     pfpURL: string;
+    balance?: number;
 }
 
 export interface AuthContextType {
