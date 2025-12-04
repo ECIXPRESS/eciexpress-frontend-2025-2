@@ -12,8 +12,6 @@ export default function Home() {
       { id: 1, name: 'Reggio' },
       { id: 2, name: 'Harvies' },
       { id: 3, name: 'Arepas' },
-      { id: 4, name: 'Cafeteria' },
-      { id: 5, name: 'Restaurante' },
     ],
     papeleria: [
       { id: 6, name: 'PaperFlash' },
@@ -129,12 +127,12 @@ export default function Home() {
           {/* Tiendas - responsive con scroll horizontal en mobile */}
           <div className="mb-8 sm:mb-10">
             <h3 className="text-sm text-gray-500 mb-4 sm:mb-6 font-medium">Tiendas</h3>
-            {/* Desktop: grid centrado */}
-            <div className="hidden md:flex justify-center gap-8 lg:gap-12">
+            {/* Desktop: grid centrado con scroll si es necesario */}
+            <div className="hidden md:flex justify-center gap-8 lg:gap-12 overflow-x-auto pb-4 -mx-4 px-4">
               {stores.map((store) => (
                 <button
                   key={store.id}
-                  className="flex flex-col items-center gap-3 group"
+                  className="flex flex-col items-center gap-3 group flex-shrink-0"
                 >
                   <div className="w-20 h-20 lg:w-24 lg:h-24 bg-gray-300 rounded-full shadow-md group-hover:scale-105 transition-transform"></div>
                   <span className="text-sm text-[#262626] font-semibold">{store.name}</span>
