@@ -7,9 +7,8 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-eciexpress-frontend/node_modules
+node_modules
 dist
-dist/
 dist-ssr
 *.local
 
@@ -23,6 +22,3 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-
-node_modules/
-node_modules
