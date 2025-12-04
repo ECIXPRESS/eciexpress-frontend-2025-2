@@ -1,3 +1,10 @@
+/**
+ * ErrorModal - Modal para mostrar diferentes tipos de errores
+ * Tipos soportados:
+ * - qr-invalid: Código QR inválido o expirado
+ * - order-not-found: Pedido no encontrado en el sistema
+ * - camera-unavailable: No se pudo acceder a la cámara (auto-redirige a manual)
+ */
 import React, { useEffect, useState } from 'react';
 import { AlertCircle, XCircle, CameraOff, RefreshCw, Keyboard } from 'lucide-react';
 
@@ -23,11 +30,11 @@ export const ErrorModal: React.FC<ErrorModalProps> = ({
   const [isAnimating, setIsAnimating] = useState(false);
   const [shouldAutoClose, setShouldAutoClose] = useState(false);
 
+  // Auto-redirige a validación manual si la cámara no está disponible
   useEffect(() => {
     if (isOpen) {
       setIsAnimating(true);
       
-      // Auto-redirigir a validación manual si la cámara no está disponible
       if (errorType === 'camera-unavailable') {
         const timer = setTimeout(() => {
           if (onManualEntry) {
@@ -48,6 +55,7 @@ export const ErrorModal: React.FC<ErrorModalProps> = ({
     }, 300);
   };
 
+  /** Ejecuta la acción principal según el tipo de error */
   const handlePrimaryAction = () => {
     const config = getErrorConfig();
     if (config?.primaryAction?.onClick) {
@@ -58,6 +66,7 @@ export const ErrorModal: React.FC<ErrorModalProps> = ({
     }
   };
 
+  /** Ejecuta la acción secundaria según el tipo de error */
   const handleSecondaryAction = () => {
     const config = getErrorConfig();
     if (config?.secondaryAction?.onClick) {
@@ -68,6 +77,10 @@ export const ErrorModal: React.FC<ErrorModalProps> = ({
     }
   };
 
+  /**
+   * Retorna la configuración del modal según el tipo de error
+   * Incluye: icono, colores, título, mensaje y acciones
+   */
   const getErrorConfig = () => {
     switch (errorType) {
       case 'qr-invalid':
@@ -182,25 +195,22 @@ export const ErrorModal: React.FC<ErrorModalProps> = ({
         }}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Contenido del modal */}
         <div className="bg-white rounded-2xl shadow-2xl overflow-hidden">
           <div className="p-8 text-center">
-            {/* Icono de error con animación */}
+            {/* Icono de error animado */}
             <div className={`inline-flex items-center justify-center w-20 h-20 ${config.iconBg} rounded-full mb-4 animate-shake-scale`}>
               <Icon className={`w-12 h-12 ${config.iconColor}`} />
             </div>
             
-            {/* Título */}
             <h3 className="font-bold text-2xl text-gray-900 mb-2">
               {config.title}
             </h3>
             
-            {/* Mensaje */}
             <p className="text-gray-600 mb-3">
               {config.message}
             </p>
             
-            {/* Detalles adicionales */}
+            {/* Detalles adicionales (código escaneado, etc.) */}
             {config.details && (
               <div className="bg-gray-50 border border-gray-200 rounded-lg p-3 mb-6">
                 <p className="text-sm text-gray-700 font-medium">
@@ -236,7 +246,7 @@ export const ErrorModal: React.FC<ErrorModalProps> = ({
               )}
             </div>
             
-            {/* Texto de ayuda */}
+            {/* Texto de auto-redirección para error de cámara */}
             {errorType === 'camera-unavailable' && (
               <p className="text-xs text-gray-400 mt-4 animate-pulse">
                 Redirigiendo automáticamente en 3 segundos...
@@ -246,7 +256,7 @@ export const ErrorModal: React.FC<ErrorModalProps> = ({
         </div>
       </div>
 
-      {/* Animaciones */}
+      {/* Animación de shake para el icono */}
       <style>{`
         @keyframes shake-scale {
           0%, 100% { transform: scale(1) rotate(0deg); }

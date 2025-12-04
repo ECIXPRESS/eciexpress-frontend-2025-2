@@ -1,3 +1,7 @@
+/**
+ * PedidosList - Lista de pedidos con soporte para vista cuadrícula y lista
+ * Incluye paginación, animaciones de transición y modal de detalles
+ */
 import React, { useState, useMemo } from 'react';
 import { AlertCircle } from 'lucide-react';
 import type { Pedido, VistaType } from '../types/pedidos';
@@ -29,12 +33,14 @@ export const PedidosList: React.FC<PedidosListProps> = ({
 
   const totalPaginas = Math.ceil(pedidos.length / ITEMS_PER_PAGE);
   
+  // Obtiene los pedidos de la página actual
   const pedidosPaginados = useMemo(() => {
     const inicio = (paginaActual - 1) * ITEMS_PER_PAGE;
     const fin = inicio + ITEMS_PER_PAGE;
     return pedidos.slice(inicio, fin);
   }, [pedidos, paginaActual]);
 
+  // Cambia el tipo de vista con animación
   const handleVistaChange = (vista: VistaType) => {
     if (vista === vistaActual) return;
     
@@ -48,13 +54,12 @@ export const PedidosList: React.FC<PedidosListProps> = ({
     }, 300);
   };
 
+  // Cambia de página con animación de slide
   const handlePageChange = (pagina: number) => {
     if (pagina === paginaActual) return;
     
-    // Determinar dirección del slide
     setSlideDirection(pagina > paginaActual ? 'left' : 'right');
     
-    // Solo animar en vista de cuadrícula
     if (vistaActual === 'grid') {
       setIsTransitioning(true);
       setTimeout(() => {
@@ -68,6 +73,7 @@ export const PedidosList: React.FC<PedidosListProps> = ({
     }
   };
 
+  // Abre el modal de detalles (solo en vista lista)
   const handleVerDetalles = (pedido: Pedido) => {
     if (vistaActual === 'list') {
       setPedidoSeleccionado(pedido);
@@ -81,6 +87,7 @@ export const PedidosList: React.FC<PedidosListProps> = ({
     setTimeout(() => setPedidoSeleccionado(null), 200);
   };
 
+  // Estado vacío
   if (pedidos.length === 0) {
     return (
       <div className="text-center py-12">
@@ -106,7 +113,7 @@ export const PedidosList: React.FC<PedidosListProps> = ({
         <ViewSelector vistaActual={vistaActual} onVistaChange={handleVistaChange} />
       </div>
 
-      {/* Contenido principal - CON animación */}
+      {/* Contenido con animaciones de transición */}
       <div className="flex-1 min-h-0 overflow-hidden">
         <div
           className={`
@@ -120,6 +127,7 @@ export const PedidosList: React.FC<PedidosListProps> = ({
           `}
         >
           {vistaActual === 'grid' ? (
+            // Vista cuadrícula
             <div className="h-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 content-start">
               {pedidosPaginados.map((pedido, index) => (
                 <div
@@ -141,6 +149,7 @@ export const PedidosList: React.FC<PedidosListProps> = ({
               ))}
             </div>
           ) : (
+            // Vista lista
             <div className="h-full flex flex-col justify-start space-y-3">
               {pedidosPaginados.map((pedido, index) => (
                 <div
@@ -165,7 +174,7 @@ export const PedidosList: React.FC<PedidosListProps> = ({
         </div>
       </div>
 
-      {/* Navegación */}
+      {/* Navegación/Paginación según tipo de vista */}
       {totalPaginas > 1 && (
         <div className="flex-shrink-0 mt-4">
           {vistaActual === 'grid' ? (

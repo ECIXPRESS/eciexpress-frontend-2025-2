@@ -1,3 +1,8 @@
+/**
+ * ManualCodeModal - Modal para ingreso manual de código de validación
+ * Alternativa al escáner QR cuando la cámara no está disponible
+ * Permite ingresar códigos de 9 caracteres alfanuméricos
+ */
 import React, { useEffect, useState, useRef } from 'react';
 import { X, Hash } from 'lucide-react';
 
@@ -22,6 +27,7 @@ export const ManualCodeModal: React.FC<ManualCodeModalProps> = ({
   const [isTransitioning, setIsTransitioning] = useState(false);
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
+  // Gestiona apertura/cierre del modal y enfoca el primer input
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -43,6 +49,7 @@ export const ManualCodeModal: React.FC<ManualCodeModalProps> = ({
     };
   }, [isOpen]);
 
+  /** Maneja cambios en los inputs individuales con auto-avance */
   const handleInputChange = (index: number, value: string) => {
     // Permitir números y letras
     if (value && !/^[A-Za-z0-9]$/.test(value)) return;
@@ -57,12 +64,14 @@ export const ManualCodeModal: React.FC<ManualCodeModalProps> = ({
     }
   };
 
+  /** Maneja Backspace para retroceder entre inputs */
   const handleKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Backspace' && !code[index] && index > 0) {
       inputRefs.current[index - 1]?.focus();
     }
   };
 
+  /** Maneja pegado de código completo desde portapapeles */
   const handlePaste = (e: React.ClipboardEvent) => {
     e.preventDefault();
     const pastedData = e.clipboardData.getData('text').replace(/[^A-Za-z0-9]/g, '').slice(0, 9).toUpperCase();
@@ -73,6 +82,7 @@ export const ManualCodeModal: React.FC<ManualCodeModalProps> = ({
     inputRefs.current[lastIndex]?.focus();
   };
 
+  /** Valida que el código tenga 9 caracteres antes de enviar */
   const handleValidate = () => {
     const fullCode = code.join('');
     
@@ -84,6 +94,7 @@ export const ManualCodeModal: React.FC<ManualCodeModalProps> = ({
     onSuccess(fullCode);
   };
 
+  /** Transición suave de vuelta al escáner QR */
   const handleBackToScanner = () => {
     setIsTransitioning(true);
     setTimeout(() => {

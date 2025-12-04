@@ -1,3 +1,8 @@
+/**
+ * FiltrosPedidos - Barra de búsqueda y filtros de estado
+ * Permite buscar pedidos por código, cliente o producto
+ * y filtrar por estado (preparación, completado, todos)
+ */
 import React from 'react';
 import type { FiltrosPedidos as FiltrosType } from '../types/pedidos';
 import { Search } from 'lucide-react';
@@ -11,6 +16,7 @@ export const FiltrosPedidos: React.FC<FiltrosPedidosProps> = ({
   filtros,
   onFiltrosChange,
 }) => {
+  /** Actualiza el texto de búsqueda */
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onFiltrosChange({
       ...filtros,
@@ -18,6 +24,7 @@ export const FiltrosPedidos: React.FC<FiltrosPedidosProps> = ({
     });
   };
 
+  /** Actualiza el filtro de estado seleccionado */
   const handleEstadoChange = (estado: string | undefined) => {
     onFiltrosChange({
       ...filtros,
@@ -28,7 +35,7 @@ export const FiltrosPedidos: React.FC<FiltrosPedidosProps> = ({
   return (
     <div className="mb-5 bg-white rounded-xl border border-gray-200 p-4 shadow-sm flex-shrink-0">
       <div className="flex flex-col lg:flex-row gap-4">
-        {/* Buscador */}
+        {/* Campo de búsqueda */}
         <div className="flex-1">
           <label className="block text-sm font-semibold text-gray-700 mb-2">
             Buscar Pedido
@@ -45,7 +52,7 @@ export const FiltrosPedidos: React.FC<FiltrosPedidosProps> = ({
           </div>
         </div>
 
-        {/* Filtros de Estado */}
+        {/* Botones de filtro por estado */}
         <div className="lg:w-auto">
           <label className="block text-sm font-semibold text-gray-700 mb-2">
             Filtrar por Estado

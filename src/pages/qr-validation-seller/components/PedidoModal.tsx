@@ -1,3 +1,7 @@
+/**
+ * PedidoModal - Modal de detalles completos del pedido
+ * Muestra información de contacto, entrega, pago y lista de productos
+ */
 import React, { useEffect, useState } from 'react';
 import { X, User, Phone, Clock, CreditCard, ChefHat, DollarSign } from 'lucide-react';
 import type { Pedido } from '../types/pedidos';
@@ -17,10 +21,10 @@ export const PedidoModal: React.FC<PedidoModalProps> = ({
 }) => {
   const [isAnimating, setIsAnimating] = useState(false);
 
+  // Gestiona el ciclo de vida del modal y tecla Escape para cerrar
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
-      // Pequeño delay para activar la animación después del render
       requestAnimationFrame(() => {
         setIsAnimating(true);
       });
@@ -54,7 +58,7 @@ export const PedidoModal: React.FC<PedidoModalProps> = ({
       `}
       onClick={onClose}
     >
-      {/* Backdrop con blur */}
+      {/* Backdrop */}
       <div 
         className={`
           absolute inset-0 bg-black/60 backdrop-blur-sm
@@ -63,7 +67,7 @@ export const PedidoModal: React.FC<PedidoModalProps> = ({
         `}
       />
       
-      {/* Contenedor del modal con animación mejorada */}
+      {/* Contenedor del modal con animación bounce */}
       <div 
         className={`
           relative w-full max-w-md z-10
@@ -75,12 +79,12 @@ export const PedidoModal: React.FC<PedidoModalProps> = ({
         `}
         style={{
           transitionTimingFunction: isAnimating 
-            ? 'cubic-bezier(0.34, 1.56, 0.64, 1)' // Bounce effect en apertura
-            : 'cubic-bezier(0.4, 0, 0.2, 1)' // Suave en cierre
+            ? 'cubic-bezier(0.34, 1.56, 0.64, 1)'
+            : 'cubic-bezier(0.4, 0, 0.2, 1)'
         }}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Botón de cerrar */}
+        {/* Botón cerrar */}
         <button
           onClick={onClose}
           className={`
@@ -95,10 +99,9 @@ export const PedidoModal: React.FC<PedidoModalProps> = ({
           <X className="w-5 h-5 group-hover:rotate-90 transition-transform duration-300" />
         </button>
         
-        {/* Contenido del modal - Solo vista posterior de la carta */}
         <div className="bg-white rounded-xl shadow-2xl overflow-hidden">
           <div className="h-full flex flex-col max-h-[85vh]">
-            {/* Header del reverso con gradiente */}
+            {/* Header con gradiente y total del pedido */}
             <div className="bg-gradient-to-r from-primary-500 to-primary-600 text-white p-4 flex-shrink-0">
               <div className="flex justify-between items-start mb-2">
                 <div>
@@ -107,7 +110,6 @@ export const PedidoModal: React.FC<PedidoModalProps> = ({
                 </div>
               </div>
               
-              {/* Precio destacado */}
               <div className="flex items-center justify-between mt-3 pt-3 border-t border-white/20">
                 <span className="text-sm text-primary-100">Total del Pedido</span>
                 <div className="flex items-center text-2xl font-bold">
@@ -119,7 +121,7 @@ export const PedidoModal: React.FC<PedidoModalProps> = ({
 
             {/* Contenido scrolleable */}
             <div className="flex-grow overflow-y-auto p-4">
-              {/* Información del cliente */}
+              {/* Sección: Información de contacto */}
               <div className="mb-4">
                 <h4 className="font-bold text-gray-900 text-sm mb-2 flex items-center">
                   Información de Contacto
@@ -136,7 +138,7 @@ export const PedidoModal: React.FC<PedidoModalProps> = ({
                 </div>
               </div>
 
-              {/* Detalles de entrega y pago */}
+              {/* Sección: Detalles de entrega y pago */}
               <div className="mb-4">
                 <h4 className="font-bold text-gray-900 text-sm mb-2">Detalles de Entrega</h4>
                 <div className="space-y-2">
@@ -162,7 +164,7 @@ export const PedidoModal: React.FC<PedidoModalProps> = ({
                 </div>
               </div>
 
-              {/* Lista completa de productos */}
+              {/* Sección: Lista de productos */}
               <div className="mb-4">
                 <h4 className="font-bold text-gray-900 text-sm mb-2 flex items-center">
                   <ChefHat className="w-4 h-4 mr-1.5 text-primary-600" />
@@ -191,7 +193,7 @@ export const PedidoModal: React.FC<PedidoModalProps> = ({
                 </div>
               </div>
 
-              {/* Observaciones generales del pedido */}
+              {/* Observaciones del pedido (si existen) */}
               {pedido.observaciones && (
                 <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
                   <p className="text-xs font-semibold text-yellow-800 mb-1">

@@ -1,3 +1,8 @@
+/**
+ * PedidoCard - Tarjeta de pedido con efecto flip para vista cuadrícula
+ * Frente: Vista resumida con imagen y datos principales
+ * Reverso: Vista detallada con información completa del pedido
+ */
 import React, { useState } from 'react';
 import type { Pedido } from '../types/pedidos';
 import { Card, Badge } from '@shared';
@@ -7,9 +12,7 @@ import {
   Phone, 
   CreditCard, 
   CheckCircle, 
-  AlertCircle,
   RotateCcw,
-  ChefHat,
   DollarSign
 } from 'lucide-react';
 
@@ -19,15 +22,7 @@ interface PedidoCardProps {
   onVerDetalles?: (id: string) => void;
 }
 
-// Mapeo de imágenes reales por categoría de producto (para encabezado)
-const imagenesRealesProductos: { [key: string]: string } = {
-  hamburguesa: '/images/productos/1.jpg',
-  pizza: '/images/productos/2.jpg',
-  ensalada: '/images/productos/3.jpg',
-  default: '/images/productos/1.jpg' // Imagen por defecto
-};
-
-// Mapeo de emojis por categoría de producto (para lista de productos)
+/** Mapeo de emojis por categoría de producto */
 const emojisProductos: { [key: string]: string } = {
   hamburguesa: '🍔',
   pizza: '🍕',
@@ -39,6 +34,7 @@ const emojisProductos: { [key: string]: string } = {
   default: '📦'
 };
 
+/** Obtiene la ruta de imagen según el tipo de producto */
 const getImagenRealProducto = (nombre: string): string => {
   const nombreLower = nombre.toLowerCase();
   if (nombreLower.includes('hamburguesa')) return '/src/assets/qr-validation-seller/productos/1.jpg';
@@ -47,6 +43,7 @@ const getImagenRealProducto = (nombre: string): string => {
   return '/src/assets/qr-validation-seller/productos/1.jpg';
 };
 
+/** Obtiene el emoji correspondiente al producto */
 const getEmojiProducto = (nombre: string): string => {
   const nombreLower = nombre.toLowerCase();
   if (nombreLower.includes('hamburguesa')) return emojisProductos.hamburguesa;
@@ -66,22 +63,19 @@ export const PedidoCard: React.FC<PedidoCardProps> = ({
 }) => {
   const [isFlipped, setIsFlipped] = useState(false);
 
-  const handleFlip = () => {
-    setIsFlipped(!isFlipped);
-  };
+  const handleFlip = () => setIsFlipped(!isFlipped);
 
   const handleValidar = () => {
     onValidar?.(pedido.id);
     setIsFlipped(false);
   };
 
-  // Producto principal para mostrar en el frente
   const productoPrincipal = pedido.productos[0];
 
-  // Frente de la tarjeta - Vista resumida
+  /** Frente de la tarjeta - Vista resumida */
   const CardFront = () => (
     <div className="h-full flex flex-col">
-      {/* Imagen del producto principal con badge de estado */}
+      {/* Imagen del producto con badge de estado */}
       <div className="relative h-52 overflow-hidden rounded-t-xl">
         <img 
           src={getImagenRealProducto(productoPrincipal.nombre)} 
@@ -91,34 +85,30 @@ export const PedidoCard: React.FC<PedidoCardProps> = ({
             const target = e.currentTarget;
             target.style.display = 'none';
             const fallback = target.nextElementSibling as HTMLElement;
-            if (fallback) {
-              fallback.style.display = 'flex';
-            }
+            if (fallback) fallback.style.display = 'flex';
           }}
         />
+        {/* Fallback con emoji si la imagen falla */}
         <div className="hidden absolute inset-0 items-center justify-center bg-gradient-to-br from-primary-50 to-secondary-50">
           <span className="text-6xl">{getEmojiProducto(productoPrincipal.nombre)}</span>
         </div>
         
-        {/* Badge de estado en esquina superior izquierda */}
         <div className="absolute top-3 left-3">
           <Badge estado={pedido.estado} />
         </div>
       </div>
 
-      {/* Contenido de la tarjeta */}
+      {/* Contenido */}
       <div className="flex flex-col flex-grow p-4">
-        {/* Título: Nombre del cliente */}
         <h3 className="font-bold text-gray-900 text-lg mb-1 truncate">
           {pedido.nombreCliente}
         </h3>
         
-        {/* Código del pedido */}
         <p className="text-sm text-gray-500 mb-3">
           Pedido #{pedido.codigo}
         </p>
 
-        {/* Información de entrega y precio */}
+        {/* Hora y precio */}
         <div className="flex items-center justify-between mb-3 pb-3 border-b border-gray-100">
           <div className="flex items-center text-sm text-gray-600">
             <Clock className="w-4 h-4 mr-1.5 text-primary-500" />
@@ -138,9 +128,7 @@ export const PedidoCard: React.FC<PedidoCardProps> = ({
               <div key={index} className="flex items-start text-sm">
                 <div className="flex-1 min-w-0">
                   <span className="font-medium text-primary-600">{producto.cantidad}x</span>
-                  <span className="text-gray-700 ml-1">
-                    {producto.nombre}
-                  </span>
+                  <span className="text-gray-700 ml-1">{producto.nombre}</span>
                 </div>
               </div>
             ))}
@@ -174,10 +162,10 @@ export const PedidoCard: React.FC<PedidoCardProps> = ({
     </div>
   );
 
-  // Reverso de la tarjeta - Vista detallada
+  /** Reverso de la tarjeta - Vista detallada */
   const CardBack = () => (
     <div className="h-full flex flex-col">
-      {/* Header del reverso con gradiente */}
+      {/* Header con gradiente */}
       <div className="bg-gradient-to-r from-primary-500 to-primary-600 text-white p-4 rounded-t-xl">
         <div className="flex justify-between items-start mb-2">
           <div>
@@ -192,7 +180,7 @@ export const PedidoCard: React.FC<PedidoCardProps> = ({
           </button>
         </div>
         
-        {/* Precio destacado */}
+        {/* Total */}
         <div className="flex items-center justify-between mt-3 pt-3 border-t border-white/20">
           <span className="text-sm text-primary-100">Total del Pedido</span>
           <div className="flex items-center text-2xl font-bold">
@@ -204,11 +192,9 @@ export const PedidoCard: React.FC<PedidoCardProps> = ({
 
       {/* Contenido scrolleable */}
       <div className="flex-grow overflow-y-auto p-4">
-        {/* Información del cliente */}
+        {/* Información de contacto */}
         <div className="mb-4">
-          <h4 className="font-bold text-gray-900 text-sm mb-2 flex items-center">
-            Información de Contacto
-          </h4>
+          <h4 className="font-bold text-gray-900 text-sm mb-2">Información de Contacto</h4>
           <div className="bg-gray-50 rounded-lg p-3 space-y-2">
             <div className="flex items-center text-sm">
               <User className="w-3.5 h-3.5 mr-2 text-gray-500 flex-shrink-0" />
@@ -221,7 +207,7 @@ export const PedidoCard: React.FC<PedidoCardProps> = ({
           </div>
         </div>
 
-        {/* Detalles de entrega y pago */}
+        {/* Detalles de entrega */}
         <div className="mb-4">
           <h4 className="font-bold text-gray-900 text-sm mb-2">Detalles de Entrega</h4>
           <div className="space-y-2">
@@ -238,9 +224,7 @@ export const PedidoCard: React.FC<PedidoCardProps> = ({
                 <CreditCard className="w-3.5 h-3.5 mr-2" />
                 <span>Método de pago</span>
               </div>
-              <span className={`font-semibold ${
-                pedido.pagado ? 'text-green-600' : 'text-orange-600'
-              }`}>
+              <span className={`font-semibold ${pedido.pagado ? 'text-green-600' : 'text-orange-600'}`}>
                 {pedido.pagado ? 'Pagado' : 'Pendiente'} • {pedido.metodoPago}
               </span>
             </div>
@@ -249,9 +233,7 @@ export const PedidoCard: React.FC<PedidoCardProps> = ({
 
         {/* Lista completa de productos */}
         <div className="mb-4">
-          <h4 className="font-bold text-gray-900 text-sm mb-2 flex items-center">
-            Productos Ordenados
-          </h4>
+          <h4 className="font-bold text-gray-900 text-sm mb-2">Productos Ordenados</h4>
           <div className="space-y-2">
             {pedido.productos.map((producto, index) => (
               <div key={index} className="bg-white border border-gray-200 rounded-lg p-2.5">
@@ -261,9 +243,7 @@ export const PedidoCard: React.FC<PedidoCardProps> = ({
                       <span className="text-primary-600">{producto.cantidad}x</span> {producto.nombre}
                     </p>
                     {producto.observaciones && (
-                      <p className="text-xs text-gray-500 mt-1">
-                        {producto.observaciones}
-                      </p>
+                      <p className="text-xs text-gray-500 mt-1">{producto.observaciones}</p>
                     )}
                   </div>
                   <span className="font-bold text-sm text-primary-600 ml-2 flex-shrink-0">
@@ -275,12 +255,10 @@ export const PedidoCard: React.FC<PedidoCardProps> = ({
           </div>
         </div>
 
-        {/* Observaciones generales del pedido */}
+        {/* Observaciones del pedido */}
         {pedido.observaciones && (
           <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
-            <p className="text-xs font-semibold text-yellow-800 mb-1">
-              Observaciones del Pedido
-            </p>
+            <p className="text-xs font-semibold text-yellow-800 mb-1">Observaciones del Pedido</p>
             <p className="text-sm text-yellow-900">{pedido.observaciones}</p>
           </div>
         )}
@@ -293,12 +271,14 @@ export const PedidoCard: React.FC<PedidoCardProps> = ({
       className="relative w-full h-[500px]"
       style={{ perspective: '1000px' }}
     >
+      {/* Contenedor con transformación 3D para el flip */}
       <div 
         className={`relative w-full h-full transition-transform duration-700 ease-in-out ${
           isFlipped ? '[transform:rotateY(180deg)]' : '[transform:rotateY(0deg)]'
         }`}
         style={{ transformStyle: 'preserve-3d' }}
       >
+        {/* Cara frontal */}
         <div 
           className="absolute inset-0 w-full h-full"
           style={{ backfaceVisibility: 'hidden' }}
@@ -307,12 +287,10 @@ export const PedidoCard: React.FC<PedidoCardProps> = ({
             <CardFront />
           </Card>
         </div>
+        {/* Cara posterior */}
         <div 
           className="absolute inset-0 w-full h-full"
-          style={{ 
-            backfaceVisibility: 'hidden',
-            transform: 'rotateY(180deg)'
-          }}
+          style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
         >
           <Card className="h-full hover:shadow-xl transition-shadow duration-300 border border-gray-200 overflow-hidden">
             <CardBack />

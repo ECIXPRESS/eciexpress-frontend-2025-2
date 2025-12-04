@@ -1,3 +1,7 @@
+/**
+ * SlideNavigation - Navegación tipo carrusel con flechas e indicadores de página
+ * Usado en la vista de cuadrícula para navegar entre páginas de pedidos
+ */
 import React from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
@@ -14,6 +18,7 @@ export const SlideNavigation: React.FC<SlideNavigationProps> = ({
 }) => {
   return (
     <div className="flex items-center justify-between mt-4">
+      {/* Botón página anterior */}
       <button
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
@@ -23,6 +28,7 @@ export const SlideNavigation: React.FC<SlideNavigationProps> = ({
         <ChevronLeft className="w-6 h-6 text-gray-700 group-hover:text-primary-600 transition-colors duration-200" />
       </button>
 
+      {/* Indicadores de página (dots) */}
       <div className="flex items-center gap-2">
         {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
           <button
@@ -40,6 +46,7 @@ export const SlideNavigation: React.FC<SlideNavigationProps> = ({
         ))}
       </div>
 
+      {/* Botón página siguiente */}
       <button
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}

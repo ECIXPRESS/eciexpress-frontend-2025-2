@@ -1,3 +1,8 @@
+/**
+ * Pagination - Componente de paginación numérica
+ * Muestra números de página con elipsis para listas largas
+ * Usado en la vista de lista de pedidos
+ */
 import React from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
@@ -14,6 +19,10 @@ export const Pagination: React.FC<PaginationProps> = ({
 }) => {
   const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
   
+  /**
+   * Calcula qué páginas mostrar con elipsis para listas largas
+   * Ejemplo: [1, '...', 4, 5, 6, '...', 10]
+   */
   const getVisiblePages = () => {
     if (totalPages <= 5) return pages;
     
@@ -27,6 +36,7 @@ export const Pagination: React.FC<PaginationProps> = ({
 
   return (
     <div className="flex items-center justify-center gap-2 mt-6">
+      {/* Botón anterior */}
       <button
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
@@ -35,6 +45,7 @@ export const Pagination: React.FC<PaginationProps> = ({
         <ChevronLeft className="w-5 h-5" />
       </button>
 
+      {/* Números de página */}
       {visiblePages.map((page, index) => (
         <button
           key={index}
@@ -54,6 +65,7 @@ export const Pagination: React.FC<PaginationProps> = ({
         </button>
       ))}
 
+      {/* Botón siguiente */}
       <button
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}

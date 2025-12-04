@@ -1,3 +1,7 @@
+/**
+ * SuccessModal - Modal de confirmación de validación exitosa
+ * Se cierra automáticamente después de 3 segundos
+ */
 import React, { useEffect, useState } from 'react';
 import { CheckCircle } from 'lucide-react';
 
@@ -17,7 +21,7 @@ export const SuccessModal: React.FC<SuccessModalProps> = ({
   useEffect(() => {
     if (isOpen) {
       setIsAnimating(true);
-      // Auto-cerrar después de 3 segundos
+      // Auto-cierre después de 3 segundos
       const timer = setTimeout(() => {
         handleClose();
       }, 3000);
@@ -75,7 +79,7 @@ export const SuccessModal: React.FC<SuccessModalProps> = ({
         {/* Contenido del modal */}
         <div className="bg-white rounded-2xl shadow-2xl overflow-hidden">
           <div className="p-8 text-center">
-            {/* Icono de éxito con animación */}
+            {/* Icono de éxito animado */}
             <div className="inline-flex items-center justify-center w-20 h-20 bg-green-100 rounded-full mb-4 animate-bounce-once">
               <CheckCircle className="w-12 h-12 text-green-600" />
             </div>

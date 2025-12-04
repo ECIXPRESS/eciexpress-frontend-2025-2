@@ -1,3 +1,6 @@
+/**
+ * ViewSelector - Selector de tipo de vista (cuadrícula o lista)
+ */
 import React from 'react';
 import { Grid3x3, List } from 'lucide-react';
 import type { VistaType } from '../types/pedidos';
@@ -13,6 +16,7 @@ export const ViewSelector: React.FC<ViewSelectorProps> = ({
 }) => {
   return (
     <div className="flex items-center gap-2 bg-white rounded-lg border border-gray-200 p-1 shadow-sm">
+      {/* Botón vista cuadrícula */}
       <button
         onClick={() => onVistaChange('grid')}
         className={`
@@ -28,6 +32,7 @@ export const ViewSelector: React.FC<ViewSelectorProps> = ({
         <span>Cuadrícula</span>
       </button>
       
+      {/* Botón vista lista */}
       <button
         onClick={() => onVistaChange('list')}
         className={`

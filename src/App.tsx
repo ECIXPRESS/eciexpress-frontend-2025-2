@@ -1,3 +1,7 @@
+/**
+ * App.tsx - Componente principal de la aplicación ECI Express
+ * Gestiona el estado global de pedidos, filtros y modales de validación
+ */
 import React, { useState, useMemo, useEffect } from 'react';
 import { Header, Container } from '@shared';
 import { 
@@ -13,6 +17,7 @@ import {
 } from '@pages/qr-validation-seller';
 
 function App() {
+  // Estado principal: lista de pedidos con datos de ejemplo
   const [pedidos, setPedidos] = useState<Pedido[]>([
     {
       id: '1',
@@ -165,13 +170,16 @@ function App() {
     },
   ]);
 
+  // Estado de filtros de búsqueda y estado
   const [filtros, setFiltros] = useState<FiltrosPedidosType>({
     query: '',
     estado: undefined
   });
 
+  // Estado activo en la navegación por pestañas
   const [estadoActivo, setEstadoActivo] = useState<string>('total');
 
+  // Estados para controlar los modales
   const [validationModalOpen, setValidationModalOpen] = useState(false);
   const [successModalOpen, setSuccessModalOpen] = useState(false);
   const [errorModalOpen, setErrorModalOpen] = useState(false);
@@ -181,7 +189,7 @@ function App() {
   const [validatedCode, setValidatedCode] = useState<string>('');
   const [initialTab, setInitialTab] = useState<'qr' | 'manual'>('qr');
 
-  // Escuchar eventos de error personalizados
+  // Listener para eventos de error personalizados (emitidos desde ValidationModal)
   useEffect(() => {
     const handleShowError = (event: any) => {
       const { type, code } = event.detail;
@@ -194,26 +202,25 @@ function App() {
     return () => window.removeEventListener('show-error', handleShowError);
   }, []);
 
-  // Calcular resumen
+  // Cálculo del resumen de pedidos por estado
   const resumen: ResumenPedidosType = {
     completados: pedidos.filter(p => p.estado === 'completado').length,
     pendientes: pedidos.filter(p => p.estado === 'preparacion').length,
     total: pedidos.length,
   };
 
-  // Filtrar pedidos según estado activo y filtros
+  // Filtrado de pedidos según navegación activa y filtros de búsqueda
   const pedidosFiltrados = useMemo(() => {
     return pedidos.filter(pedido => {
-      // 1. Filtrar por estado activo en la navegación (tiene prioridad si está activo)
+      // Filtro por estado de navegación
       let pasaFiltroNavegacion = true;
       if (estadoActivo === 'completados') {
         pasaFiltroNavegacion = pedido.estado === 'completado';
       } else if (estadoActivo === 'pendientes') {
         pasaFiltroNavegacion = pedido.estado === 'preparacion';
       }
-      // Si estadoActivo es 'total', no se filtra por estado
 
-      // 2. Filtrar por búsqueda de texto
+      // Filtro por búsqueda de texto
       let pasaBusqueda = true;
       if (filtros.query.trim()) {
         pasaBusqueda = 
@@ -224,7 +231,7 @@ function App() {
           );
       }
 
-      // 3. Filtrar por estado del componente FiltrosPedidos (solo si no hay estado activo en navegación)
+      // Filtro por estado del componente FiltrosPedidos
       let pasaFiltroEstado = true;
       if (filtros.estado && estadoActivo === 'total') {
         pasaFiltroEstado = pedido.estado === filtros.estado;
@@ -234,14 +241,15 @@ function App() {
     });
   }, [pedidos, filtros, estadoActivo]);
 
+  // Abre el modal de validación para un pedido específico
   const handleValidarPedido = (id: string) => {
     setCurrentPedidoId(id);
-    setInitialTab('qr'); // Siempre inicia en QR cuando validan desde un pedido
+    setInitialTab('qr');
     setValidationModalOpen(true);
   };
 
+  // Procesa la validación exitosa y actualiza el estado del pedido
   const handleValidationSuccess = (code: string) => {
-    console.log('Código validado:', code);
     if (currentPedidoId) {
       setPedidos(pedidos.map(pedido => 
         pedido.id === currentPedidoId ? { ...pedido, estado: 'completado' } : pedido
@@ -252,10 +260,11 @@ function App() {
     setSuccessModalOpen(true);
   };
 
+  // Handlers para cerrar modales
   const handleCloseValidation = () => {
     setValidationModalOpen(false);
     setCurrentPedidoId(null);
-    setInitialTab('qr'); // Reset a pestaña QR
+    setInitialTab('qr');
   };
 
   const handleCloseSuccess = () => {
@@ -269,17 +278,19 @@ function App() {
     setErrorCode('');
   };
 
+  // Redirige al ingreso manual desde el modal de error
   const handleErrorManualEntry = () => {
     setErrorModalOpen(false);
-    setInitialTab('manual'); // Abre en pestaña manual
+    setInitialTab('manual');
     setTimeout(() => {
       setValidationModalOpen(true);
-    }, 300); // Pequeño delay para transición suave
+    }, 300);
   };
 
+  // Reintenta el escaneo QR desde el modal de error
   const handleErrorRetry = () => {
     setErrorModalOpen(false);
-    setInitialTab('qr'); // Vuelve a intentar con QR
+    setInitialTab('qr');
     setTimeout(() => {
       setValidationModalOpen(true);
     }, 300);
@@ -294,17 +305,20 @@ function App() {
       <Header nombreTienda="ECI Express" />
       
       <Container className="flex-1 flex flex-col overflow-hidden py-5">
+        {/* Navegación por estados (Total, Pendientes, Completados) */}
         <EstadoNavigation 
           resumen={resumen}
           estadoActivo={estadoActivo}
           onEstadoChange={setEstadoActivo}
         />
         
+        {/* Barra de búsqueda y filtros */}
         <FiltrosPedidos 
           filtros={filtros} 
           onFiltrosChange={setFiltros} 
         />
         
+        {/* Lista de pedidos con scroll */}
         <div className="flex-1 overflow-y-auto -mx-1 px-1">
           <PedidosList
             pedidos={pedidosFiltrados}
@@ -314,7 +328,7 @@ function App() {
         </div>
       </Container>
 
-      {/* Modal de validación con pestañas */}
+      {/* Modales */}
       <ValidationModal
         isOpen={validationModalOpen}
         onClose={handleCloseValidation}
@@ -323,14 +337,12 @@ function App() {
         initialTab={initialTab}
       />
 
-      {/* Modal de éxito */}
       <SuccessModal
         isOpen={successModalOpen}
         onClose={handleCloseSuccess}
         code={validatedCode}
       />
 
-      {/* Modal de errores */}
       <ErrorModal
         isOpen={errorModalOpen}
         onClose={handleCloseError}

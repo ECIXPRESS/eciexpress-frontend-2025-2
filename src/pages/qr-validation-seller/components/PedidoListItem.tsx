@@ -1,3 +1,7 @@
+/**
+ * PedidoListItem - Componente de pedido para vista de lista
+ * Muestra información resumida del pedido en formato horizontal
+ */
 import React from 'react';
 import type { Pedido } from '../types/pedidos';
 import { Badge } from '@shared';
@@ -9,6 +13,9 @@ interface PedidoListItemProps {
   onVerDetalles: (id: string) => void;
 }
 
+/**
+ * Obtiene la ruta de imagen según el tipo de producto
+ */
 const getImagenProducto = (nombre: string): string => {
   const nombreLower = nombre.toLowerCase();
   if (nombreLower.includes('hamburguesa')) return '/src/assets/qr-validation-seller/productos/1.jpg';
@@ -25,7 +32,7 @@ export const PedidoListItem: React.FC<PedidoListItemProps> = ({
   return (
     <div className="bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-all duration-200">
       <div className="flex items-center p-4 gap-4">
-        {/* Imagen del producto con badge */}
+        {/* Imagen del producto principal con badge de estado */}
         <div className="relative w-28 h-28 flex-shrink-0 rounded-lg overflow-visible">
           <img
             src={getImagenProducto(pedido.productos[0].nombre)}
@@ -37,7 +44,7 @@ export const PedidoListItem: React.FC<PedidoListItemProps> = ({
           </div>
         </div>
 
-        {/* Información principal */}
+        {/* Información principal del pedido */}
         <div className="flex-1 min-w-0">
           <div className="flex items-start justify-between mb-2">
             <div className="flex-1 min-w-0 mr-4">
@@ -48,6 +55,7 @@ export const PedidoListItem: React.FC<PedidoListItemProps> = ({
                 Pedido #{pedido.codigo}
               </p>
             </div>
+            {/* Total del pedido */}
             <div className="text-right flex-shrink-0">
               <div className="flex items-center text-xl font-bold text-primary-600">
                 <DollarSign className="w-5 h-5" />
@@ -56,6 +64,7 @@ export const PedidoListItem: React.FC<PedidoListItemProps> = ({
             </div>
           </div>
 
+          {/* Hora y teléfono */}
           <div className="flex items-center gap-4 text-sm text-gray-600 mb-2">
             <div className="flex items-center gap-1.5">
               <Clock className="w-4 h-4 text-primary-500 flex-shrink-0" />
@@ -67,7 +76,7 @@ export const PedidoListItem: React.FC<PedidoListItemProps> = ({
             </div>
           </div>
 
-          {/* Productos resumidos */}
+          {/* Resumen de productos */}
           <div className="text-sm text-gray-700">
             <span className="font-semibold text-primary-600">{pedido.productos.length} producto(s): </span>
             <span className="text-gray-600">

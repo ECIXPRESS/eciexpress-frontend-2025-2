@@ -1,3 +1,8 @@
+/**
+ * EstadoNavigation - Navegación principal por estados de pedidos
+ * Muestra tarjetas con contadores animados para cada estado
+ * Estados: Total, En Preparación, Entregados
+ */
 import React, { useEffect, useState } from 'react';
 import type { ResumenPedidos as ResumenType } from '../types/pedidos';
 
@@ -7,13 +12,16 @@ interface EstadoNavigationProps {
   onEstadoChange: (estado: string) => void;
 }
 
-// Componente para el contador animado
+/**
+ * AnimatedCounter - Contador con animación de incremento
+ * Anima el valor desde 0 hasta el valor final en 1 segundo
+ */
 const AnimatedCounter: React.FC<{ value: number; isActive: boolean }> = ({ value, isActive }) => {
   const [count, setCount] = useState(0);
 
   useEffect(() => {
     setCount(0);
-    const duration = 1000; // 1 segundo
+    const duration = 1000;
     const steps = 30;
     const increment = value / steps;
     const stepDuration = duration / steps;
@@ -33,10 +41,7 @@ const AnimatedCounter: React.FC<{ value: number; isActive: boolean }> = ({ value
   }, [value]);
 
   return (
-    <span className={`
-      transition-all duration-300
-      ${isActive ? 'scale-110' : ''}
-    `}>
+    <span className={`transition-all duration-300 ${isActive ? 'scale-110' : ''}`}>
       {count}
     </span>
   );
@@ -47,6 +52,7 @@ export const EstadoNavigation: React.FC<EstadoNavigationProps> = ({
   estadoActivo,
   onEstadoChange,
 }) => {
+  // Configuración de cada tarjeta de estado
   const items = [
     { 
       key: 'total',
@@ -102,7 +108,7 @@ export const EstadoNavigation: React.FC<EstadoNavigationProps> = ({
               `}
             >
               <div className="flex flex-col space-y-4">
-                {/* Título */}
+                {/* Título de la tarjeta */}
                 <div>
                   <h3 className={`
                     text-lg font-bold transition-colors duration-200 text-left
@@ -112,7 +118,7 @@ export const EstadoNavigation: React.FC<EstadoNavigationProps> = ({
                   </h3>
                 </div>
                 
-                {/* Contador grande con animación */}
+                {/* Contador animado */}
                 <div className="flex items-baseline space-x-2">
                   <div className={`
                     text-5xl font-black transition-colors duration-200 tabular-nums

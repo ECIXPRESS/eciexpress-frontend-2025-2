@@ -1,3 +1,7 @@
+/**
+ * QRScannerModal - Modal dedicado para escaneo de códigos QR
+ * Utiliza la cámara del dispositivo para detectar y decodificar códigos QR
+ */
 import React, { useEffect, useRef, useState } from 'react';
 import { X, Camera, AlertCircle, Keyboard, QrCode } from 'lucide-react';
 import { BrowserQRCodeReader } from '@zxing/library';
@@ -24,6 +28,7 @@ export const QRScannerModal: React.FC<QRScannerModalProps> = ({
   const [isTransitioning, setIsTransitioning] = useState(false);
   const codeReaderRef = useRef<BrowserQRCodeReader | null>(null);
 
+  // Gestiona apertura/cierre del modal y control de la cámara
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -43,6 +48,7 @@ export const QRScannerModal: React.FC<QRScannerModalProps> = ({
     };
   }, [isOpen]);
 
+  // Inicializa el escáner QR y configura la cámara
   const startScanning = async () => {
     try {
       setError(null);
@@ -57,6 +63,7 @@ export const QRScannerModal: React.FC<QRScannerModalProps> = ({
         throw new Error('No se encontró ninguna cámara en tu dispositivo');
       }
 
+      // Prioriza cámara trasera para mejor experiencia en móviles
       const selectedDevice = videoInputDevices.find(device => 
         device.label.toLowerCase().includes('back') || 
         device.label.toLowerCase().includes('trasera')
@@ -80,6 +87,7 @@ export const QRScannerModal: React.FC<QRScannerModalProps> = ({
     }
   };
 
+  // Libera recursos de la cámara
   const stopScanning = () => {
     if (codeReaderRef.current) {
       codeReaderRef.current.reset();
@@ -93,6 +101,7 @@ export const QRScannerModal: React.FC<QRScannerModalProps> = ({
     onClose();
   };
 
+  // Transición suave hacia el modal de ingreso manual
   const handleManualEntry = () => {
     setIsTransitioning(true);
     stopScanning();
@@ -113,7 +122,7 @@ export const QRScannerModal: React.FC<QRScannerModalProps> = ({
       `}
       onClick={handleClose}
     >
-      {/* Backdrop */}
+      {/* Backdrop con blur */}
       <div 
         className={`
           absolute inset-0 bg-black/70 backdrop-blur-sm
@@ -140,7 +149,7 @@ export const QRScannerModal: React.FC<QRScannerModalProps> = ({
         }}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Botón de cerrar */}
+        {/* Botón cerrar */}
         <button
           onClick={handleClose}
           className={`
@@ -155,9 +164,8 @@ export const QRScannerModal: React.FC<QRScannerModalProps> = ({
           <X className="w-5 h-5 group-hover:rotate-90 transition-transform duration-300" />
         </button>
         
-        {/* Contenido del modal */}
         <div className="bg-white rounded-2xl shadow-2xl overflow-hidden">
-          {/* Header simplificado */}
+          {/* Header */}
           <div className="bg-white p-6 border-b border-gray-100">
             <div className="text-center">
               <div className="inline-flex items-center justify-center w-16 h-16 bg-primary-100 rounded-full mb-3">
@@ -172,7 +180,7 @@ export const QRScannerModal: React.FC<QRScannerModalProps> = ({
             </div>
           </div>
 
-          {/* Video preview con marco amarillo */}
+          {/* Área de video con marco de escaneo */}
           <div className="relative bg-black aspect-square">
             {!error ? (
               <>
@@ -184,38 +192,38 @@ export const QRScannerModal: React.FC<QRScannerModalProps> = ({
                   muted
                 />
                 
-                {/* Overlay de escaneo - Marco amarillo totalmente centrado */}
+                {/* Overlay con marco amarillo de escaneo */}
                 <div className="absolute inset-0 flex flex-col items-center justify-center p-8">
-                  {/* Overlay oscuro con recorte */}
                   <div className="absolute inset-0 bg-black/40" />
                   
-                  {/* Contenedor centrado */}
                   <div className="relative z-10 flex flex-col items-center">
-                    {/* Marco de escaneo amarillo */}
+                    {/* Marco de escaneo con esquinas decorativas */}
                     <div className="w-64 h-64 border-4 border-yellow-400 rounded-2xl relative bg-transparent shadow-2xl">
-                      {/* Esquinas redondeadas amarillas */}
+                      {/* Esquina superior izquierda */}
                       <div className="absolute -top-1 -left-1 w-12 h-12">
                         <div className="absolute top-0 left-0 w-full h-1 bg-yellow-400 rounded-tl-2xl" />
                         <div className="absolute top-0 left-0 w-1 h-full bg-yellow-400 rounded-tl-2xl" />
                       </div>
+                      {/* Esquina superior derecha */}
                       <div className="absolute -top-1 -right-1 w-12 h-12">
                         <div className="absolute top-0 right-0 w-full h-1 bg-yellow-400 rounded-tr-2xl" />
                         <div className="absolute top-0 right-0 w-1 h-full bg-yellow-400 rounded-tr-2xl" />
                       </div>
+                      {/* Esquina inferior izquierda */}
                       <div className="absolute -bottom-1 -left-1 w-12 h-12">
                         <div className="absolute bottom-0 left-0 w-full h-1 bg-yellow-400 rounded-bl-2xl" />
                         <div className="absolute bottom-0 left-0 w-1 h-full bg-yellow-400 rounded-bl-2xl" />
                       </div>
+                      {/* Esquina inferior derecha */}
                       <div className="absolute -bottom-1 -right-1 w-12 h-12">
                         <div className="absolute bottom-0 right-0 w-full h-1 bg-yellow-400 rounded-br-2xl" />
                         <div className="absolute bottom-0 right-0 w-1 h-full bg-yellow-400 rounded-br-2xl" />
                       </div>
                       
-                      {/* Línea de escaneo animada */}
+                      {/* Línea animada de escaneo */}
                       <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-transparent via-yellow-400 to-transparent shadow-lg shadow-yellow-400/50 animate-scan" />
                     </div>
                     
-                    {/* Texto de ayuda - centrado debajo del marco */}
                     <p className="text-white text-sm font-medium bg-black/60 px-6 py-2.5 rounded-lg backdrop-blur-sm mt-6 text-center">
                       Coloca el código QR dentro del marco
                     </p>
@@ -223,6 +231,7 @@ export const QRScannerModal: React.FC<QRScannerModalProps> = ({
                 </div>
               </>
             ) : (
+              // Vista de error cuando la cámara no está disponible
               <div className="flex items-center justify-center aspect-square p-8">
                 <div className="text-center">
                   <div className="inline-flex items-center justify-center w-20 h-20 bg-red-100 rounded-full mb-4">
@@ -241,7 +250,7 @@ export const QRScannerModal: React.FC<QRScannerModalProps> = ({
             )}
           </div>
 
-          {/* Footer - Botón validar */}
+          {/* Footer con opción de ingreso manual */}
           <div className="p-6 bg-white">
             <button
               onClick={handleManualEntry}
@@ -258,7 +267,7 @@ export const QRScannerModal: React.FC<QRScannerModalProps> = ({
         </div>
       </div>
 
-      {/* Estilos para la animación de escaneo */}
+      {/* Animación de línea de escaneo */}
       <style>{`
         @keyframes scan {
           0%, 100% { top: 0; opacity: 0.5; }

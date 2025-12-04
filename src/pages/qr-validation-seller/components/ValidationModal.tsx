@@ -1,3 +1,7 @@
+/**
+ * ValidationModal - Modal de validación con pestañas QR y código manual
+ * Permite validar pedidos mediante escaneo QR o ingreso manual del código
+ */
 import React, { useEffect, useRef, useState } from 'react';
 import { X, QrCode, Hash, AlertCircle, Keyboard } from 'lucide-react';
 import { BrowserQRCodeReader } from '@zxing/library';
@@ -30,13 +34,14 @@ export const ValidationModal: React.FC<ValidationModalProps> = ({
   const codeReaderRef = useRef<BrowserQRCodeReader | null>(null);
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
-  // Actualizar la pestaña activa cuando cambia initialTab
+  // Sincroniza la pestaña activa con initialTab cuando el modal se abre
   useEffect(() => {
     if (isOpen) {
       setActiveTab(initialTab);
     }
   }, [isOpen, initialTab]);
 
+  // Gestiona el ciclo de vida del modal y el escáner
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -46,7 +51,6 @@ export const ValidationModal: React.FC<ValidationModalProps> = ({
       if (activeTab === 'qr') {
         startScanning();
       } else {
-        // Auto-focus en input manual si está en esa pestaña
         setTimeout(() => {
           const manualInput = document.querySelector('input[placeholder="Ingresa el código"]') as HTMLInputElement;
           manualInput?.focus();
@@ -67,6 +71,7 @@ export const ValidationModal: React.FC<ValidationModalProps> = ({
     };
   }, [isOpen, activeTab]);
 
+  // Inicia el escáner de códigos QR
   const startScanning = async () => {
     try {
       setQrError(null);
@@ -81,6 +86,7 @@ export const ValidationModal: React.FC<ValidationModalProps> = ({
         throw new Error('No se encontró ninguna cámara en tu dispositivo');
       }
 
+      // Prioriza la cámara trasera si está disponible
       const selectedDevice = videoInputDevices.find(device => 
         device.label.toLowerCase().includes('back') || 
         device.label.toLowerCase().includes('trasera')
@@ -104,6 +110,7 @@ export const ValidationModal: React.FC<ValidationModalProps> = ({
     }
   };
 
+  // Detiene el escáner y libera recursos
   const stopScanning = () => {
     if (codeReaderRef.current) {
       codeReaderRef.current.reset();
@@ -112,6 +119,7 @@ export const ValidationModal: React.FC<ValidationModalProps> = ({
     setIsScanning(false);
   };
 
+  // Cambia entre pestañas QR y manual
   const handleTabChange = (tab: TabType) => {
     if (tab === 'qr') {
       stopScanning();
@@ -121,7 +129,6 @@ export const ValidationModal: React.FC<ValidationModalProps> = ({
     setQrError(null);
     setCode(['', '', '', '', '', '', '', '', '']);
     
-    // Auto-focus según pestaña
     if (tab === 'manual') {
       setTimeout(() => {
         const manualInput = document.querySelector('input[placeholder="Ingresa el código"]') as HTMLInputElement;
@@ -130,6 +137,7 @@ export const ValidationModal: React.FC<ValidationModalProps> = ({
     }
   };
 
+  // Maneja el pegado de código desde el portapapeles
   const handlePaste = (e: React.ClipboardEvent) => {
     e.preventDefault();
     const pastedData = e.clipboardData.getData('text').replace(/[^A-Za-z0-9]/g, '').slice(0, 9).toUpperCase();
@@ -137,6 +145,7 @@ export const ValidationModal: React.FC<ValidationModalProps> = ({
     setCode(newCode);
   };
 
+  // Valida el código ingresado manualmente
   const handleValidate = () => {
     const fullCode = code.join('');
     
@@ -161,7 +170,7 @@ export const ValidationModal: React.FC<ValidationModalProps> = ({
       `}
       onClick={onClose}
     >
-      {/* Backdrop */}
+      {/* Fondo oscuro con blur */}
       <div 
         className={`
           absolute inset-0 bg-black/70 backdrop-blur-sm
@@ -170,7 +179,7 @@ export const ValidationModal: React.FC<ValidationModalProps> = ({
         `}
       />
       
-      {/* Contenedor del modal */}
+      {/* Contenedor del modal con animación de entrada */}
       <div 
         className={`
           relative w-full max-w-md z-10
@@ -187,7 +196,7 @@ export const ValidationModal: React.FC<ValidationModalProps> = ({
         }}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Botón de cerrar */}
+        {/* Botón cerrar */}
         <button
           onClick={onClose}
           className={`
@@ -202,12 +211,11 @@ export const ValidationModal: React.FC<ValidationModalProps> = ({
           <X className="w-5 h-5 group-hover:rotate-90 transition-transform duration-300" />
         </button>
         
-        {/* Contenido del modal */}
         <div className="bg-white rounded-2xl shadow-2xl overflow-hidden">
           {/* Header con pestañas */}
           <div className="bg-white border-b border-gray-100">
-            {/* Pestañas */}
             <div className="flex border-b border-gray-200">
+              {/* Pestaña QR */}
               <button
                 onClick={() => handleTabChange('qr')}
                 className={`
@@ -226,6 +234,7 @@ export const ValidationModal: React.FC<ValidationModalProps> = ({
                 )}
               </button>
               
+              {/* Pestaña código manual */}
               <button
                 onClick={() => handleTabChange('manual')}
                 className={`
@@ -245,7 +254,7 @@ export const ValidationModal: React.FC<ValidationModalProps> = ({
               </button>
             </div>
 
-            {/* Título dinámico */}
+            {/* Título dinámico según pestaña */}
             <div className="text-center p-6">
               <div className="inline-flex items-center justify-center w-16 h-16 bg-primary-100 rounded-full mb-3">
                 {activeTab === 'qr' ? (
@@ -266,10 +275,10 @@ export const ValidationModal: React.FC<ValidationModalProps> = ({
             </div>
           </div>
 
-          {/* Contenido dinámico según pestaña */}
+          {/* Contenido según pestaña activa */}
           <div className={`relative bg-white ${activeTab === 'qr' ? 'aspect-square' : 'h-[383px]'}`}>
             {activeTab === 'qr' ? (
-              // Vista QR
+              // Vista del escáner QR
               <div className="relative bg-black h-full">
                 {!qrError ? (
                   <>
@@ -281,12 +290,14 @@ export const ValidationModal: React.FC<ValidationModalProps> = ({
                       muted
                     />
                     
+                    {/* Overlay con marco de escaneo */}
                     <div className="absolute inset-0 flex flex-col items-center justify-center p-8">
                       <div className="absolute inset-0 bg-black/40" />
                       
                       <div className="relative z-10 flex flex-col items-center">
+                        {/* Marco amarillo de escaneo */}
                         <div className="w-64 h-64 border-4 border-yellow-400 rounded-2xl relative bg-transparent shadow-2xl">
-                          {/* Esquinas */}
+                          {/* Esquinas decorativas */}
                           <div className="absolute -top-1 -left-1 w-12 h-12">
                             <div className="absolute top-0 left-0 w-full h-1 bg-yellow-400 rounded-tl-2xl" />
                             <div className="absolute top-0 left-0 w-1 h-full bg-yellow-400 rounded-tl-2xl" />
@@ -304,6 +315,7 @@ export const ValidationModal: React.FC<ValidationModalProps> = ({
                             <div className="absolute bottom-0 right-0 w-1 h-full bg-yellow-400 rounded-br-2xl" />
                           </div>
                           
+                          {/* Línea animada de escaneo */}
                           <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-transparent via-yellow-400 to-transparent shadow-lg shadow-yellow-400/50 animate-scan" />
                         </div>
                         
@@ -314,6 +326,7 @@ export const ValidationModal: React.FC<ValidationModalProps> = ({
                     </div>
                   </>
                 ) : (
+                  // Vista de error de cámara
                   <div className="flex items-center justify-center h-full p-8">
                     <div className="text-center">
                       <div className="inline-flex items-center justify-center w-20 h-20 bg-red-100 rounded-full mb-4">
@@ -332,7 +345,7 @@ export const ValidationModal: React.FC<ValidationModalProps> = ({
                 )}
               </div>
             ) : (
-              // Vista Manual - textos consistentes con QR
+              // Vista de ingreso manual
               <div className="absolute inset-0 flex items-center justify-center p-4">
                 <div className="w-full max-w-[280px]">
                   <div className="text-center mb-3">
@@ -380,6 +393,7 @@ export const ValidationModal: React.FC<ValidationModalProps> = ({
                     </div>
                   )}
 
+                  {/* Preview de detalles cuando el código está completo */}
                   {isComplete && !error && (
                     <div className="bg-gray-50 rounded-lg p-2.5 border border-gray-200 shadow-sm">
                       <p className="text-xs font-semibold text-gray-600 mb-1.5">
@@ -406,7 +420,7 @@ export const ValidationModal: React.FC<ValidationModalProps> = ({
             )}
           </div>
 
-          {/* Footer */}
+          {/* Footer con acciones */}
           <div className="p-6 bg-white border-t border-gray-100">
             {activeTab === 'manual' && (
               <button
@@ -425,7 +439,7 @@ export const ValidationModal: React.FC<ValidationModalProps> = ({
               </button>
             )}
             
-            {/* Botones Demo - Iguales en ambas pestañas */}
+            {/* Botones de prueba para notificaciones */}
             <div className="border-t border-gray-200 pt-3 mb-3">
               <p className="text-xs font-semibold text-gray-500 mb-2 text-center">Probar Notificaciones</p>
               <div className="grid grid-cols-2 gap-2">
