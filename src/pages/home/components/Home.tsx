@@ -87,13 +87,14 @@ export default function Home() {
   const products = productsByCategoryData[activeCategory as keyof typeof productsByCategoryData];
 
   return (
-    <>
+    <div className="flex min-h-screen bg-[#F6F6F6]">
       <Sidebar />
-      {/* Ajuste de padding y margen para diferentes pantallas */}
-      <div className="min-h-screen bg-[#F6F6F6] p-4 sm:p-6 md:p-8 ml-20">
+      
+      {/* Contenido principal - responsive */}
+      <div className="flex-1 md:ml-20 p-4 sm:p-6 md:p-8">
         <div className="max-w-7xl mx-auto">
           {/* Botones de categoría - responsive */}
-          <div className="flex justify-center gap-2 sm:gap-4 mb-6 sm:mb-8">
+          <div className="flex justify-center gap-2 sm:gap-4 mb-6 sm:mb-8 mt-16 md:mt-0">
             <button
               onClick={() => setActiveCategory('cafeteria')}
               className={`px-6 sm:px-8 md:px-10 py-2 sm:py-3 rounded-full font-semibold text-sm sm:text-base shadow-md transition-colors ${
@@ -121,15 +122,13 @@ export default function Home() {
             <img 
               src={bannerImage} 
               alt="Banner ECIEXPRESS" 
-              className="w-full h-full object-cover"
+              className="w-full h-auto object-cover"
             />
           </div>
 
           {/* Tiendas - responsive con scroll horizontal en mobile */}
           <div className="mb-8 sm:mb-10">
-            <h3 className="text-sm text-gray-500 mb-4 sm:mb-6 font-medium px-2 sm:px-0">
-              Tiendas
-            </h3>
+            <h3 className="text-sm text-gray-500 mb-4 sm:mb-6 font-medium">Tiendas</h3>
             {/* Desktop: grid centrado */}
             <div className="hidden md:flex justify-center gap-8 lg:gap-12">
               {stores.map((store) => (
@@ -161,7 +160,7 @@ export default function Home() {
           </div>
 
           {/* Tabs - responsive */}
-          <div className="mb-6 sm:mb-8 px-2 sm:px-0">
+          <div className="mb-6 sm:mb-8">
             <div className="flex gap-6 sm:gap-8 border-b-2 border-gray-200">
               <button
                 onClick={() => setActiveTab('populares')}
@@ -171,7 +170,7 @@ export default function Home() {
               >
                 Populares
                 {activeTab === 'populares' && (
-                  <div className="absolute bottom-0 left-0 right-0 h-0.5 sm:h-1 bg-[#FDDF65]"></div>
+                  <div className="absolute bottom-0 left-0 right-0 h-1 bg-[#FDDF65]"></div>
                 )}
               </button>
               <button
@@ -182,7 +181,7 @@ export default function Home() {
               >
                 Favoritos
                 {activeTab === 'favoritos' && (
-                  <div className="absolute bottom-0 left-0 right-0 h-0.5 sm:h-1 bg-[#FDDF65]"></div>
+                  <div className="absolute bottom-0 left-0 right-0 h-1 bg-[#FDDF65]"></div>
                 )}
               </button>
             </div>
@@ -248,6 +247,6 @@ export default function Home() {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
