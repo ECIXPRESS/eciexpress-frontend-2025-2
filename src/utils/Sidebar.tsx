@@ -7,11 +7,49 @@ import {
   ClipboardList, 
   MessageCircle, 
   LogOut,
-  Bell
+  Bell,
+  BarChart3,
+  Users,
+  Tag
 } from 'lucide-react';
+import { useAuth } from '@/pages/login/hooks/useAuth';
+
+interface MenuItem {
+  icon: typeof LayoutDashboard;
+  label: string;
+  path?: string;
+}
 
 export default function Sidebar() {
   const [isExpanded, setIsExpanded] = useState(false);
+  const { user, logout } = useAuth();
+
+  const menuConfig: Record<string, MenuItem[]> = {
+    user: [
+      { icon: LayoutDashboard, label: 'Catálogo' },
+      { icon: ShoppingCart, label: 'Carrito' },
+      { icon: ClipboardList, label: 'Pedidos' },
+      { icon: MessageCircle, label: 'Chat' },
+    ],
+    seller: [
+      { icon: ClipboardList, label: 'Pedidos' },
+      { icon: LayoutDashboard, label: 'Catálogo' },
+      { icon: BarChart3, label: 'Estadísticas' },
+      { icon: MessageCircle, label: 'Chat' },
+    ],
+    admin: [
+      { icon: LayoutDashboard, label: 'Tablero' },
+      { icon: Users, label: 'Vendedores' },
+      { icon: MessageCircle, label: 'Chat' },
+      { icon: Tag, label: 'Promociones' },
+      { icon: BarChart3, label: 'Estadísticas' },
+    ],
+  };
+
+  const userRole = user?.role || 'user';
+  const menuItems = menuConfig[userRole] || menuConfig.user;
+  const showBalance = userRole === 'user';
+  const userBalance = user?.balance || 0;
 
   return (
     <div 
@@ -42,8 +80,8 @@ export default function Sidebar() {
           </button>
         </div>
 
-        {/* Balance Card - Solo cuando está expandido */}
-        {isExpanded && (
+        {/* Balance Card - Solo para usuarios */}
+        {isExpanded && showBalance && (
           <div className="px-4 mb-4">
             <div className="bg-gradient-to-br from-[#FDDF65] to-[#f5d74e] rounded-2xl p-4 shadow-lg">
               <div className="flex items-center justify-between mb-2">
@@ -52,37 +90,35 @@ export default function Sidebar() {
                   <Plus className="w-4 h-4 text-gray-800" />
                 </button>
               </div>
-              <div className="text-2xl font-bold text-[#262626]">$ 1.200</div>
+              <div className="text-2xl font-bold text-[#262626]">
+                $ {userBalance.toLocaleString('es-CO')}
+              </div>
             </div>
           </div>
         )}
 
-        {/* Navegación */}
+        {/* Navegación dinámica según rol */}
         <nav className="flex-1 px-2">
-          <button className="w-full p-3 flex items-center gap-3 rounded-lg hover:bg-gray-100 transition-colors mb-1">
-            <LayoutDashboard className="w-6 h-6 text-gray-600 flex-shrink-0" />
-            {isExpanded && <span className="text-sm font-medium text-gray-700">Catálogo</span>}
-          </button>
-
-          <button className="w-full p-3 flex items-center gap-3 rounded-lg hover:bg-gray-100 transition-colors mb-1">
-            <ShoppingCart className="w-6 h-6 text-gray-600 flex-shrink-0" />
-            {isExpanded && <span className="text-sm font-medium text-gray-700">Carrito</span>}
-          </button>
-
-          <button className="w-full p-3 flex items-center gap-3 rounded-lg hover:bg-gray-100 transition-colors mb-1">
-            <ClipboardList className="w-6 h-6 text-gray-600 flex-shrink-0" />
-            {isExpanded && <span className="text-sm font-medium text-gray-700">Pedidos</span>}
-          </button>
-
-          <button className="w-full p-3 flex items-center gap-3 rounded-lg hover:bg-gray-100 transition-colors mb-1">
-            <MessageCircle className="w-6 h-6 text-gray-600 flex-shrink-0" />
-            {isExpanded && <span className="text-sm font-medium text-gray-700">Chat</span>}
-          </button>
+          {menuItems.map((item, index) => {
+            const Icon = item.icon;
+            return (
+              <button 
+                key={index}
+                className="w-full p-3 flex items-center gap-3 rounded-lg hover:bg-gray-100 transition-colors mb-1"
+              >
+                <Icon className="w-6 h-6 text-gray-600 flex-shrink-0" />
+                {isExpanded && <span className="text-sm font-medium text-gray-700">{item.label}</span>}
+              </button>
+            );
+          })}
         </nav>
 
         {/* Botón de Salir */}
         <div className="border-t border-gray-100 p-2">
-          <button className="w-full p-3 flex items-center gap-3 rounded-lg hover:bg-gray-100 transition-colors">
+          <button 
+            onClick={logout}
+            className="w-full p-3 flex items-center gap-3 rounded-lg hover:bg-gray-100 transition-colors"
+          >
             <LogOut className="w-6 h-6 text-gray-600 flex-shrink-0" />
             {isExpanded && <span className="text-sm font-medium text-gray-700">Salir</span>}
           </button>
