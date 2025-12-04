@@ -2,8 +2,8 @@
  * App.tsx - Componente principal de la aplicación ECI Express
  * Gestiona el estado global de pedidos, filtros y modales de validación
  */
-import React, { useState, useMemo, useEffect } from 'react';
-import { Header, Container } from '@shared';
+import { useState, useMemo, useEffect } from 'react';
+import { Header, Container } from './utils/qr-validation-seller';
 import { 
   PedidosList, 
   EstadoNavigation, 
@@ -14,7 +14,7 @@ import {
   type Pedido,
   type ResumenPedidosType,
   type FiltrosPedidosType 
-} from '@pages/qr-validation-seller';
+} from './pages/qr-validation-seller';
 
 function App() {
   // Estado principal: lista de pedidos con datos de ejemplo

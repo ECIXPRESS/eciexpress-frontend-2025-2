@@ -3,7 +3,7 @@
  * Permite validar pedidos mediante escaneo QR o ingreso manual del código
  */
 import React, { useEffect, useRef, useState } from 'react';
-import { X, QrCode, Hash, AlertCircle, Keyboard } from 'lucide-react';
+import { X, QrCode, Hash, AlertCircle} from 'lucide-react';
 import { BrowserQRCodeReader } from '@zxing/library';
 
 interface ValidationModalProps {
@@ -20,7 +20,6 @@ export const ValidationModal: React.FC<ValidationModalProps> = ({
   isOpen,
   onClose,
   onSuccess,
-  pedidoId,
   initialTab = 'qr',
 }) => {
   const [activeTab, setActiveTab] = useState<TabType>(initialTab);
@@ -28,11 +27,10 @@ export const ValidationModal: React.FC<ValidationModalProps> = ({
   const [error, setError] = useState<string | null>(null);
   const [isAnimating, setIsAnimating] = useState(false);
   const [qrError, setQrError] = useState<string | null>(null);
-  const [isScanning, setIsScanning] = useState(false);
+  const [, setIsScanning] = useState(false);
   
   const videoRef = useRef<HTMLVideoElement>(null);
   const codeReaderRef = useRef<BrowserQRCodeReader | null>(null);
-  const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
   // Sincroniza la pestaña activa con initialTab cuando el modal se abre
   useEffect(() => {

@@ -17,7 +17,6 @@ export const PedidoModal: React.FC<PedidoModalProps> = ({
   pedido,
   isOpen,
   onClose,
-  onValidar,
 }) => {
   const [isAnimating, setIsAnimating] = useState(false);
 

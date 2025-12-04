@@ -19,7 +19,6 @@ export const ManualCodeModal: React.FC<ManualCodeModalProps> = ({
   onClose,
   onSuccess,
   onBackToScanner,
-  pedidoId,
 }) => {
   const [code, setCode] = useState(['', '', '', '', '', '', '', '', '']);
   const [error, setError] = useState<string | null>(null);
@@ -48,28 +47,6 @@ export const ManualCodeModal: React.FC<ManualCodeModalProps> = ({
       document.body.style.overflow = 'unset';
     };
   }, [isOpen]);
-
-  /** Maneja cambios en los inputs individuales con auto-avance */
-  const handleInputChange = (index: number, value: string) => {
-    // Permitir números y letras
-    if (value && !/^[A-Za-z0-9]$/.test(value)) return;
-
-    const newCode = [...code];
-    newCode[index] = value.toUpperCase();
-    setCode(newCode);
-    setError(null);
-
-    if (value && index < 8) {
-      inputRefs.current[index + 1]?.focus();
-    }
-  };
-
-  /** Maneja Backspace para retroceder entre inputs */
-  const handleKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Backspace' && !code[index] && index > 0) {
-      inputRefs.current[index - 1]?.focus();
-    }
-  };
 
   /** Maneja pegado de código completo desde portapapeles */
   const handlePaste = (e: React.ClipboardEvent) => {

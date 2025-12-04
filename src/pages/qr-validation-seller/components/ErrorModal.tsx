@@ -28,7 +28,6 @@ export const ErrorModal: React.FC<ErrorModalProps> = ({
   code,
 }) => {
   const [isAnimating, setIsAnimating] = useState(false);
-  const [shouldAutoClose, setShouldAutoClose] = useState(false);
 
   // Auto-redirige a validación manual si la cámara no está disponible
   useEffect(() => {

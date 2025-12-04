@@ -18,7 +18,6 @@ const getSaludo = (): string => {
 };
 
 export const Header: React.FC<HeaderProps> = ({ 
-  nombreTienda, 
   fecha,
   nombreAdmin = 'Cafe Leyenda',
   rol = 'Cafetería'

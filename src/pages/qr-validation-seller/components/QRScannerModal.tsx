@@ -3,7 +3,7 @@
  * Utiliza la cámara del dispositivo para detectar y decodificar códigos QR
  */
 import React, { useEffect, useRef, useState } from 'react';
-import { X, Camera, AlertCircle, Keyboard, QrCode } from 'lucide-react';
+import { X, AlertCircle, Keyboard, QrCode } from 'lucide-react';
 import { BrowserQRCodeReader } from '@zxing/library';
 
 interface QRScannerModalProps {
@@ -19,10 +19,9 @@ export const QRScannerModal: React.FC<QRScannerModalProps> = ({
   onClose,
   onSuccess,
   onManualEntry,
-  pedidoId,
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [isScanning, setIsScanning] = useState(false);
+  const [, setIsScanning] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isAnimating, setIsAnimating] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
@@ -72,7 +71,7 @@ export const QRScannerModal: React.FC<QRScannerModalProps> = ({
       codeReader.decodeFromVideoDevice(
         selectedDevice.deviceId,
         videoRef.current!,
-        (result, error) => {
+        (result) => {
           if (result) {
             const code = result.getText();
             onSuccess(code);

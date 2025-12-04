@@ -2,7 +2,7 @@
  * pedidos.ts - Definiciones de tipos para el módulo de validación QR
  * Contiene interfaces para pedidos, productos, filtros y resultados de validación
  */
-import type { EstadoPedido } from '@shared';
+import type { EstadoPedido } from '../../../utils/qr-validation-seller';
 
 /**
  * Producto individual dentro de un pedido

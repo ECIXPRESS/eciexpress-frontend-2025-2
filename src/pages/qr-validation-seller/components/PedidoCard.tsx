@@ -5,7 +5,7 @@
  */
 import React, { useState } from 'react';
 import type { Pedido } from '../types/pedidos';
-import { Card, Badge } from '@shared';
+import { Card, Badge } from '../../../utils/qr-validation-seller';
 import { 
   Clock, 
   User, 
@@ -58,8 +58,7 @@ const getEmojiProducto = (nombre: string): string => {
 
 export const PedidoCard: React.FC<PedidoCardProps> = ({ 
   pedido, 
-  onValidar, 
-  onVerDetalles 
+  onValidar,
 }) => {
   const [isFlipped, setIsFlipped] = useState(false);
 

@@ -11,7 +11,7 @@ export default defineConfig({
   resolve: {
     alias: {
       // Alias para componentes compartidos (Header, Container, Card, Badge, etc.)
-      '@shared': path.resolve(__dirname, './src/utils/qr-validation-seller'),
+      '@shared': path.resolve(__dirname, './utils/qr-validation-seller'),
       // Alias para la página de validación QR del vendedor
       '@pages/qr-validation-seller': path.resolve(__dirname, './src/pages/qr-validation-seller'),
     },

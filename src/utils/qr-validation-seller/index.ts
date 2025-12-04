@@ -9,8 +9,8 @@ export { Card } from './components/UI/Card';
 export { Badge } from './components/UI/Badge';
 
 // Componentes de Layout
-export { Header } from './components/Layout/Header';
-export { Container } from './components/Layout/Container';
+export { Header } from './components/layout/Header';
+export { Container } from './components/layout/Container';
 
 // Tipos compartidos
 export type { 
