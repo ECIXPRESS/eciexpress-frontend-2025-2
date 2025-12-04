@@ -73,16 +73,18 @@ export default function Sidebar() {
           )}
         </div>
 
-        {/* Botón de agregar */}
-        <div className="flex items-center justify-center py-4">
-          <button className="w-12 h-12 rounded-full bg-[#FDDF65] hover:bg-[#f5d74e] flex items-center justify-center transition-colors shadow-md">
-            <Plus className="w-6 h-6 text-[#262626]" />
-          </button>
-        </div>
+        {/* Botón de agregar (solo cuando está colapsado) o Balance Card (cuando está expandido) */}
+        {!isExpanded && (
+          <div className="flex items-center justify-center py-4">
+            <button className="w-12 h-12 rounded-full bg-[#FDDF65] hover:bg-[#f5d74e] flex items-center justify-center transition-colors shadow-md">
+              <Plus className="w-6 h-6 text-[#262626]" />
+            </button>
+          </div>
+        )}
 
-        {/* Balance Card - Solo para usuarios */}
+        {/* Balance Card - Solo para usuarios cuando está expandido */}
         {isExpanded && showBalance && (
-          <div className="px-4 mb-4">
+          <div className="px-4 py-4 mb-4">
             <div className="bg-gradient-to-br from-[#FDDF65] to-[#f5d74e] rounded-2xl p-4 shadow-lg">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-sm text-gray-700 font-medium">Balance:</span>
@@ -95,6 +97,10 @@ export default function Sidebar() {
               </div>
             </div>
           </div>
+        )}
+
+        {isExpanded && !showBalance && (
+          <div className="py-4"></div>
         )}
 
         {/* Navegación dinámica según rol */}
