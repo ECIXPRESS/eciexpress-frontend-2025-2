@@ -65,7 +65,7 @@ export const PasswordRecoveryContainer = (): JSX.Element => {
                 </motion.div>
             </AnimatePresence>
 
-            <div className="flex flex-col w-1/3 h-full flex justify-end items-end">
+            <div className="flex flex-col w-1/3 h-full justify-end items-end">
                 <AnimatePresence mode="wait">
                     {currentStep === 'email' && (
                         <motion.div

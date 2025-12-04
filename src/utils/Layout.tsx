@@ -1,10 +1,8 @@
 import {ToastContainer} from "react-toastify";
 import {Outlet} from "react-router-dom";
-import Navbar from "@/pages/Navbar/Navbar";
 
 const Layout = () => (
     <div className="flex h-screen bg-pattern-foreground overflow-hidden">
-        <Navbar/>
         <div className="flex-1 flex flex-col min-w-0">
             <main className="flex-1 mr-4 mb-4 rounded-4xl bg-foreground overflow-auto">
                 <ToastContainer
