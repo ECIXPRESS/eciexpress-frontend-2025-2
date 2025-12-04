@@ -24,7 +24,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
                                              }) => {
     return (
         <div className="w-full flex flex-row items-center justify-center">
-            <div className="w-full max-w-lg h-screen flex flex-col justify-center items-center gap-4 px-2">
+            <div className="w-full h-screen flex flex-col justify-center items-center gap-4 px-2">
                 {/* Logo */}
                 <div className="flex items-center justify-center mb-4">
                     <img

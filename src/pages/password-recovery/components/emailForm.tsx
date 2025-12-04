@@ -3,18 +3,23 @@ import {Undo2} from "lucide-react";
 import StandardInput from "@/lib/input/standarInput";
 import React from "react";
 
-const EmailForm = () => {
+interface EmailFormProps {
+    onEmailSent: (email: string) => void;
+}
+
+const EmailForm:React.FC<EmailFormProps> = ({onEmailSent}) => {
     const [email, setEmail] = React.useState('');
     const [loading, setLoading] = React.useState(false);
 
     const onSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+        onEmailSent(email);
         setLoading(true);
         setLoading(false);
     };
 
     return (
-        <div className="w-1/3 h-screen flex flex-col items-center justify-center gap-5 p-16">
+        <div className="w-full h-screen flex flex-col items-center justify-center gap-5 p-16">
             <Link className="flex items-center gap-3 w-full"
                   to="/auth">
                 <Undo2 className="w-7 h-7 text-[#ffad2a]"/>

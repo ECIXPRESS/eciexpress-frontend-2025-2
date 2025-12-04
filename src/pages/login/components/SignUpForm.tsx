@@ -32,7 +32,7 @@ const SignUpForm: React.FC<SignUpFormProps> = ({
     return (
         <div className="w-full flex flex-col items-center justify-center">
             <div
-                className="w-full max-w-lg h-screen flex flex-col justify-center items-center gap-2 px-6">
+                className="w-full h-screen flex flex-col justify-center items-center gap-2 px-6">
                 {/* Logo */}
                 <div className="flex items-center justify-center mb-4">
                     <img
