@@ -61,13 +61,9 @@ export default function Sidebar() {
       {/* Botón hamburguesa para mobile */}
       <button
         onClick={() => setIsMobileOpen(!isMobileOpen)}
-        className="md:hidden fixed top-4 left-4 z-[100] w-12 h-12 bg-white rounded-full shadow-2xl flex items-center justify-center hover:scale-105 transition-transform"
+        className={`md:hidden fixed top-4 left-4 z-[100] w-12 h-12 bg-white rounded-full shadow-2xl flex items-center justify-center hover:scale-105 transition-transform ${isMobileOpen ? 'hidden' : ''}`}
       >
-        {isMobileOpen ? (
-          <X className="w-6 h-6 text-gray-600" />
-        ) : (
-          <Menu className="w-6 h-6 text-gray-600" />
-        )}
+        <Menu className="w-6 h-6 text-gray-600" />
       </button>
 
       {/* Overlay para mobile */}
