@@ -33,12 +33,11 @@ function App() {
 
                     <Route element={<ProtectedRoute />}>
                         <Route element={<Layout />}>
-                            <Route path="/catalog" element={<div>Catalog</div>} />
+                            <Route path="/home" element={<div>Catalog</div>} />
                             <Route path="/shoppingCart" element={<div>Shopping Cart</div>} />
                             <Route path="/orders" element={<div>Orders</div>} />
                             <Route path="/chat" element={<div>Chat</div>} />
-                            <Route path="/dashboard" element={<div>Dashboard</div>} />
-                            <Route path="/" element={<Navigate to="/dashboard" replace />} />
+                            <Route path="/" element={<Navigate to="/home" replace />} />
                         </Route>
                     </Route>
 

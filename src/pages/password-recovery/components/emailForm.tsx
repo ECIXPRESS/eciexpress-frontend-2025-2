@@ -1,4 +1,4 @@
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {Undo2} from "lucide-react";
 import StandardInput from "@/lib/input/standarInput";
 import React from "react";
@@ -10,11 +10,13 @@ interface EmailFormProps {
 const EmailForm:React.FC<EmailFormProps> = ({onEmailSent}) => {
     const [email, setEmail] = React.useState('');
     const [loading, setLoading] = React.useState(false);
+    const navigate = useNavigate();
 
     const onSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         onEmailSent(email);
         setLoading(true);
+        navigate('/verificationCode');
         setLoading(false);
     };
 
