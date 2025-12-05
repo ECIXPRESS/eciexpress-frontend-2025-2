@@ -1,8 +1,9 @@
 /**
  * App.tsx - Componente principal de la aplicación ECI Express
- * Gestiona el estado global de pedidos, filtros y modales de validación
+ * Gestiona navegación entre módulos: QR Validation e Inventario
  */
 import { useState, useMemo, useEffect } from 'react';
+import { Package, QrCode } from 'lucide-react';
 import { Header, Container } from './utils/qr-validation-seller';
 import { 
   PedidosList, 
@@ -16,8 +17,30 @@ import {
   type FiltrosPedidosType 
 } from './pages/qr-validation-seller';
 
+// Importaciones del módulo de inventario
+import {
+  ProductosList,
+  EstadoNavigation as EstadoNavigationInventario,
+  FiltrosInventario,
+  type Producto,
+  type ResumenInventario,
+  type FiltrosInventarioType,
+  getEstadoStock,
+} from './pages/inventory-seller';
+import { SuccessToast } from './pages/inventory-seller/components/SuccessToast';
+
+// Tipos para navegación
+type ModuloActivo = 'qr-validation' | 'inventory';
+
 function App() {
-  // Estado principal: lista de pedidos con datos de ejemplo
+  // ============================================
+  // ESTADO DE NAVEGACIÓN ENTRE MÓDULOS
+  // ============================================
+  const [moduloActivo, setModuloActivo] = useState<ModuloActivo>('inventory');
+
+  // ============================================
+  // ESTADOS DEL MÓDULO QR VALIDATION
+  // ============================================
   const [pedidos, setPedidos] = useState<Pedido[]>([
     {
       id: '1',
@@ -170,16 +193,14 @@ function App() {
     },
   ]);
 
-  // Estado de filtros de búsqueda y estado
   const [filtros, setFiltros] = useState<FiltrosPedidosType>({
     query: '',
     estado: undefined
   });
 
-  // Estado activo en la navegación por pestañas
   const [estadoActivo, setEstadoActivo] = useState<string>('total');
 
-  // Estados para controlar los modales
+  // Estados para modales de QR Validation
   const [validationModalOpen, setValidationModalOpen] = useState(false);
   const [successModalOpen, setSuccessModalOpen] = useState(false);
   const [errorModalOpen, setErrorModalOpen] = useState(false);
@@ -189,7 +210,171 @@ function App() {
   const [validatedCode, setValidatedCode] = useState<string>('');
   const [initialTab, setInitialTab] = useState<'qr' | 'manual'>('qr');
 
-  // Listener para eventos de error personalizados (emitidos desde ValidationModal)
+  // ============================================
+  // ESTADOS DEL MÓDULO INVENTARIO
+  // ============================================
+  const [productos, setProductos] = useState<Producto[]>([
+    {
+      id: '1',
+      nombre: 'Hamburguesa Clásica',
+      descripcion: 'Deliciosa hamburguesa con carne de res, lechuga, tomate y salsa especial',
+      precio: 15000,
+      stock: 25,
+      stockMinimo: 10,
+      categoria: 'Almuerzo',
+      disponible: true,
+      fechaActualizacion: '2025-01-15T10:30:00Z',
+      unidadMedida: 'unidades'
+    },
+    {
+      id: '2',
+      nombre: 'Arepa con Huevo',
+      descripcion: 'Arepa tradicional rellena de huevo frito',
+      precio: 5500,
+      stock: 8,
+      stockMinimo: 15,
+      categoria: 'Desayuno',
+      disponible: true,
+      fechaActualizacion: '2025-01-15T08:00:00Z',
+      unidadMedida: 'unidades'
+    },
+    {
+      id: '3',
+      nombre: 'Jugo Natural de Naranja',
+      descripcion: 'Jugo 100% natural de naranja recién exprimido',
+      precio: 4000,
+      stock: 0,
+      stockMinimo: 20,
+      categoria: 'Bebidas',
+      disponible: false,
+      fechaActualizacion: '2025-01-14T16:45:00Z',
+      unidadMedida: 'vasos'
+    },
+    {
+      id: '4',
+      nombre: 'Empanada de Carne',
+      descripcion: 'Empanada crujiente rellena de carne molida sazonada',
+      precio: 3500,
+      stock: 45,
+      stockMinimo: 20,
+      categoria: 'Snacks',
+      disponible: true,
+      fechaActualizacion: '2025-01-15T09:15:00Z',
+      unidadMedida: 'unidades'
+    },
+    {
+      id: '5',
+      nombre: 'Brownie de Chocolate',
+      descripcion: 'Brownie casero con trozos de chocolate y nueces',
+      precio: 4500,
+      stock: 12,
+      stockMinimo: 10,
+      categoria: 'Postres',
+      disponible: true,
+      fechaActualizacion: '2025-01-15T07:30:00Z',
+      unidadMedida: 'porciones'
+    },
+    {
+      id: '6',
+      nombre: 'Combo Ejecutivo',
+      descripcion: 'Plato del día + bebida + postre a precio especial',
+      precio: 18500,
+      stock: 5,
+      stockMinimo: 10,
+      categoria: 'Combos',
+      disponible: true,
+      fechaActualizacion: '2025-01-15T11:00:00Z',
+      unidadMedida: 'combos'
+    },
+    {
+      id: '7',
+      nombre: 'Sándwich de Pollo',
+      descripcion: 'Sándwich con pechuga de pollo, queso, lechuga y mayonesa',
+      precio: 12000,
+      stock: 18,
+      stockMinimo: 15,
+      categoria: 'Almuerzo',
+      disponible: true,
+      fechaActualizacion: '2025-01-15T10:00:00Z',
+      unidadMedida: 'unidades'
+    },
+    {
+      id: '8',
+      nombre: 'Café Americano',
+      descripcion: 'Café negro preparado con granos seleccionados',
+      precio: 2500,
+      stock: 100,
+      stockMinimo: 30,
+      categoria: 'Bebidas',
+      disponible: true,
+      fechaActualizacion: '2025-01-15T06:00:00Z',
+      unidadMedida: 'tazas'
+    },
+    {
+      id: '9',
+      nombre: 'Papas Fritas',
+      descripcion: 'Porción de papas fritas crujientes con sal',
+      precio: 5000,
+      stock: 3,
+      stockMinimo: 25,
+      categoria: 'Snacks',
+      disponible: true,
+      fechaActualizacion: '2025-01-15T12:30:00Z',
+      unidadMedida: 'porciones'
+    },
+    {
+      id: '10',
+      nombre: 'Torta de Zanahoria',
+      descripcion: 'Torta húmeda de zanahoria con frosting de queso crema',
+      precio: 5500,
+      stock: 0,
+      stockMinimo: 8,
+      categoria: 'Postres',
+      disponible: false,
+      fechaActualizacion: '2025-01-14T18:00:00Z',
+      unidadMedida: 'porciones'
+    },
+    {
+      id: '11',
+      nombre: 'Huevos Pericos',
+      descripcion: 'Huevos revueltos con tomate y cebolla, estilo colombiano',
+      precio: 6000,
+      stock: 30,
+      stockMinimo: 15,
+      categoria: 'Desayuno',
+      disponible: true,
+      fechaActualizacion: '2025-01-15T07:00:00Z',
+      unidadMedida: 'porciones'
+    },
+    {
+      id: '12',
+      nombre: 'Combo Estudiante',
+      descripcion: 'Hamburguesa + papas + gaseosa a precio especial',
+      precio: 16000,
+      stock: 20,
+      stockMinimo: 10,
+      categoria: 'Combos',
+      disponible: true,
+      fechaActualizacion: '2025-01-15T11:30:00Z',
+      unidadMedida: 'combos'
+    },
+  ]);
+
+  const [filtrosInventario, setFiltrosInventario] = useState<FiltrosInventarioType>({
+    query: '',
+    categoria: undefined,
+    estadoStock: undefined
+  });
+
+  const [estadoActivoInventario, setEstadoActivoInventario] = useState<string>('total');
+  const [toastVisible, setToastVisible] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
+
+  // ============================================
+  // EFECTOS Y CÁLCULOS
+  // ============================================
+
+  // Listener para eventos de error de QR Validation
   useEffect(() => {
     const handleShowError = (event: any) => {
       const { type, code } = event.detail;
@@ -202,17 +387,30 @@ function App() {
     return () => window.removeEventListener('show-error', handleShowError);
   }, []);
 
-  // Cálculo del resumen de pedidos por estado
-  const resumen: ResumenPedidosType = {
+  // Resumen de pedidos
+  const resumenPedidos: ResumenPedidosType = {
     completados: pedidos.filter(p => p.estado === 'completado').length,
     pendientes: pedidos.filter(p => p.estado === 'preparacion').length,
     total: pedidos.length,
   };
 
-  // Filtrado de pedidos según navegación activa y filtros de búsqueda
+  // Resumen de inventario
+  const resumenInventario: ResumenInventario = useMemo(() => ({
+    total: productos.length,
+    stockBajo: productos.filter(p => {
+      const estado = getEstadoStock(p.stock, p.stockMinimo);
+      return estado === 'stock-bajo';
+    }).length,
+    disponibles: productos.filter(p => {
+      const estado = getEstadoStock(p.stock, p.stockMinimo);
+      return estado === 'disponible';
+    }).length,
+    agotados: productos.filter(p => p.stock === 0).length,
+  }), [productos]);
+
+  // Filtrado de pedidos
   const pedidosFiltrados = useMemo(() => {
     return pedidos.filter(pedido => {
-      // Filtro por estado de navegación
       let pasaFiltroNavegacion = true;
       if (estadoActivo === 'completados') {
         pasaFiltroNavegacion = pedido.estado === 'completado';
@@ -220,7 +418,6 @@ function App() {
         pasaFiltroNavegacion = pedido.estado === 'preparacion';
       }
 
-      // Filtro por búsqueda de texto
       let pasaBusqueda = true;
       if (filtros.query.trim()) {
         pasaBusqueda = 
@@ -231,7 +428,6 @@ function App() {
           );
       }
 
-      // Filtro por estado del componente FiltrosPedidos
       let pasaFiltroEstado = true;
       if (filtros.estado && estadoActivo === 'total') {
         pasaFiltroEstado = pedido.estado === filtros.estado;
@@ -241,14 +437,51 @@ function App() {
     });
   }, [pedidos, filtros, estadoActivo]);
 
-  // Abre el modal de validación para un pedido específico
+  // Filtrado de productos
+  const productosFiltrados = useMemo(() => {
+    return productos.filter(producto => {
+      // Filtro por navegación de estado
+      let pasaFiltroNavegacion = true;
+      if (estadoActivoInventario === 'stockBajo') {
+        const estado = getEstadoStock(producto.stock, producto.stockMinimo);
+        pasaFiltroNavegacion = estado === 'stock-bajo';
+      }
+
+      // Filtro por búsqueda
+      let pasaBusqueda = true;
+      if (filtrosInventario.query.trim()) {
+        pasaBusqueda = 
+          producto.nombre.toLowerCase().includes(filtrosInventario.query.toLowerCase()) ||
+          (producto.descripcion?.toLowerCase().includes(filtrosInventario.query.toLowerCase()) ?? false);
+      }
+
+      // Filtro por categoría
+      let pasaCategoria = true;
+      if (filtrosInventario.categoria) {
+        pasaCategoria = producto.categoria === filtrosInventario.categoria;
+      }
+
+      // Filtro por estado de stock
+      let pasaEstadoStock = true;
+      if (filtrosInventario.estadoStock) {
+        const estado = getEstadoStock(producto.stock, producto.stockMinimo);
+        pasaEstadoStock = estado === filtrosInventario.estadoStock;
+      }
+
+      return pasaFiltroNavegacion && pasaBusqueda && pasaCategoria && pasaEstadoStock;
+    });
+  }, [productos, filtrosInventario, estadoActivoInventario]);
+
+  // ============================================
+  // HANDLERS QR VALIDATION
+  // ============================================
+
   const handleValidarPedido = (id: string) => {
     setCurrentPedidoId(id);
     setInitialTab('qr');
     setValidationModalOpen(true);
   };
 
-  // Procesa la validación exitosa y actualiza el estado del pedido
   const handleValidationSuccess = (code: string) => {
     if (currentPedidoId) {
       setPedidos(pedidos.map(pedido => 
@@ -260,7 +493,6 @@ function App() {
     setSuccessModalOpen(true);
   };
 
-  // Handlers para cerrar modales
   const handleCloseValidation = () => {
     setValidationModalOpen(false);
     setCurrentPedidoId(null);
@@ -278,7 +510,6 @@ function App() {
     setErrorCode('');
   };
 
-  // Redirige al ingreso manual desde el modal de error
   const handleErrorManualEntry = () => {
     setErrorModalOpen(false);
     setInitialTab('manual');
@@ -287,7 +518,6 @@ function App() {
     }, 300);
   };
 
-  // Reintenta el escaneo QR desde el modal de error
   const handleErrorRetry = () => {
     setErrorModalOpen(false);
     setInitialTab('qr');
@@ -300,35 +530,122 @@ function App() {
     console.log('Ver detalles del pedido:', id);
   };
 
+  // ============================================
+  // HANDLERS INVENTARIO
+  // ============================================
+
+  const handleUpdateStock = (id: string, newStock: number) => {
+    setProductos(productos.map(producto => 
+      producto.id === id 
+        ? { 
+            ...producto, 
+            stock: newStock, 
+            disponible: newStock > 0,
+            fechaActualizacion: new Date().toISOString()
+          } 
+        : producto
+    ));
+    
+    const producto = productos.find(p => p.id === id);
+    setToastMessage(`Stock de "${producto?.nombre}" actualizado a ${newStock} unidades`);
+    setToastVisible(true);
+  };
+
+  // ============================================
+  // RENDER
+  // ============================================
+
   return (
     <div className="min-h-screen bg-primary-50 flex flex-col">
       <Header nombreTienda="ECI Express" />
       
+      {/* Navegación entre módulos */}
+      <div className="bg-white border-b border-gray-200 shadow-sm">
+        <Container>
+          <div className="flex gap-2 py-3">
+            <button
+              onClick={() => setModuloActivo('qr-validation')}
+              className={`
+                flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200
+                ${moduloActivo === 'qr-validation'
+                  ? 'bg-primary-500 text-white shadow-md'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }
+              `}
+            >
+              <QrCode className="w-4 h-4" />
+              <span>Validación QR</span>
+            </button>
+            
+            <button
+              onClick={() => setModuloActivo('inventory')}
+              className={`
+                flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200
+                ${moduloActivo === 'inventory'
+                  ? 'bg-primary-500 text-white shadow-md'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }
+              `}
+            >
+              <Package className="w-4 h-4" />
+              <span>Inventario</span>
+            </button>
+          </div>
+        </Container>
+      </div>
+      
       <Container className="flex-1 flex flex-col overflow-hidden py-5">
-        {/* Navegación por estados (Total, Pendientes, Completados) */}
-        <EstadoNavigation 
-          resumen={resumen}
-          estadoActivo={estadoActivo}
-          onEstadoChange={setEstadoActivo}
-        />
-        
-        {/* Barra de búsqueda y filtros */}
-        <FiltrosPedidos 
-          filtros={filtros} 
-          onFiltrosChange={setFiltros} 
-        />
-        
-        {/* Lista de pedidos con scroll */}
-        <div className="flex-1 overflow-y-auto -mx-1 px-1">
-          <PedidosList
-            pedidos={pedidosFiltrados}
-            onValidarPedido={handleValidarPedido}
-            onVerDetalles={handleVerDetalles}
-          />
-        </div>
+        {moduloActivo === 'qr-validation' ? (
+          // ============================================
+          // VISTA QR VALIDATION
+          // ============================================
+          <>
+            <EstadoNavigation 
+              resumen={resumenPedidos}
+              estadoActivo={estadoActivo}
+              onEstadoChange={setEstadoActivo}
+            />
+            
+            <FiltrosPedidos 
+              filtros={filtros} 
+              onFiltrosChange={setFiltros} 
+            />
+            
+            <div className="flex-1 overflow-y-auto -mx-1 px-1">
+              <PedidosList
+                pedidos={pedidosFiltrados}
+                onValidarPedido={handleValidarPedido}
+                onVerDetalles={handleVerDetalles}
+              />
+            </div>
+          </>
+        ) : (
+          // ============================================
+          // VISTA INVENTARIO
+          // ============================================
+          <>
+            <EstadoNavigationInventario 
+              resumen={resumenInventario}
+              estadoActivo={estadoActivoInventario}
+              onEstadoChange={setEstadoActivoInventario}
+            />
+            
+            <FiltrosInventario 
+              filtros={filtrosInventario} 
+              onFiltrosChange={setFiltrosInventario} 
+            />
+            
+            <div className="flex-1 overflow-y-auto -mx-1 px-1">
+              <ProductosList
+                productos={productosFiltrados}
+                onUpdateStock={handleUpdateStock}
+              />
+            </div>
+          </>
+        )}
       </Container>
 
-      {/* Modales */}
+      {/* Modales de QR Validation */}
       <ValidationModal
         isOpen={validationModalOpen}
         onClose={handleCloseValidation}
@@ -350,6 +667,13 @@ function App() {
         code={errorCode}
         onManualEntry={handleErrorManualEntry}
         onRetry={handleErrorRetry}
+      />
+
+      {/* Toast de éxito para inventario */}
+      <SuccessToast
+        isVisible={toastVisible}
+        message={toastMessage}
+        onClose={() => setToastVisible(false)}
       />
     </div>
   );
