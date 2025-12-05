@@ -16,13 +16,15 @@ const PasswordChangeForm: React.FC<PasswordChangeFormProps> = ({email, token, on
     const { changePassword } = useChangePassword();
 
 
-    const passwordRequeriments = [
-        {regex: /^(?=.*[!@#$%^&*]).+$/, message: "Al menos un carácter especial, numero y mayuscula"},
-        {regex: /^.{8,}$/, message: "Al menos 8 caracteres"}
+    const passwordRequirements = [
+        { regex: /^(?=.*[!@#$%^&*])/, message: "Al menos un carácter especial" },
+        { regex: /^(?=.*\d)/, message: "Al menos un número" },
+        { regex: /^(?=.*[A-Z])/, message: "Al menos una letra mayúscula" },
+        { regex: /^.{8,}$/, message: "Al menos 8 caracteres" }
     ];
 
     const validatePassword = (password: string) => {
-        return passwordRequeriments.every((requirement) => requirement.regex.test(password));
+        return passwordRequirements.every((requirement) => requirement.regex.test(password));
     };
 
     const onSubmit = async (e: React.FormEvent) => {

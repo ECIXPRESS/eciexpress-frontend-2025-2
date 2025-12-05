@@ -1,36 +1,36 @@
-import { useState } from 'react';
-import { toast } from "react-toastify";
 import apiClient from "@/lib/interceptors/apiClient";
+import {toast} from "react-toastify";
+import {useState} from "react";
 
 export const useSendVerificationCode = () => {
-    const [email, setEmail] = useState("");
     const [loading, setLoading] = useState(false);
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
+    const sendVerificationCode = async (email: string) => {
         setLoading(true);
 
         if (!email) {
-            toast.error("Please fill in all fields");
+            toast.error("Ingresa un correo válido");
             setLoading(false);
-            return;
+            return { success: false, error: "Ingresa un correo válido" };
         }
 
         try {
-             await apiClient.post("/users/password/reset-request", { email});
-             toast.success("Verification code sent successfully");
+            await apiClient.post("/users/password/reset-request", { email });
+            return { success: true };
         } catch (err: unknown) {
             const error = err as { response?: { data?: { message?: string } }};
-            toast.error(error.response?.data?.message || "Error al enviar la solicitud, intentelo mas tarde.");
+            const errorMessage = error.response?.data?.message || "Error al enviar la solicitud, intente nuevamente más tarde.";
+            return {
+                success: false,
+                error: errorMessage
+            };
         } finally {
             setLoading(false);
         }
     };
 
     return {
-        email,
-        setEmail,
         loading,
-        handleSubmit
+        sendVerificationCode
     };
 };
