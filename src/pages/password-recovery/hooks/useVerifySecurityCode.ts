@@ -22,8 +22,9 @@ export const useVerifySecurityCode = () => {
             }
 
             return null
-        } catch (err: any) {
-            const errorMessage = err.response?.data?.message || "Error al verificar el código";
+        } catch (err: unknown) {
+            const error = err as { response?: { data?: { message?: string } }};
+            const errorMessage = error.response?.data?.message || "Error al verificar el código";
             toast.error(errorMessage);
             setError(errorMessage);
             throw err;

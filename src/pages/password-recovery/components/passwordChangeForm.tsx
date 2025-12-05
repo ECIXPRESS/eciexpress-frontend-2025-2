@@ -49,7 +49,7 @@ const PasswordChangeForm: React.FC<PasswordChangeFormProps> = ({email, token, on
             });
             toast.success("Contraseña cambiada exitosamente");
             onPasswordChanged();
-        } catch (error) {
+        } catch {
             toast.error("Error al cambiar la contraseña");
         } finally {
             setLoading(false);

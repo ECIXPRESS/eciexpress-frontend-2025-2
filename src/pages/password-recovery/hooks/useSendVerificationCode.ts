@@ -19,8 +19,9 @@ export const useSendVerificationCode = () => {
         try {
              await apiClient.post("/users/password/reset-request", { email});
              toast.success("Verification code sent successfully");
-        } catch (err: any) {
-            toast.error(err.response?.data?.message || "Error al enviar la solicitud, intentelo mas tarde.");
+        } catch (err: unknown) {
+            const error = err as { response?: { data?: { message?: string } }};
+            toast.error(error.response?.data?.message || "Error al enviar la solicitud, intentelo mas tarde.");
         } finally {
             setLoading(false);
         }

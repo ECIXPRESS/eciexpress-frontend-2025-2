@@ -56,8 +56,9 @@ export const useSignUp = () => {
 
             login(token, user);
             navigate("/dashboard", {replace: true});
-        } catch (err: any) {
-            toast.error(err.response?.data?.message || "Error al crear la cuenta");
+        } catch (err: unknown) {
+            const error = err as { response?: { data?: { message?: string } }};
+            toast.error(error.response?.data?.message || "Error al crear la cuenta");
         } finally {
             setLoading(false);
         }

@@ -52,7 +52,7 @@ export const VerificationCodeForm: React.FC<VerificationCodeFormProps> = ({email
             try {
                 const token = await verifyCode(email, code);
                 onCodeVerified(token);
-            } catch (err) {
+            } catch {
                 toast.error("Error al verificar el código. Por favor revisa el codigo.");
             }
         } else {

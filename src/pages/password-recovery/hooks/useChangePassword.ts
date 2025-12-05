@@ -22,8 +22,9 @@ export const useChangePassword = () => {
             });
 
             return response.data;
-        } catch (err: any) {
-            const errorMessage = err.response?.data?.message || "Error al cambiar la contraseña, intente nuevamente más tarde.";
+        } catch (err: unknown) {
+            const error = err as { response?: { data?: { message?: string } }};
+            const errorMessage = error.response?.data?.message || "Error al cambiar la contraseña, intente nuevamente más tarde.";
             toast.error(errorMessage);
             throw err;
         } finally {
