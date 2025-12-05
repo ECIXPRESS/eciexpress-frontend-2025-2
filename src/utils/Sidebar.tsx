@@ -54,12 +54,14 @@ export default function Sidebar() {
   const showBalance = userRole === 'user';
   const userBalance = user?.balance || 0;
 
+  const shouldShowExpanded = isMobileOpen || isExpanded;
+
   return (
     <>
       {/* Botón hamburguesa para mobile */}
       <button
         onClick={() => setIsMobileOpen(!isMobileOpen)}
-        className="md:hidden fixed top-4 left-4 z-50 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center"
+        className="md:hidden fixed top-4 left-4 z-[100] w-12 h-12 bg-white rounded-full shadow-2xl flex items-center justify-center hover:scale-105 transition-transform"
       >
         {isMobileOpen ? (
           <X className="w-6 h-6 text-gray-600" />
@@ -71,20 +73,20 @@ export default function Sidebar() {
       {/* Overlay para mobile */}
       {isMobileOpen && (
         <div
-          className="md:hidden fixed inset-0 bg-black/50 z-40"
+          className="md:hidden fixed inset-0 bg-black/50 z-[90]"
           onClick={() => setIsMobileOpen(false)}
         />
       )}
 
       {/* Sidebar */}
-      <div 
+      <div
         className={`
-          fixed left-0 top-0 h-screen bg-white shadow-lg transition-all duration-300 z-50
-          ${isExpanded ? 'w-64' : 'w-20'}
+          fixed inset-y-0 left-0 bg-white shadow-lg transition-all duration-300 z-[95]
+          md:w-20 ${shouldShowExpanded ? 'w-56 md:w-56' : 'w-20'}
           ${isMobileOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
         `}
-        onMouseEnter={() => !isMobileOpen && setIsExpanded(true)}
-        onMouseLeave={() => !isMobileOpen && setIsExpanded(false)}
+        onMouseEnter={() => setIsExpanded(true)}
+        onMouseLeave={() => setIsExpanded(false)}
       >
         <div className="flex flex-col h-full">
           {/* Header - Usuario y Notificaciones */}
@@ -93,15 +95,15 @@ export default function Sidebar() {
               <User className="w-6 h-6 text-gray-600" />
             </button>
             
-            {isExpanded && (
+            {shouldShowExpanded && (
               <button className="w-10 h-10 rounded-full hover:bg-gray-100 flex items-center justify-center transition-colors">
                 <Bell className="w-5 h-5 text-gray-600" />
               </button>
             )}
           </div>
 
-          {/* Botón de agregar (solo cuando está colapsado) */}
-          {!isExpanded && (
+          {/* Botón de agregar (solo cuando está colapsado EN DESKTOP) */}
+          {!shouldShowExpanded && (
             <div className="flex items-center justify-center py-4">
               <button className="w-12 h-12 rounded-full bg-[#FDDF65] hover:bg-[#f5d74e] flex items-center justify-center transition-colors shadow-md">
                 <Plus className="w-6 h-6 text-[#262626]" />
@@ -110,7 +112,7 @@ export default function Sidebar() {
           )}
 
           {/* Balance Card - Solo para usuarios cuando está expandido */}
-          {isExpanded && showBalance && (
+          {shouldShowExpanded && showBalance && (
             <div className="px-4 py-4 mb-4">
               <div className="bg-gradient-to-br from-[#FDDF65] to-[#f5d74e] rounded-2xl p-4 shadow-lg">
                 <div className="flex items-center justify-between mb-2">
@@ -126,12 +128,12 @@ export default function Sidebar() {
             </div>
           )}
 
-          {isExpanded && !showBalance && (
+          {shouldShowExpanded && !showBalance && (
             <div className="py-4"></div>
           )}
 
           {/* Navegación dinámica según rol */}
-          <nav className="flex-1 px-2">
+          <nav className="flex-1 px-2 overflow-y-auto">
             {menuItems.map((item, index) => {
               const Icon = item.icon;
               return (
@@ -141,7 +143,7 @@ export default function Sidebar() {
                   onClick={() => setIsMobileOpen(false)}
                 >
                   <Icon className="w-6 h-6 text-gray-600 flex-shrink-0" />
-                  {isExpanded && <span className="text-sm font-medium text-gray-700">{item.label}</span>}
+                  {shouldShowExpanded && <span className="text-sm font-medium text-gray-700">{item.label}</span>}
                 </button>
               );
             })}
@@ -157,7 +159,7 @@ export default function Sidebar() {
               className="w-full p-3 flex items-center gap-3 rounded-lg hover:bg-gray-100 transition-colors"
             >
               <LogOut className="w-6 h-6 text-gray-600 flex-shrink-0" />
-              {isExpanded && <span className="text-sm font-medium text-gray-700">Salir</span>}
+              {shouldShowExpanded && <span className="text-sm font-medium text-gray-700">Salir</span>}
             </button>
           </div>
         </div>
