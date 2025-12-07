@@ -559,41 +559,6 @@ function App() {
     <div className="min-h-screen bg-primary-50 flex flex-col">
       <Header nombreTienda="ECI Express" />
       
-      {/* Navegación entre módulos */}
-      <div className="bg-white border-b border-gray-200 shadow-sm">
-        <Container>
-          <div className="flex gap-2 py-3">
-            <button
-              onClick={() => setModuloActivo('qr-validation')}
-              className={`
-                flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200
-                ${moduloActivo === 'qr-validation'
-                  ? 'bg-primary-500 text-white shadow-md'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                }
-              `}
-            >
-              <QrCode className="w-4 h-4" />
-              <span>Validación QR</span>
-            </button>
-            
-            <button
-              onClick={() => setModuloActivo('inventory')}
-              className={`
-                flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200
-                ${moduloActivo === 'inventory'
-                  ? 'bg-primary-500 text-white shadow-md'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                }
-              `}
-            >
-              <Package className="w-4 h-4" />
-              <span>Inventario</span>
-            </button>
-          </div>
-        </Container>
-      </div>
-      
       <Container className="flex-1 flex flex-col overflow-hidden py-5">
         {moduloActivo === 'qr-validation' ? (
           // ============================================
@@ -644,6 +609,39 @@ function App() {
           </>
         )}
       </Container>
+
+      {/* Navegación flotante en esquina inferior derecha */}
+      <div className="fixed bottom-6 right-6 z-40">
+        <div className="flex gap-2 bg-white rounded-full shadow-lg border border-gray-200 p-1.5">
+          <button
+            onClick={() => setModuloActivo('qr-validation')}
+            className={`
+              p-3 rounded-full transition-all duration-200
+              ${moduloActivo === 'qr-validation'
+                ? 'bg-primary-500 text-white shadow-md'
+                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+              }
+            `}
+            title="Validación QR"
+          >
+            <QrCode className="w-5 h-5" />
+          </button>
+          
+          <button
+            onClick={() => setModuloActivo('inventory')}
+            className={`
+              p-3 rounded-full transition-all duration-200
+              ${moduloActivo === 'inventory'
+                ? 'bg-primary-500 text-white shadow-md'
+                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+              }
+            `}
+            title="Inventario"
+          >
+            <Package className="w-5 h-5" />
+          </button>
+        </div>
+      </div>
 
       {/* Modales de QR Validation */}
       <ValidationModal
