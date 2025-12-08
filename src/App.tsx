@@ -7,6 +7,7 @@ import { PasswordRecoveryContainer } from "@/pages/password-recovery/passwordRec
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect } from "react";
 import { useAuth } from "@/pages/login/hooks/useAuth";
+import TestConnection from "@/pages/chat/TestConnection";
 
 import Home from "@/pages/home/components/Home";
 
@@ -28,13 +29,20 @@ function HomeWithMockUser() {
     }
   }, [user, login]);
 
-  return <Home />;
+  return <Home />
+  ;
 }
 
 function App() {
   return (
     <AuthProvider>
-      <HomeWithMockUser />
+      <Routes>
+        {/* ⭐ Agregar ruta de prueba */}
+        <Route path="/test-connection" element={<TestConnection />} />
+        
+        {/* Ruta principal */}
+        <Route path="/" element={<HomeWithMockUser />} />
+      </Routes>
     </AuthProvider>
   );
 }
