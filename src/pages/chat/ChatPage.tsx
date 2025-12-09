@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import ConversationList from './components/ConversationList';
+import MessageList from './components/MessageList';
 import { ConversationResponse } from '@/types/chat.types';
 import { useAuth } from '@/pages/login/hooks/useAuth';
+import { useConversations } from './hooks/useConversations';
 
 const ChatPage = () => {
   const { user } = useAuth();
@@ -9,10 +11,17 @@ const ChatPage = () => {
   const [showContacts, setShowContacts] = useState(false);
 
   const userId = user?.userId || 'd66d2d30-56cb-410b-a5f0-9191c38f380e';
+  
+  const { messages, loading, selectConversation } = useConversations(userId);
 
-  const getConversationName = (conversation: ConversationResponse) => {
+  const handleSelectConversation = async (conversation: ConversationResponse) => {
+    setCurrentConversation(conversation);
+    await selectConversation(conversation);
+  };
+
+  const getConversationName = (conversation:  ConversationResponse) => {
     const id = conversation.conversationId || 'unknown';
-    return `Conversación ${id. slice(0, 8)}`;
+    return `Conversación ${id.slice(0, 8)}`;
   };
 
   const getParticipantsCount = (conversation: ConversationResponse) => {
@@ -29,9 +38,8 @@ const ChatPage = () => {
   };
 
   return (
-    // ⭐ Contenedor absoluto que ocupa todo
     <div className="absolute inset-0 md:left-20 flex overflow-hidden bg-gray-50">
-      {/* Sidebar de conversaciones - FIJO */}
+      {/* Sidebar de conversaciones */}
       <div className="w-80 bg-white border-r border-gray-200 flex flex-col flex-shrink-0">
         {/* Header */}
         <div className="p-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white flex-shrink-0">
@@ -64,12 +72,12 @@ const ChatPage = () => {
           <ConversationList
             userId={userId}
             currentConversation={currentConversation}
-            onSelectConversation={setCurrentConversation}
+            onSelectConversation={handleSelectConversation}
           />
         </div>
       </div>
 
-      {/* ⭐ Área principal del chat - FLEX-1 ocupa todo el resto */}
+      {/* Área principal del chat */}
       <div className="flex-1 flex flex-col bg-white">
         {currentConversation ? (
           <div className="flex-1 flex flex-col h-full">
@@ -90,22 +98,12 @@ const ChatPage = () => {
               </div>
             </div>
 
-            {/* Área de mensajes */}
-            <div className="flex-1 flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 overflow-auto">
-              <div className="text-center p-8">
-                <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-white shadow-lg flex items-center justify-center">
-                  <svg className="w-12 h-12 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h. 01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                  </svg>
-                </div>
-                <p className="text-lg font-semibold text-gray-700 mb-2">
-                  Cargando mensajes...
-                </p>
-                <p className="text-sm text-gray-500">
-                  ID: {currentConversation.conversationId}
-                </p>
-              </div>
-            </div>
+            {/* Lista de mensajes */}
+            <MessageList
+              messages={messages}
+              currentUserId={userId}
+              loading={loading}
+            />
 
             {/* Input de mensaje */}
             <div className="p-4 bg-white border-t border-gray-200 flex-shrink-0">
@@ -141,7 +139,7 @@ const ChatPage = () => {
             <div className="text-center px-4 max-w-md">
               <div className="w-32 h-32 mx-auto mb-6 rounded-full bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center shadow-lg">
                 <svg className="w-16 h-16 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h. 01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                 </svg>
               </div>
               <h3 className="text-2xl font-bold text-gray-800 mb-3">
@@ -184,7 +182,7 @@ const ChatPage = () => {
             <div className="p-8 text-center">
               <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-100 flex items-center justify-center">
                 <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4. 354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
                 </svg>
               </div>
               <p className="text-gray-600">
