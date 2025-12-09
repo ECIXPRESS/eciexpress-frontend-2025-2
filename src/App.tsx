@@ -1,14 +1,14 @@
-import { Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { ProtectedRoute } from "./utils/ProtectedRoute";
 import Layout from "./utils/Layout";
 import { AuthProvider } from "@/utils/context/AuthProvider";
 import Auth from "@/pages/login/hooks/Auth";
 import { PasswordRecoveryContainer } from "@/pages/password-recovery/passwordRecoveryContainer";
-import { AnimatePresence, motion } from "framer-motion";
 import { useEffect } from "react";
 import { useAuth } from "@/pages/login/hooks/useAuth";
 
 import Home from "@/pages/home/components/Home";
+import StatisticsPage from "@/pages/statistics/StatisticsPage";
 
 function HomeWithMockUser() {
   const { login, user } = useAuth();
@@ -20,7 +20,7 @@ function HomeWithMockUser() {
         {
           userId: "1",
           email: "usuario@eci.edu.co",
-          role: "user", 
+          role: "seller",  // 👈 CAMBIA ESTO para probar: "user", "seller" o "admin"
           pfpURL: "",
           balance: 1200
         }
@@ -28,7 +28,32 @@ function HomeWithMockUser() {
     }
   }, [user, login]);
 
-  return <Home />;
+  return (
+    <Routes>
+      {/* Ruta principal */}
+      <Route path="/" element={<Layout />}>
+        <Route index element={<Home />} />
+        
+        {/* Ruta de estadísticas */}
+        <Route path="/statistics" element={<StatisticsPage />} />
+        
+        {/* Rutas placeholder para otras secciones */}
+        <Route path="/orders" element={<div className="p-8 text-2xl">Pedidos - Próximamente</div>} />
+        <Route path="/catalog" element={<div className="p-8 text-2xl">Catálogo - Próximamente</div>} />
+        <Route path="/chat" element={<div className="p-8 text-2xl">Chat - Próximamente</div>} />
+        <Route path="/dashboard" element={<div className="p-8 text-2xl">Dashboard - Próximamente</div>} />
+        <Route path="/sellers" element={<div className="p-8 text-2xl">Vendedores - Próximamente</div>} />
+        <Route path="/promotions" element={<div className="p-8 text-2xl">Promociones - Próximamente</div>} />
+      </Route>
+
+      {/* Ruta de autenticación (si la necesitas) */}
+      <Route path="/auth" element={<Auth />} />
+      <Route path="/password-recovery" element={<PasswordRecoveryContainer />} />
+      
+      {/* Redirigir cualquier otra ruta al home */}
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
+  );
 }
 
 function App() {
