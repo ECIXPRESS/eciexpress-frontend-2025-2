@@ -20,7 +20,7 @@ function HomeWithMockUser() {
         {
           userId: "1",
           email: "usuario@eci.edu.co",
-          role: "seller",  // user, seller, admin
+          role: "admin",  // user, seller, admin
           pfpURL: "",
           balance: 512000
         }
