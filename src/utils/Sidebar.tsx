@@ -15,6 +15,7 @@ import {
   X
 } from 'lucide-react';
 import { useAuth } from '@/pages/login/hooks/useAuth';
+import { Link } from 'react-router-dom'; 
 
 interface MenuItem {
   icon: typeof LayoutDashboard;
@@ -32,20 +33,20 @@ export default function Sidebar() {
       { icon: LayoutDashboard, label: 'Catálogo' },
       { icon: ShoppingCart, label: 'Carrito' },
       { icon: ClipboardList, label: 'Pedidos' },
-      { icon: MessageCircle, label: 'Chat' },
+      { icon: MessageCircle, label: 'Chat', path: '/chat'},
     ],
     seller: [
       { icon: ClipboardList, label: 'Pedidos' },
       { icon: LayoutDashboard, label: 'Catálogo' },
       { icon: BarChart3, label: 'Estadísticas' },
-      { icon: MessageCircle, label: 'Chat' },
+      { icon: MessageCircle, label: 'Chat', path: '/chat' },
     ],
     admin: [
       { icon: LayoutDashboard, label: 'Tablero' },
       { icon: Users, label: 'Vendedores' },
       { icon: MessageCircle, label: 'Chat' },
       { icon: Tag, label: 'Promociones' },
-      { icon: BarChart3, label: 'Estadísticas' },
+      { icon: BarChart3, label: 'Estadísticas', path: '/chat' },
     ],
   };
 
@@ -127,23 +128,40 @@ export default function Sidebar() {
           {shouldShowExpanded && !showBalance && (
             <div className="py-4"></div>
           )}
-
-          {/* Navegación dinámica según rol */}
-          <nav className="flex-1 px-2 overflow-y-auto">
-            {menuItems.map((item, index) => {
-              const Icon = item.icon;
-              return (
-                <button 
-                  key={index}
-                  className="w-full p-3 flex items-center gap-3 rounded-lg hover:bg-gray-100 transition-colors mb-1"
-                  onClick={() => setIsMobileOpen(false)}
-                >
-                  <Icon className="w-6 h-6 text-gray-600 flex-shrink-0" />
-                  {shouldShowExpanded && <span className="text-sm font-medium text-gray-700">{item.label}</span>}
-                </button>
-              );
-            })}
-          </nav>
+{/* Navegación dinámica según rol */}
+<nav className="flex-1 px-2 overflow-y-auto">
+  {menuItems.map((item, index) => {
+    const Icon = item.icon;
+    const isActive = item.path === location.pathname;
+    
+    return item.path ? (
+      <Link
+        key={index}
+        to={item.path}
+        className={`w-full p-3 flex items-center gap-3 rounded-lg transition-colors mb-1 ${isActive ?  '' : 'hover: bg-gray-100'}`}
+        onClick={() => setIsMobileOpen(false)}
+      >
+        <Icon className={`w-6 h-6 flex-shrink-0 ${isActive ? 'text-blue-600' : 'text-gray-600'}`} />
+        {shouldShowExpanded && (
+          <span className={`text-sm font-semibold ${isActive ? 'text-blue-600' : 'text-gray-700'}`}>
+            {item.label}
+          </span>
+        )}
+      </Link>
+    ) : (
+      <button 
+        key={index}
+        className="w-full p-3 flex items-center gap-3 rounded-lg hover:bg-gray-100 transition-colors mb-1"
+        onClick={() => setIsMobileOpen(false)}
+      >
+        <Icon className="w-6 h-6 text-gray-600 flex-shrink-0" />
+        {shouldShowExpanded && (
+          <span className="text-sm font-semibold text-gray-700">{item. label}</span>
+        )}
+      </button>
+    );
+  })}
+</nav>
 
           {/* Botón de Salir */}
           <div className="border-t border-gray-100 p-2">

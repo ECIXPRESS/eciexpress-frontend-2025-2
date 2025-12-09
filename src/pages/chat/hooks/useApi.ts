@@ -6,7 +6,8 @@ export const useApi = () => {
   const [error, setError] = useState<string | null>(null);
 
   // Cambiar esta URL cuando conectes al API Gateway real
-  const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+  const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8081';
+
 
   const getAuthHeaders = () => {
     // Aquí obtendrías el token de autenticación si lo necesitas

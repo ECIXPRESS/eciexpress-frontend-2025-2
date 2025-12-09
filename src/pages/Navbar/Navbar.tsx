@@ -1,4 +1,5 @@
 import {Bell, LayoutDashboard, MessageSquare, ShoppingCart, Clipboard} from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Navbar = () => {
     return (
@@ -33,10 +34,10 @@ const Navbar = () => {
                         </button>
                     </nav>
                     <nav className="w-full flex gap-4">
-                        <button className="flex flex-col">
+                        <Link to="/chat" className="flex flex-col hover:opacity-80 transition-opacity">
                             <MessageSquare className="w-5 h-5"/>
-                            <span className="text-xs text-foreground ">Chat</span>
-                        </button>
+                            <span className="text-xs text-foreground">Chat</span>
+                        </Link>
                     </nav>
                 </div>
             </div>
