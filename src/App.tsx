@@ -22,7 +22,7 @@ function HomeWithMockUser() {
           email: "usuario@eci.edu.co",
           role: "user",  // user, seller, admin
           pfpURL: "",
-          balance: 1200
+          balance: 512000
         }
       );
     }
@@ -46,7 +46,7 @@ function HomeWithMockUser() {
         <Route path="/promotions" element={<div className="p-8 text-2xl">Promociones - Próximamente</div>} />
       </Route>
 
-      {/* Ruta de autenticación (si la necesitas) */}
+      {/* Ruta de autenticación */}
       <Route path="/auth" element={<Auth />} />
       <Route path="/password-recovery" element={<PasswordRecoveryContainer />} />
       
