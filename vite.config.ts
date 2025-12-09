@@ -9,5 +9,16 @@ export default defineConfig({
         alias: {
             '@': path.resolve(__dirname, './src')
         }
+    },
+  define: {
+    // ⭐ Agregar estas líneas para SockJS
+    global: 'globalThis',
+    'process.env':  {}
+  },
+  server: {
+    port: 5173,
+    proxy: {
+      // Si tienes proxy configurado aquí, déjalo
     }
+  }
 })
