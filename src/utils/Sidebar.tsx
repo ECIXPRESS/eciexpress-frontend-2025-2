@@ -15,6 +15,7 @@ import {
   X
 } from 'lucide-react';
 import { useAuth } from '@/pages/login/hooks/useAuth';
+import { useNavigate } from 'react-router-dom';
 
 interface MenuItem {
   icon: typeof LayoutDashboard;
@@ -26,26 +27,27 @@ export default function Sidebar() {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const { user, logout } = useAuth();
+  const navigate = useNavigate();
 
   const menuConfig: Record<string, MenuItem[]> = {
     user: [
-      { icon: LayoutDashboard, label: 'Catálogo' },
+      { icon: LayoutDashboard, label: 'Catálogo', path: '/' },
       { icon: ShoppingCart, label: 'Carrito' },
       { icon: ClipboardList, label: 'Pedidos' },
       { icon: MessageCircle, label: 'Chat' },
     ],
     seller: [
-      { icon: ClipboardList, label: 'Pedidos' },
-      { icon: LayoutDashboard, label: 'Catálogo' },
-      { icon: BarChart3, label: 'Estadísticas' },
-      { icon: MessageCircle, label: 'Chat' },
+      { icon: ClipboardList, label: 'Pedidos', path: '/orders' },
+      { icon: LayoutDashboard, label: 'Catálogo', path: '/catalog' },
+      { icon: BarChart3, label: 'Estadísticas', path: '/statistics' },
+      { icon: MessageCircle, label: 'Chat', path: '/chat' },
     ],
     admin: [
-      { icon: LayoutDashboard, label: 'Tablero' },
-      { icon: Users, label: 'Vendedores' },
-      { icon: MessageCircle, label: 'Chat' },
-      { icon: Tag, label: 'Promociones' },
-      { icon: BarChart3, label: 'Estadísticas' },
+      { icon: LayoutDashboard, label: 'Tablero', path: '/dashboard' },
+      { icon: Users, label: 'Vendedores', path: '/sellers' },
+      { icon: MessageCircle, label: 'Chat', path: '/chat' },
+      { icon: Tag, label: 'Promociones', path: '/promotions' },
+      { icon: BarChart3, label: 'Estadísticas', path: '/statistics' },
     ],
   };
 
@@ -136,7 +138,12 @@ export default function Sidebar() {
                 <button 
                   key={index}
                   className="w-full p-3 flex items-center gap-3 rounded-lg hover:bg-gray-100 transition-colors mb-1"
-                  onClick={() => setIsMobileOpen(false)}
+                  onClick={() => {
+                    if (item.path) {
+                      navigate(item.path);
+                    }
+                    setIsMobileOpen(false);
+                  }}
                 >
                   <Icon className="w-6 h-6 text-gray-600 flex-shrink-0" />
                   {shouldShowExpanded && <span className="text-sm font-medium text-gray-700">{item.label}</span>}
