@@ -124,7 +124,7 @@ export default function SellerStats() {
 
         {/* Top productos y ventas diarias */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <TopProductsTable products={mockTopProducts.slice(0, 2)} />
+          <TopProductsTable products={mockTopProducts} />
           <DailySalesChart data={mockDailySalesData} />
         </div>
       </div>
