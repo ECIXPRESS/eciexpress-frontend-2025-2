@@ -1,5 +1,3 @@
-// Types basados en los DTOs del backend StatisticsController.java
-
 export interface DailySalesReport {
   storeId: string;
   date: string;
