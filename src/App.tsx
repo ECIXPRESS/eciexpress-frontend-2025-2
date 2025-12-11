@@ -9,6 +9,7 @@ import { useAuth } from "@/pages/login/hooks/useAuth";
 
 import Home from "@/pages/home/components/Home";
 import StatisticsPage from "@/pages/statistics/StatisticsPage";
+import ProductDetailPage from "@/pages/product-detail/components/ProductDetailPage";
 
 function HomeWithMockUser() {
   const { login, user } = useAuth();
@@ -20,7 +21,7 @@ function HomeWithMockUser() {
         {
           userId: "1",
           email: "usuario@eci.edu.co",
-          role: "admin",  // user, seller, admin
+          role: "user",  // user, seller, admin
           pfpURL: "",
           balance: 512000
         }
@@ -36,6 +37,9 @@ function HomeWithMockUser() {
         
         {/* Ruta de estadísticas */}
         <Route path="/statistics" element={<StatisticsPage />} />
+        
+        {/* Ruta de detalle de producto */}
+        <Route path="/product/:id" element={<ProductDetailPage />} />
         
         {/* Rutas placeholder para otras secciones */}
         <Route path="/orders" element={<div className="p-8 text-2xl">Pedidos - Próximamente</div>} />
