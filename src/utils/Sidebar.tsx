@@ -31,8 +31,8 @@ export default function Sidebar() {
 
   const menuConfig: Record<string, MenuItem[]> = {
     user: [
-      { icon: LayoutDashboard, label: 'Catálogo', path: '/home' },
-      { icon: ShoppingCart, label: 'Carrito' },
+      { icon: LayoutDashboard, label: 'Catálogo', path: '/' },
+      { icon: ShoppingCart, label: 'Carrito', path: '/cart' },
       { icon: ClipboardList, label: 'Pedidos' },
       { icon: MessageCircle, label: 'Chat' },
     ],

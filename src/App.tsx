@@ -10,6 +10,7 @@ import { useAuth } from "@/pages/login/hooks/useAuth";
 import Home from "@/pages/home/components/Home";
 import StatisticsPage from "@/pages/statistics/StatisticsPage";
 import ProductDetailPage from "@/pages/product-detail/components/ProductDetailPage";
+import CartPage from "@/pages/cart/CartPage";
 
 function HomeWithMockUser() {
   const { login, user } = useAuth();
@@ -40,6 +41,9 @@ function HomeWithMockUser() {
         
         {/* Ruta de detalle de producto */}
         <Route path="/product/:id" element={<ProductDetailPage />} />
+        
+        {/* Ruta de carrito */}
+        <Route path="/cart" element={<CartPage />} />
         
         {/* Rutas placeholder para otras secciones */}
         <Route path="/orders" element={<div className="p-8 text-2xl">Pedidos - Próximamente</div>} />

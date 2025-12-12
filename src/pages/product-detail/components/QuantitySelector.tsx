@@ -9,7 +9,6 @@ interface QuantitySelectorProps {
 
 /**
  * Selector de cantidad con botones +/- y validación de stock
- * Aplica Ley de Fitts con botones grandes (48x48px) para fácil interacción
  */
 export default function QuantitySelector({
   quantity,

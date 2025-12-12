@@ -9,7 +9,6 @@ interface ProductImageProps {
 
 /**
  * Componente de imagen del producto con fondo decorativo
- * Incluye botón de favoritos en la esquina superior derecha
  */
 export default function ProductImage({ 
   imageUrl, 

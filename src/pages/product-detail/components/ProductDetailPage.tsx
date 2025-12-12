@@ -49,8 +49,6 @@ export default function ProductDetailPage() {
       totalPrice: product.price * quantity
     });
     
-    // Aquí se integraría con el sistema de carrito real
-    // Por ahora solo mostramos la confirmación
   };
 
   const handleShare = () => {

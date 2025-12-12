@@ -11,7 +11,6 @@ interface ProductInfoProps {
 
 /**
  * Componente de información del producto con opciones y selector de cantidad
- * Aplica principios de jerarquía visual y agrupación lógica
  */
 export default function ProductInfo({ product, onAddToCart }: ProductInfoProps) {
   const [quantity, setQuantity] = useState(1);
