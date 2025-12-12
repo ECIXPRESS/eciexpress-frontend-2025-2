@@ -164,11 +164,63 @@ export const relatedProductsMock: Record<string, RelatedProduct[]> = {
       category: 'papeleria'
     },
     {
-      id: 'lapicera-ejecutiva',
-      name: 'Lapicera ejecutiva',
-      price: 15000,
-      imageUrl: 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=400',
-      rating: 4.7,
+      id: 'cuadernos-multicolor',
+      name: 'Cuadernos argollados',
+      price: 7000,
+      imageUrl: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400',
+      rating: 5.0,
+      category: 'papeleria'
+    }
+  ],
+  'cuadernos-multicolor': [
+    {
+      id: 'termo-agua-1l',
+      name: 'Termo de agua 1L',
+      price: 16000,
+      imageUrl: 'https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=400',
+      rating: 4.0,
+      category: 'papeleria'
+    },
+    {
+      id: 'impresion-color',
+      name: 'Impresión a color',
+      price: 1000,
+      imageUrl: 'https://images.unsplash.com/photo-1612198188060-c7c2a3b66eae?w=400',
+      rating: 4.4,
+      category: 'papeleria'
+    },
+    {
+      id: 'termo-agua-1l',
+      name: 'Termo 1L',
+      price: 16000,
+      imageUrl: 'https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=400',
+      rating: 4.0,
+      category: 'papeleria'
+    }
+  ],
+  'impresion-color': [
+    {
+      id: 'cuadernos-multicolor',
+      name: 'Cuadernos argollados multicolor',
+      price: 7000,
+      imageUrl: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400',
+      rating: 5.0,
+      category: 'papeleria'
+    },
+    {
+      id: 'termo-agua-1l',
+      name: 'Termo de agua 1L',
+      price: 16000,
+      imageUrl: 'https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=400',
+      rating: 4.0,
+      category: 'papeleria'
+    },
+    {
+      id: 'cuadernos-multicolor',
+      name: 'Cuadernos multicolor',
+      price: 7000,
+      imageUrl: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400',
+      rating: 5.0,
       category: 'papeleria'
     }
   ],
@@ -190,22 +242,72 @@ export const relatedProductsMock: Record<string, RelatedProduct[]> = {
       category: 'cafeteria'
     },
     {
-      id: 'wrap-vegetariano',
-      name: 'Wrap Vegetariano',
-      price: 10500,
-      imageUrl: 'https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=400',
-      rating: 4.5,
+      id: 'sandwich-pollo-pesto',
+      name: 'Sándwich de Pollo',
+      price: 12000,
+      imageUrl: 'https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=400',
+      rating: 4.6,
+      category: 'cafeteria'
+    }
+  ],
+  'sandwich-pollo-pesto': [
+    {
+      id: 'combo-hamburguesa-deluxe',
+      name: 'Combo Hamburguesa Deluxe',
+      price: 18500,
+      imageUrl: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400',
+      rating: 4.8,
+      category: 'cafeteria'
+    },
+    {
+      id: 'cafe-latte',
+      name: 'Café Latte Grande',
+      price: 7500,
+      imageUrl: 'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=400',
+      rating: 4.9,
+      category: 'cafeteria'
+    },
+    {
+      id: 'combo-hamburguesa-deluxe',
+      name: 'Combo Hamburguesa',
+      price: 18500,
+      imageUrl: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400',
+      rating: 4.8,
+      category: 'cafeteria'
+    }
+  ],
+  'cafe-latte': [
+    {
+      id: 'combo-hamburguesa-deluxe',
+      name: 'Combo Hamburguesa Deluxe',
+      price: 18500,
+      imageUrl: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400',
+      rating: 4.8,
+      category: 'cafeteria'
+    },
+    {
+      id: 'sandwich-pollo-pesto',
+      name: 'Sándwich de Pollo al Pesto',
+      price: 12000,
+      imageUrl: 'https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=400',
+      rating: 4.6,
+      category: 'cafeteria'
+    },
+    {
+      id: 'combo-hamburguesa-deluxe',
+      name: 'Combo Hamburguesa',
+      price: 18500,
+      imageUrl: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400',
+      rating: 4.8,
       category: 'cafeteria'
     }
   ]
 };
 
-// Helper para obtener producto por ID
 export const getProductById = (id: string): Product | undefined => {
   return productsMock[id];
 };
 
-// Helper para obtener productos relacionados
 export const getRelatedProducts = (productId: string): RelatedProduct[] => {
   return relatedProductsMock[productId] || [];
 };
