@@ -4,65 +4,98 @@ interface Props {
   conversation: ConversationResponse;
   isActive: boolean;
   onClick: () => void;
+  currentUserId: string;
+  getUserName:  (userId: string) => string;  // ⭐ AGREGAR
 }
 
-const ConversationItem = ({ conversation, isActive, onClick }: Props) => {
-  const lastMessage = conversation.messageResponses?.[conversation.messageResponses.length - 1];
-  const unreadCount = conversation.messageResponses?.filter(m => !m.isRead).length || 0;
-
-  const formatTime = (timestamp: string | undefined) => {
-    if (!timestamp) return '';
-    const date = new Date(timestamp);
-    const now = new Date();
-    const diffInHours = (now.getTime() - date.getTime()) / (1000 * 60 * 60);
-
-    if (diffInHours < 24) {
-      return date.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+const ConversationItem = ({ conversation, isActive, onClick, currentUserId, getUserName }: Props) => {
+  
+  // ⭐ FUNCIÓN ACTUALIZADA
+  const getConversationName = () => {
+    const userIds = conversation.usersIds || [];
+    const otherUserId = userIds.find((id: string) => id !== currentUserId);
+    
+    if (otherUserId) {
+      return getUserName(otherUserId);
     }
-    return date.toLocaleDateString('es-ES', { day: '2-digit', month:  '2-digit' });
+    
+    return conversation.conversationId?. slice(0, 8) || 'Chat';
   };
+
+  const getInitial = () => {
+    const name = getConversationName();
+    return name[0]?.toUpperCase() || 'C';
+  };
+
+  const getLastMessage = () => {
+    if (conversation.messageResponses && conversation.messageResponses.length > 0) {
+      const lastMsg = conversation.messageResponses[conversation.messageResponses.length - 1];
+      return lastMsg. text?. slice(0, 40) || 'Sin mensajes';
+    }
+    return 'Sin mensajes';
+  };
+
+  const getLastMessageTime = () => {
+    if (conversation.messageResponses && conversation.messageResponses.length > 0) {
+      const lastMsg = conversation.messageResponses[conversation.messageResponses.length - 1];
+      if (lastMsg.creationDate) {
+        const date = new Date(lastMsg. creationDate);
+        return date.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+      }
+    }
+    return '';
+  };
+
+  const getUnreadCount = () => {
+    if (conversation.messageResponses) {
+      return conversation.messageResponses.filter(
+        msg => ! msg.isRead && msg.authorId !== currentUserId
+      ).length;
+    }
+    return 0;
+  };
+
+  const unreadCount = getUnreadCount();
 
   return (
     <div
       onClick={onClick}
       className={`
-        p-4 border-b border-gray-100 cursor-pointer transition-colors
+        flex items-center space-x-3 p-4 cursor-pointer transition-colors border-b border-gray-100
         ${isActive ? 'bg-blue-50 border-l-4 border-l-blue-600' : 'hover:bg-gray-50'}
       `}
     >
-      <div className="flex items-start space-x-3">
-        {/* Avatar */}
-        <div className="flex-shrink-0">
-          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white font-semibold">
-            {conversation.conversationId?.[0]?.toUpperCase() || 'C'}
-          </div>
-        </div>
-
-        {/* Contenido */}
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center justify-between mb-1">
-            <h3 className={`font-semibold truncate ${isActive ? 'text-blue-600' : 'text-gray-800'}`}>
-              {conversation.conversationId || 'Conversación'}
-            </h3>
-            {lastMessage && (
-              <span className="text-xs text-gray-500 ml-2 flex-shrink-0">
-                {formatTime(lastMessage.creationDate)}
-              </span>
-            )}
-          </div>
-
-          <div className="flex items-center justify-between">
-            <p className="text-sm text-gray-600 truncate">
-              {lastMessage?.text || 'No hay mensajes'}
-            </p>
-            {unreadCount > 0 && (
-              <span className="ml-2 flex-shrink-0 w-5 h-5 bg-blue-600 text-white text-xs rounded-full flex items-center justify-center">
-                {unreadCount}
-              </span>
-            )}
-          </div>
-        </div>
+      {/* Avatar */}
+      <div className={`
+        w-12 h-12 rounded-full flex items-center justify-center text-white font-bold flex-shrink-0
+        ${isActive ? 'bg-blue-600' : 'bg-gradient-to-br from-blue-400 to-blue-600'}
+      `}>
+        {getInitial()}
       </div>
+
+      {/* Info */}
+      <div className="flex-1 min-w-0">
+        <div className="flex items-center justify-between mb-1">
+          <h3 className={`font-semibold truncate ${isActive ? 'text-blue-900' : 'text-gray-900'}`}>
+            {getConversationName()}
+          </h3>
+          <span className="text-xs text-gray-500 flex-shrink-0 ml-2">
+            {getLastMessageTime()}
+          </span>
+        </div>
+        <p className="text-sm text-gray-600 truncate">
+          {getLastMessage()}
+        </p>
+      </div>
+
+      {/* Unread badge */}
+      {unreadCount > 0 && (
+        <div className="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
+          <span className="text-xs text-white font-bold">
+            {unreadCount > 9 ? '9+' : unreadCount}
+          </span>
+        </div>
+      )}
     </div>
   );
 };
