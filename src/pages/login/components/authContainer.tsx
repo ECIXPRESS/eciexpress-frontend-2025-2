@@ -12,7 +12,7 @@ interface AuthContainerProps {
 }
 
 const AuthContainer: React.FC<AuthContainerProps> = ({ children, isLogin }) => {
-    const isMobile = useMediaQuery({ maxWidth: 768 });
+    const isMobile = useMediaQuery({ maxWidth: 770 });
 
     return (
         <div className="h-screen w-screen flex flex-col md:flex-row bg-cover overflow-hidden bg-[url(@/assets/lightBackgroundVertical.png)] md:bg-[url(@/assets/lightBackground.png)]">
@@ -28,6 +28,7 @@ const AuthContainer: React.FC<AuthContainerProps> = ({ children, isLogin }) => {
                 pauseOnHover
                 theme="colored"
                 toastClassName="rounded-lg shadow-md"
+                className="z-50 position-relative"
             />
 
             {/*SignUp header*/}
@@ -35,7 +36,7 @@ const AuthContainer: React.FC<AuthContainerProps> = ({ children, isLogin }) => {
                 {!isLogin && isMobile && (
                     <motion.div
                         key="signup-banner"
-                        className="h-1/4 bg-cover bg-center relative"
+                        className="h-1/4 bg-cover bg-center relative flex items-start mb-8"
                         initial={{ width: 0, opacity: 0}}
                         animate={{ width: "100%", opacity: 1 }}
                         exit={{ width: 0, opacity: 0}}
@@ -44,7 +45,7 @@ const AuthContainer: React.FC<AuthContainerProps> = ({ children, isLogin }) => {
                         <motion.img
                             src={signUpHeader}
                             alt="signUpHeader"
-                            className="w-full object-cover"
+                            className="w-full h-full object-cover object-top"
                             initial={{ scale: 1.1 }}
                             animate={{ scale: 1 }}
                             transition={{ duration: 0.7 }}
@@ -57,8 +58,8 @@ const AuthContainer: React.FC<AuthContainerProps> = ({ children, isLogin }) => {
             <AnimatePresence mode="wait">
                 {isLogin && isMobile && (
                     <motion.div
-                        key="signup-banner"
-                        className="h-1/4 bg-cover bg-center relative"
+                        key="login-banner"
+                        className="h-1/4 bg-cover bg-center relative flex items-start mb-8"
                         initial={{ width: 0, opacity: 0}}
                         animate={{ width: "100%", opacity: 1 }}
                         exit={{ width: 0, opacity: 0}}
@@ -67,7 +68,7 @@ const AuthContainer: React.FC<AuthContainerProps> = ({ children, isLogin }) => {
                         <motion.img
                             src={logInHeader}
                             alt="logInHeader"
-                            className="w-full object-cover"
+                            className="w-full h-full object-cover object-top"
                             initial={{ scale: 1.1 }}
                             animate={{ scale: 1 }}
                             transition={{ duration: 0.7 }}
@@ -92,7 +93,7 @@ const AuthContainer: React.FC<AuthContainerProps> = ({ children, isLogin }) => {
                             animate={{ opacity: 1, x: 0 }}
                             exit={{ opacity: 0, x: 50 }}
                             transition={{ duration: 0.4, delay: 0.1 }}
-                            className="w-full md:w-1/2 text-sm flex flex-col px-9"
+                            className="w-full md:w-2/3 text-sm flex flex-col px-9"
                         >
                             {children}
                         </motion.div>
@@ -114,7 +115,7 @@ const AuthContainer: React.FC<AuthContainerProps> = ({ children, isLogin }) => {
                         <motion.img
                             src={signupBanner}
                             alt="signupBanner"
-                            className="w-1/2 h-1/2 object-cover"
+                            className="w-1/2 h-1/2 object-cover object-left"
                             initial={{ scale: 1.1 }}
                             animate={{ scale: 1 }}
                             transition={{ duration: 0.7 }}
@@ -137,7 +138,7 @@ const AuthContainer: React.FC<AuthContainerProps> = ({ children, isLogin }) => {
                         <motion.img
                             src={loginBanner}
                             alt="loginBanner"
-                            className="w-full md:w-1/2 h-full object-cover"
+                            className="w-full md:w-2/3 h-full object-cover object-right"
                             initial={{ scale: 1.1 }}
                             animate={{ scale: 1 }}
                             transition={{ duration: 0.7 }}
@@ -169,7 +170,6 @@ const AuthContainer: React.FC<AuthContainerProps> = ({ children, isLogin }) => {
                     </motion.div>
                 )}
             </AnimatePresence>
-
         </div>
     );
 };
