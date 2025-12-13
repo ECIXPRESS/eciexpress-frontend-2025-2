@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { useAuth } from '@/pages/login/hooks/useAuth';
 import { Link } from 'react-router-dom'; 
+import { useNavigate } from 'react-router-dom';
 
 interface MenuItem {
   icon: typeof LayoutDashboard;
@@ -27,11 +28,12 @@ export default function Sidebar() {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const { user, logout } = useAuth();
+  const navigate = useNavigate();
 
   const menuConfig: Record<string, MenuItem[]> = {
     user: [
-      { icon: LayoutDashboard, label: 'Catálogo' },
-      { icon: ShoppingCart, label: 'Carrito' },
+      { icon: LayoutDashboard, label: 'Catálogo', path: '/' },
+      { icon: ShoppingCart, label: 'Carrito', path: '/cart' },
       { icon: ClipboardList, label: 'Pedidos' },
       { icon: MessageCircle, label: 'Chat', path: '/chat'},
     ],
@@ -99,8 +101,8 @@ export default function Sidebar() {
             )}
           </div>
 
-          {/* Botón de agregar (solo cuando está colapsado EN DESKTOP) */}
-          {!shouldShowExpanded && (
+           {/* Botón de agregar (solo cuando está colapsado EN DESKTOP) */}
+          {!shouldShowExpanded && showBalance && (
             <div className="flex items-center justify-center py-4">
               <button className="w-12 h-12 rounded-full bg-[#FDDF65] hover:bg-[#f5d74e] flex items-center justify-center transition-colors shadow-md">
                 <Plus className="w-6 h-6 text-[#262626]" />

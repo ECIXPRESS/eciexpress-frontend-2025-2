@@ -1,6 +1,5 @@
 import {ToastContainer} from "react-toastify";
 import {Outlet} from "react-router-dom";
-import Navbar from "@/pages/Navbar/Navbar";
 import Sidebar from "./Sidebar";
 
 const Layout = () => (
@@ -22,7 +21,7 @@ const Layout = () => (
                     toastClassName="rounded-lg shadow-md"
                 />
                 <div className="h-full w-full">
-                    <Outlet/>
+                    <Outlet />
                 </div>
             </main>
         </div>
