@@ -9,25 +9,27 @@ interface UserHeaderProps {
 
 const UserHeader: React.FC<UserHeaderProps> = ({ name, role, avatarUrl, onSettingsClick }) => {
     return (
-        <header className="flex h-40 items-start gap-5 px-12 py-9 bg-snow border-b shadow-sm">
-            <div className="flex items-center justify-center w-24 h-24 rounded-full overflow-hidden bg-gray-200">
-                {avatarUrl ? (
-                    <img src={avatarUrl} alt={`Foto de perfil de ${name}`} className="w-full h-full object-cover" />
-                ) : (
-                    <User className="w-12 h-12 text-gray-400" />
-                )}
+        <header className="flex h-40 h-min-fit items-start gap-5 py-8 p-5 lg:px-12 lg:py-9 bg-snow border-b border-gray-200 shadow-sm">
+            <div className="flex items-center justify-center w-1/5 h-full">
+                <div className="flex items-center justify-center w-full max-w-24 max-h-24 rounded-full overflow-hidden bg-gray-200">
+                    {avatarUrl ? (
+                        <img src={avatarUrl} alt={`Foto de perfil de ${name}`} className="w-full h-full object-cover" />
+                    ) : (
+                        <User className="w-full h-full text-gray-400" />
+                    )}
+                </div>
             </div>
 
             <div className="flex flex-col justify-center flex-1 gap-1">
-                <div className="font-['Arial_Rounded_MT_Bold'] text-[#ffcc4d] text-3xl">
+                <h1 className="text-neutral-800 text-xl lg:text-3xl leading-tight">
                     Hola,
-                </div>
-                <h1 className="font-['Open_Sans'] text-neutral-800 text-xl">
+                </h1>
+                <h1 className="text-neutral-800 text-lg lg:text-xl leading-[1.15]">
                     {name}
                 </h1>
-                <p className="font-['Open_Sans'] font-extrabold text-neutral-800 text-sm">
+                <h5 className="font-extrabold text-neutral-600 text-sm">
                     {role}
-                </p>
+                </h5>
             </div>
 
             <button

@@ -32,25 +32,25 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, onViewDetails }) => {
     const config = statusConfig[order.status];
 
     return (
-        <article className="flex h-28 bg-snow rounded-3xl shadow-sm overflow-hidden">
+        <article className="flex min-h-fit h-28 bg-snow rounded-3xl shadow-sm overflow-hidden">
             <div className={`flex flex-col items-center justify-center w-28 gap-2.5 p-2.5 ${config.bg}`}>
                 <Clock className={`w-8 h-8 ${config.text}`} />
-                <div className={`font-['Arial_Rounded_MT_Bold'] text-base ${config.text}`}>
+                <div className={`text-base ${config.text}`}>
                     {config.label}
                 </div>
             </div>
 
             <div className="flex flex-col justify-center flex-1 gap-1 py-2.5 px-4">
-                <h3 className="font-['Arial_Rounded_MT_Bold'] text-neutral-800 text-xl">
+                <h3 className="text-neutral-800 text-xl">
                     {orderName}
                 </h3>
                 <div className="flex items-center gap-2.5">
                     <div className="w-8 h-8 rounded-full bg-gray-200" />
-                    <div className="font-['Arial_Rounded_MT_Bold'] text-neutral-800 text-base">
+                    <div className="text-neutral-800 text-base">
                         {order.store}
                     </div>
                 </div>
-                <p className="font-['Open_Sans'] text-neutral-800 text-sm">
+                <p className="text-neutral-800 text-sm">
                     Pagado - Recoge en {pickupTime}
                 </p>
             </div>

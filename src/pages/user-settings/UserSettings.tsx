@@ -102,16 +102,15 @@ export const UserSettings: React.FC = () => {
     ];
 
     return (
-        <main className="flex flex-col flex-1 bg-snow rounded-3xl overflow-hidden">
+        <div className="flex flex-col flex-1 bg-snow rounded-3xl overflow-hidden scrollbar-hide">
             <UserHeader
                 name="Katherin Silva Granados"
                 role="Estudiante"
                 onSettingsClick={() => console.log('Settings clicked')}
             />
 
-            <div className="flex gap-2.5 p-5 flex-1">
-                {/* Left Column */}
-                <section className="flex flex-col w-[500px] gap-2.5 px-5 py-6">
+            <div className="flex flex-col lg:flex-row gap-2.5 p-2 sm:p-3 md:p-4 lg:p-5 flex-1 overflow-hidden">
+                <section className="flex flex-col w-full lg:w-2/5 gap-3 lg:gap-4 p-3 sm:p-4 md:p-5 lg:px-5 lg:py-6">
                     <WalletCard
                         balance={120000}
                         cardholderName="Katerine Silva Granados"
@@ -119,11 +118,11 @@ export const UserSettings: React.FC = () => {
                         onAddFunds={() => console.log('Add funds clicked')}
                     />
 
-                    <h2 className="font-['Arial_Rounded_MT_Bold'] text-neutral-800 text-2xl mt-4">
-                        Proximos pedidos
+                    <h2 className="text-neutral-800 text-xl sm:text-2xl mt-2 sm:mt-4">
+                        Próximos pedidos
                     </h2>
 
-                    <div className="flex flex-col gap-3 flex-1">
+                    <div className="flex flex-col gap-2 sm:gap-3 flex-1 overflow-y-auto scrollbar-hide">
                         {upcomingOrders.map((order) => (
                             <OrderCard
                                 key={order.trackingCode}
@@ -133,9 +132,12 @@ export const UserSettings: React.FC = () => {
                         ))}
                     </div>
                 </section>
-                <HistorialPanel historial={historial}/>
+
+                <div className="w-full lg:w-3/5 sm:p-4 md:p-5 lg:px-5 lg:py-6">
+                    <HistorialPanel historial={historial}/>
+                </div>
             </div>
-        </main>
+        </div>
     );
 };
 

@@ -5,6 +5,7 @@ import {AuthProvider} from "@/utils/context/AuthProvider";
 import Auth from "@/pages/login/Auth";
 import {PasswordRecoveryContainer} from "@/pages/password-recovery/passwordRecoveryContainer";
 import {AnimatePresence, motion} from "framer-motion";
+import {UserSettings} from "@/pages/user-settings/UserSettings";
 
 function App() {
     const location = useLocation();
@@ -33,7 +34,7 @@ function App() {
 
                     <Route element={<ProtectedRoute/>}>
                         <Route element={<Layout/>}>
-                            <Route path="/home" element={<div>Catalog</div>}/>
+                            <Route path="/home" element={<UserSettings/>}/>
                             <Route path="/shoppingCart" element={<div>Shopping Cart</div>}/>
                             <Route path="/orders" element={<div>Orders</div>}/>
                             <Route path="/chat" element={<div>Chat</div>}/>

@@ -10,7 +10,7 @@ export const ProtectedRoute = () => {
     }
 
     if (location.pathname === "/") {
-        return <Navigate to="/dashboard" replace/>;
+        return <Navigate to="/home" replace/>;
     }
 
     return <Outlet/>;
