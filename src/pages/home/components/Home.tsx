@@ -1,9 +1,12 @@
 import { useState } from 'react';
 import { Heart, Star, Clock, Plus } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import bannerImage from '@/assets/home/advertisement.png';
 import Sidebar from '@/utils/Sidebar';
 
 export default function Home() {
+  const navigate = useNavigate();
   const [activeCategory, setActiveCategory] = useState('cafeteria');
   const [activeTab, setActiveTab] = useState('populares');
 
@@ -83,6 +86,29 @@ export default function Home() {
 
   const stores = storesByCategoryData[activeCategory as keyof typeof storesByCategoryData];
   const products = productsByCategoryData[activeCategory as keyof typeof productsByCategoryData];
+
+  const handleAddToCart = (productId: number, productName: string) => {
+    // Aquí se agregaría al carrito real (Context/Redux)
+    toast.success(`${productName} agregado al carrito`, {
+      position: 'bottom-right',
+      autoClose: 2000
+    });
+  };
+
+  const handleProductClick = (productId: number) => {
+    // Navegar al detalle del producto
+    const mockProductIds: Record<number, string> = {
+      1: 'combo-hamburguesa-deluxe',
+      2: 'sandwich-pollo-pesto',
+      3: 'cafe-latte',
+      4: 'cuadernos-multicolor',
+      5: 'termo-agua-1l',
+      6: 'impresion-color'
+    };
+    
+    const productSlug = mockProductIds[productId] || 'combo-hamburguesa-deluxe';
+    navigate(`/product/${productSlug}`);
+  };
 
   return (
     <div className="flex min-h-screen bg-[#F6F6F6]">
@@ -190,11 +216,18 @@ export default function Home() {
             {products.map((product) => (
               <div
                 key={product.id}
-                className="bg-white rounded-[20px] shadow-lg overflow-hidden hover:shadow-xl transition-shadow"
+                className="bg-white rounded-[20px] shadow-lg overflow-hidden hover:shadow-xl transition-shadow cursor-pointer"
+                onClick={() => handleProductClick(product.id)}
               >
                 <div className="relative">
                   <div className="w-full h-48 sm:h-56 bg-gray-300"></div>
-                  <button className="absolute top-3 right-3 sm:top-4 sm:right-4 w-10 h-10 sm:w-12 sm:h-12 bg-white rounded-full shadow-lg flex items-center justify-center hover:scale-110 transition-transform">
+                  <button 
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      // Toggle favorito
+                    }}
+                    className="absolute top-3 right-3 sm:top-4 sm:right-4 w-10 h-10 sm:w-12 sm:h-12 bg-white rounded-full shadow-lg flex items-center justify-center hover:scale-110 transition-transform"
+                  >
                     <Heart
                       className={`w-5 h-5 sm:w-6 sm:h-6 ${
                         product.isFavorite
@@ -235,7 +268,13 @@ export default function Home() {
                         </div>
                       )}
                     </div>
-                    <button className="w-12 h-12 sm:w-14 sm:h-14 bg-[#5AC7E1] hover:bg-cyan-500 rounded-xl flex items-center justify-center transition-colors shadow-md">
+                    <button 
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleAddToCart(product.id, product.name);
+                      }}
+                      className="w-12 h-12 sm:w-14 sm:h-14 bg-[#5AC7E1] hover:bg-cyan-500 rounded-xl flex items-center justify-center transition-colors shadow-md"
+                    >
                       <Plus className="w-6 h-6 sm:w-7 sm:h-7 text-white stroke-[3]" />
                     </button>
                   </div>
