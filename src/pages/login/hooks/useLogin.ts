@@ -34,8 +34,9 @@ export const useLogin = () => {
             login(token, user);
             const redirectPath = roleRoutes[user.role] || "/dashboard";
             navigate(redirectPath, { replace: true });
-        } catch (err: any) {
-            toast.error(err.response?.data?.message || "Error al iniciar sesión");
+        } catch (err: unknown) {
+            const error = err as { response?: { data?: { message?: string } } };
+            toast.error(error.response?.data?.message || "Error al iniciar sesión");
         } finally {
             setLoading(false);
         }

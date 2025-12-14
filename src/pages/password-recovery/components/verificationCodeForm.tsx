@@ -1,8 +1,15 @@
 import React, { useState, useRef, KeyboardEvent, ClipboardEvent, JSX } from "react";
 import { Link } from "react-router-dom";
 import { Undo2 } from "lucide-react";
+import {toast} from "react-toastify";
+import {useVerifySecurityCode} from "@/pages/password-recovery/hooks/useVerifySecurityCode";
 
-export const VerificationCodeForm = (): JSX.Element => {
+interface VerificationCodeFormProps {
+    email:string,
+    onCodeVerified: (token:string) => void;
+}
+
+export const VerificationCodeForm: React.FC<VerificationCodeFormProps> = ({email, onCodeVerified}): JSX.Element => {
     const [verificationCode, setVerificationCode] = useState<string[]>(Array(6).fill(""));
     const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
@@ -37,15 +44,24 @@ export const VerificationCodeForm = (): JSX.Element => {
         inputRefs.current[nextEmptyIndex]?.focus();
     };
 
-    const handleVerify = () => {
+    const { verifyCode, loading } = useVerifySecurityCode();
+
+    const handleVerify = async () => {
         const code = verificationCode.join("");
         if (code.length === 6) {
-            console.log("Verification code:", code);
+            try {
+                const token = await verifyCode(email, code);
+                onCodeVerified(token);
+            } catch {
+                toast.error("Error al verificar el código. Por favor revisa el codigo.");
+            }
+        } else {
+            toast.error("El código de verificación debe tener 6 dígitos");
         }
     };
 
     return (
-        <div className="flex flex-col w-[525px] h-screen items-center justify-center gap-5 p-3">
+        <div className="flex flex-col w-full h-screen items-center justify-center gap-5 p-3">
             <Link className="flex items-center gap-3 w-full" to="/auth">
                 <Undo2 className="w-7 h-7 text-[#ffad2a]" />
                 <span className="font-bold text-[#ffad2a] text-xl">
@@ -66,7 +82,7 @@ export const VerificationCodeForm = (): JSX.Element => {
                         <p className="text-neutral-800 text-lg">
                             Hemos enviado un código de verificación a la dirección{" "}
                             <span className="font-bold">
-                                manuel.guarnizo-c@mail.escuelaing.edu.com
+                                {email.toLowerCase()}
                             </span>
                         </p>
                     </div>
@@ -92,9 +108,10 @@ export const VerificationCodeForm = (): JSX.Element => {
                 <button
                     type="button"
                     onClick={handleVerify}
+                    disabled={loading}
                     className="w-1/3 bg-[#5AC7E1] py-4 rounded-xl text-white text-3xl font-semibold shadow-md cursor-pointer hover:bg-cyan-500 transition-colors"
                 >
-                    Verificar
+                    {loading ? 'Verificando...' : 'Verificar'}
                 </button>
             </div>
         </div>

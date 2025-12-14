@@ -24,7 +24,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
                                              }) => {
     return (
         <div className="w-full flex flex-row items-center justify-center">
-            <div className="w-full max-w-lg h-screen flex flex-col justify-center items-center gap-4 px-2">
+            <div className="w-full h-full flex flex-col justify-center items-center gap-2 md:gap-4 px-2">
                 {/* Logo */}
                 <div className="flex items-center justify-center mb-4">
                     <img
@@ -35,7 +35,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
                 </div>
 
                 {/* Header */}
-                <h1 className="text-3xl font-arial-rounded text-center mb-2">
+                <h1 className="text-2xl md:text-3xl font-arial-rounded text-center mb-2">
                     Iniciar sesión
                 </h1>
 
@@ -44,10 +44,10 @@ const LoginForm: React.FC<LoginFormProps> = ({
                     onSubmit={onSubmit}
                     className="w-full flex flex-col gap-2 items-center p-2"
                 >
-                    <div className="w-full flex flex-col gap-3">
+                    <div className="w-full flex flex-col gap-1 md:gap-3">
                         <label
                             htmlFor="signin-username"
-                            className="text-gray-600 font-semibold text-lg"
+                            className="text-gray-600 font-semibold md:text-lg"
                         >
                             Email
                         </label>
@@ -62,10 +62,10 @@ const LoginForm: React.FC<LoginFormProps> = ({
                         />
                     </div>
 
-                    <div className="w-full flex flex-col gap-3">
+                    <div className="w-full flex flex-col gap-1 md:gap-3">
                         <label
                             htmlFor="signin-password"
-                            className="text-gray-600 font-semibold text-lg"
+                            className="text-gray-600 font-semibold md:text-lg"
                         >
                             Contraseña
                         </label>
@@ -89,14 +89,14 @@ const LoginForm: React.FC<LoginFormProps> = ({
                     </button>
                 </form>
 
-                <div className="flex flex-col items-center">
-                    <div className="flex items-center h-fit gap-[5px]">
-                        <p className="text-gray-600 font-medium m-[0px]">
+                <div className="flex flex-col items-center gap-2">
+                    <div className="flex items-center h-fit gap-1">
+                        <p className="text-gray-600 font-medium">
                             ¿No tienes una cuenta?
                         </p>
                         <button
                             onClick={onSwitchToSignup}
-                            className="font-semibold font-sans bg-transparent border-none text-[#5AC7E1] underline hover:text-[#1A97A1] transition-colors"
+                            className="text-2xl font-semibold font-sans bg-transparent border-none text-[#5AC7E1] underline hover:text-[#1A97A1] transition-colors"
                         >
                             Crea una
                         </button>

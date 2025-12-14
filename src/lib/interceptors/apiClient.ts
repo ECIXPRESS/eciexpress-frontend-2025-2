@@ -2,6 +2,11 @@ import axios from 'axios';
 
 const apiClient = axios.create({
     baseURL: 'https://api-gateway-despliegue.onrender.com/api',
+    timeout: 10000,
+    headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+    }
 });
 
 apiClient.interceptors.request.use((config) => {

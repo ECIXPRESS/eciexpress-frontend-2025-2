@@ -1,37 +1,65 @@
 import StandardInput from "@/lib/input/standarInput";
 import React from "react";
 import {toast} from "react-toastify";
-import {X, Check} from "lucide-react";
+import {useChangePassword} from "@/pages/password-recovery/hooks/useChangePassword";
 
-const PasswordChangeForm = () => {
+interface PasswordChangeFormProps {
+    email: string;
+    token: string;
+    onPasswordChanged: () => void;
+}
+
+const PasswordChangeForm: React.FC<PasswordChangeFormProps> = ({email, token, onPasswordChanged}) => {
     const [password, setPassword] = React.useState('');
     const [confirmPassword, setConfirmPassword] = React.useState('');
     const [loading, setLoading] = React.useState(false);
+    const { changePassword } = useChangePassword();
 
-    const passwordRequeriments = [
-        {regex: /^(?=.*[!@#$%^&*]).+$/, message: "Al menos un carácter especial, numero y mayuscula"},
-        {regex: /^.{8,}$/, message: "Al menos 8 caracteres"}
+
+    const passwordRequirements = [
+        { regex: /^(?=.*[!@#$%^&*])/, message: "Al menos un carácter especial" },
+        { regex: /^(?=.*\d)/, message: "Al menos un número" },
+        { regex: /^(?=.*[A-Z])/, message: "Al menos una letra mayúscula" },
+        { regex: /^.{8,}$/, message: "Al menos 8 caracteres" }
     ];
 
     const validatePassword = (password: string) => {
-        return passwordRequeriments.every((requirement) => requirement.regex.test(password));
+        return passwordRequirements.every((requirement) => requirement.regex.test(password));
     };
 
-    const onSubmit = (e: React.FormEvent) => {
+    const onSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
+
         if (!validatePassword(password)) {
             toast.error("Contraseña no valida");
-        } else if (password !== confirmPassword) {
-            toast.error("Las contraseñas no coinciden");
-        } else {
-            toast.success("Contraseña cambiada exitosamente");
+            setLoading(false);
+            return;
         }
-        setLoading(false);
+
+        if (password !== confirmPassword) {
+            toast.error("Las contraseñas no coinciden");
+            setLoading(false);
+            return;
+        }
+
+        try {
+            await changePassword({
+                email: email,
+                password,
+                token: token,
+            });
+            toast.success("Contraseña cambiada exitosamente");
+            onPasswordChanged();
+        } catch {
+            toast.error("Error al cambiar la contraseña");
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
-        <div className="w-1/3 h-screen flex flex-col items-center justify-center gap-5 p-16">
+        <div className="w-full h-screen flex flex-col items-center justify-center gap-5 p-16">
             {/* Form */}
             <form className="flex flex-col h-[500px] justify-between items-center w-full py-6 rounded-3xl gap-8">
                 <div className="flex flex-col gap-10 w-full">
