@@ -86,7 +86,7 @@ const PasswordChangeForm: React.FC<PasswordChangeFormProps> = ({email, token, on
                         />
 
                         <div className="flex flex-col gap-0 w-full">
-                            {passwordRequeriments.map(requirement => (
+                            {passwordRequirements.map(requirement => (
                                     <p id={requirement.message} className="text-neutral-500 text-sm">
                                         {requirement.message}
                                     </p>
