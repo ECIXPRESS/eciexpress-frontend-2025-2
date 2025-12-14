@@ -5,7 +5,7 @@ interface Props {
   isActive: boolean;
   onClick: () => void;
   currentUserId: string;
-  getUserName:  (userId: string) => string;  // ⭐ AGREGAR
+  getUserName:  (userId: string) => string;  
 }
 
 const ConversationItem = ({ conversation, isActive, onClick, currentUserId, getUserName }: Props) => {

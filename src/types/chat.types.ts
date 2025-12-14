@@ -17,7 +17,7 @@ export interface ConversationMessageResponse {
 export interface ConversationResponse {
   conversationId: string;
   creationDate: string; // ISO string desde Instant de Java
-  usersNames: string[];
+  usersIds: string[];
   messageResponses: ConversationMessageResponse[];
   orderId: string;
 }

@@ -144,32 +144,6 @@ export const useConversations = (userId: string) => {
     }
   }, [userId]);
 
-const sendMessage = async (conversationId: string, text: string) => {
-  try {
-    const request = {
-      authorId: userId, 
-      conversationId:  conversationId,  
-      text:  text.trim()
-    };
-
-    console.log('📤 [sendMessage] Enviando:', request);
-
-    const data = await post<ConversationMessageResponse>(
-      `/api/chat/eciexpress/conversations/${conversationId}/messages`,
-      request
-    );
-
-    console.log('✅ [sendMessage] Mensaje enviado:', data);
-
-    addMessage(data);
-
-    return data;
-  } catch (err) {
-    console.error('❌ [sendMessage] Error:', err);
-    throw err;
-  }
-};
-
   return {
     conversations,
     currentConversation,
@@ -186,6 +160,5 @@ const sendMessage = async (conversationId: string, text: string) => {
     addMessage,
     markMessageAsRead,
     setMessages,
-    sendMessage
   };
 };
