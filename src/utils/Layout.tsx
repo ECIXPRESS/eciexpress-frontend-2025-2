@@ -3,10 +3,9 @@ import { Outlet } from "react-router-dom";
 import Sidebar from "@/utils/Sidebar";
 
 const Layout = () => (
-    <div className="flex h-screen bg-[#F6F6F6] overflow-hidden">
+    <div className="flex h-screen bg-[#F6F6F6]">
         <Sidebar />
-
-        <div className="flex-1 flex flex-col min-w-0 md:ml-20">
+        <div className="flex-1 overflow-y-auto bg-gray-50">
             <main className="flex-1 mr-4 mb-4 mt-4 rounded-4xl bg-white overflow-auto">
                 <ToastContainer
                     position="bottom-right"

@@ -23,6 +23,11 @@ import { PedidosList } from "@/pages/qr-validation-seller";
 import type { Pedido } from "@/pages/qr-validation-seller";
 import { mockPedidos } from "@/pages/qr-validation-seller/mocks/mockPedidos";
 
+// Importa componentes para wallet
+import { WalletCard, MovementsList, RechargeModal } from "@/pages/wallet";
+import type { WalletData } from "@/pages/wallet";
+import { mockWalletData } from "@/pages/wallet/mocks/mockWalletData";
+
 // Componente contenedor para inventory-seller
 function InventorySellerPage() {
   const [productos, setProductos] = useState<Producto[]>(mockProductos);
@@ -70,6 +75,76 @@ function QRValidationSellerPage() {
   );
 }
 
+// Componente contenedor para wallet
+function WalletPage() {
+  const [walletData, setWalletData] = useState<WalletData>(mockWalletData);
+  const [isRechargeModalOpen, setIsRechargeModalOpen] = useState(false);
+
+  const handleRecargar = () => {
+    setIsRechargeModalOpen(true);
+  };
+
+  const handleConfirmRecharge = (amount: number) => {
+    const newMovement = {
+      id: Date.now().toString(),
+      tipo: 'recarga' as const,
+      descripcion: 'Recarga',
+      monto: amount,
+      fecha: new Date().toLocaleDateString('es-CO', { day: '2-digit', month: '2-digit' })
+    };
+
+    setWalletData({
+      ...walletData,
+      saldo: walletData.saldo + amount,
+      movimientos: [newMovement, ...walletData.movimientos]
+    });
+    setIsRechargeModalOpen(false);
+  };
+
+  return (
+    <div className="min-h-screen bg-[#F6F6F6]">
+      <div className="md:ml-20 p-4 sm:p-6 md:p-8">
+        <div className="max-w-7xl mx-auto mt-16 md:mt-0">
+          {/* Sección de información del usuario - Fondo blanco */}
+          <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-md mb-6">
+            <div className="flex items-center gap-4">
+              <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gray-300 rounded-full flex-shrink-0"></div>
+              <div>
+                <h1 className="text-2xl sm:text-3xl font-bold text-[#FDDF65]">Hola,</h1>
+                <p className="text-lg sm:text-xl text-[#262626] font-semibold">{walletData.nombreUsuario}</p>
+                <p className="text-sm text-gray-500">Estudiante</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Grid de billetera y movimientos */}
+          <div className="grid lg:grid-cols-2 gap-6 lg:gap-8">
+            {/* Sección de billetera - Fondo blanco */}
+            <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-md">
+              <h2 className="text-xl sm:text-2xl font-bold text-[#262626] mb-6">Billetera</h2>
+              <WalletCard
+                saldo={walletData.saldo}
+                nombreUsuario={walletData.nombreUsuario}
+                numeroTarjeta={walletData.numeroTarjeta}
+                onRecargar={handleRecargar}
+              />
+            </div>
+
+            {/* Sección de movimientos - Ya tiene fondo blanco en su componente */}
+            <MovementsList movimientos={walletData.movimientos} />
+          </div>
+
+          <RechargeModal
+            isOpen={isRechargeModalOpen}
+            onClose={() => setIsRechargeModalOpen(false)}
+            onConfirm={handleConfirmRecharge}
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function HomeWithMockUser() {
   const { login, user } = useAuth();
 
@@ -96,6 +171,9 @@ function HomeWithMockUser() {
         
         {/* Ruta de estadísticas */}
         <Route path="/statistics" element={<StatisticsPage />} />
+        
+        {/* Ruta de billetera */}
+        <Route path="/wallet" element={<WalletPage />} />
         
         {/* Ruta de detalle de producto */}
         <Route path="/product/:id" element={<ProductDetailPage />} />

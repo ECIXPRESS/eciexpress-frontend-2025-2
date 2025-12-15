@@ -8,18 +8,17 @@ import {
   MessageCircle, 
   LogOut,
   Bell,
-  BarChart3,
-  Users,
-  Tag,
-  Menu} from 'lucide-react';
+  Menu
+} from 'lucide-react';
 import { useAuth } from '@/pages/login/hooks/useAuth';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, NavLink } from 'react-router-dom';
 
-interface MenuItem {
-  icon: typeof LayoutDashboard;
-  label: string;
-  path?: string;
-}
+const navItems = [
+  { to: "/", icon: LayoutDashboard, label: "Catálogo" },
+  { to: "/cart", icon: ShoppingCart, label: "Carrito" },
+  { to: "/orders", icon: ClipboardList, label: "Pedidos" },
+  { to: "/chat", icon: MessageCircle, label: "Chat" },
+];
 
 export default function Sidebar() {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -27,33 +26,7 @@ export default function Sidebar() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
-  const menuConfig: Record<string, MenuItem[]> = {
-    user: [
-      { icon: LayoutDashboard, label: 'Catálogo', path: '/' },
-      { icon: ShoppingCart, label: 'Carrito', path: '/cart' },
-      { icon: ClipboardList, label: 'Pedidos' },
-      { icon: MessageCircle, label: 'Chat', path: '/chat' },
-    ],
-    seller: [
-      { icon: ClipboardList, label: 'Pedidos', path: '/orders' },
-      { icon: LayoutDashboard, label: 'Catálogo', path: '/catalog' },
-      { icon: BarChart3, label: 'Estadísticas', path: '/statistics' },
-      { icon: MessageCircle, label: 'Chat', path: '/chat' },
-    ],
-    admin: [
-      { icon: LayoutDashboard, label: 'Tablero', path: '/dashboard' },
-      { icon: Users, label: 'Vendedores', path: '/sellers' },
-      { icon: MessageCircle, label: 'Chat', path: '/chat' },
-      { icon: Tag, label: 'Promociones', path: '/promotions' },
-      { icon: BarChart3, label: 'Estadísticas', path: '/statistics' },
-    ],
-  };
-
-  const userRole = user?.role || 'user';
-  const menuItems = menuConfig[userRole] || menuConfig.user;
-  const showBalance = userRole === 'user';
   const userBalance = user?.balance || 0;
-
   const shouldShowExpanded = isMobileOpen || isExpanded;
 
   return (
@@ -98,54 +71,76 @@ export default function Sidebar() {
             )}
           </div>
 
-           {/* Botón de agregar (solo cuando está colapsado EN DESKTOP) */}
-          {!shouldShowExpanded && showBalance && (
-            <div className="flex items-center justify-center py-4">
-              <button className="w-12 h-12 rounded-full bg-[#FDDF65] hover:bg-[#f5d74e] flex items-center justify-center transition-colors shadow-md">
-                <Plus className="w-6 h-6 text-[#262626]" />
-              </button>
-            </div>
-          )}
-
-          {/* Balance Card - Solo para usuarios cuando está expandido */}
-          {shouldShowExpanded && showBalance && (
+          {/* Balance Card - cuando está expandido */}
+          {shouldShowExpanded && (
             <div className="px-4 py-4 mb-4">
-              <div className="bg-gradient-to-br from-[#FDDF65] to-[#f5d74e] rounded-2xl p-4 shadow-lg">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm text-gray-700 font-medium">Balance:</span>
-                  <button className="w-8 h-8 rounded-full bg-white/50 hover:bg-white/80 flex items-center justify-center transition-colors">
-                    <Plus className="w-4 h-4 text-gray-800" />
-                  </button>
+              <div className="bg-gradient-to-br from-[#FDDF65] to-[#f5d74e] rounded-2xl p-4 shadow-lg relative overflow-hidden">
+                {/* Decoraciones de triángulos */}
+                <div className="absolute inset-0 opacity-10">
+                  <div className="absolute top-2 right-2 w-16 h-16 border-4 border-white transform rotate-45"></div>
+                  <div className="absolute bottom-2 right-8 w-8 h-8 border-2 border-white transform -rotate-12"></div>
                 </div>
-                <div className="text-2xl font-bold text-[#262626]">
-                  $ {userBalance.toLocaleString('es-CO')}
+                
+                <div className="relative z-10">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm text-white font-medium">Balance:</span>
+                    <button 
+                      onClick={() => navigate('/wallet')}
+                      className="w-8 h-8 rounded-full bg-white/50 hover:bg-white/80 flex items-center justify-center transition-colors"
+                    >
+                      <Plus className="w-4 h-4 text-white" />
+                    </button>
+                  </div>
+                  <div className="text-2xl font-bold text-white">
+                    $ {userBalance.toLocaleString('es-CO')}
+                  </div>
                 </div>
               </div>
             </div>
           )}
 
-          {shouldShowExpanded && !showBalance && (
-            <div className="py-4"></div>
+          {/* Botón de agregar cuando está colapsado */}
+          {!shouldShowExpanded && (
+            <div className="flex items-center justify-center py-4">
+              <button 
+                onClick={() => navigate('/wallet')}
+                className="w-12 h-12 rounded-full bg-[#FDDF65] hover:bg-[#f5d74e] flex items-center justify-center transition-colors shadow-md"
+              >
+                <Plus className="w-6 h-6 text-white" />
+              </button>
+            </div>
           )}
 
-          {/* Navegación dinámica según rol */}
-          <nav className="flex-1 px-2 overflow-y-auto">
-            {menuItems.map((item, index) => {
+          {/* Navegación */}
+          <nav className="flex-1 px-2 py-2 space-y-1 overflow-y-auto">
+            {navItems.map((item) => {
               const Icon = item.icon;
               return (
-                <button 
-                  key={index}
-                  className="w-full p-3 flex items-center gap-3 rounded-lg hover:bg-gray-100 transition-colors mb-1"
-                  onClick={() => {
-                    if (item.path) {
-                      navigate(item.path);
-                    }
-                    setIsMobileOpen(false);
-                  }}
+                <NavLink
+                  key={item.to}
+                  to={item.to}
+                  onClick={() => setIsMobileOpen(false)}
+                  className={({ isActive }) =>
+                    `flex items-center gap-3 px-3 py-3 rounded-lg transition-all ${
+                      isActive ? "bg-yellow-100" : "hover:bg-gray-100"
+                    }`
+                  }
                 >
-                  <Icon className="w-6 h-6 text-gray-600 flex-shrink-0" />
-                  {shouldShowExpanded && <span className="text-sm font-medium text-gray-700">{item.label}</span>}
-                </button>
+                  {({ isActive }) => (
+                    <>
+                      <Icon className={`w-6 h-6 flex-shrink-0 ${
+                        isActive ? "text-yellow-600" : "text-gray-600"
+                      }`} />
+                      {shouldShowExpanded && (
+                        <span className={`text-sm font-medium ${
+                          isActive ? "text-yellow-600" : "text-gray-700"
+                        }`}>
+                          {item.label}
+                        </span>
+                      )}
+                    </>
+                  )}
+                </NavLink>
               );
             })}
           </nav>
