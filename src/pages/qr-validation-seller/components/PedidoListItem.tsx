@@ -4,7 +4,7 @@
  */
 import React from 'react';
 import type { Pedido } from '../types/pedidos';
-import { Badge } from '../../../utils/qr-validation-seller';
+import { Badge } from '@/utils/qr-validation.seller/Components/UI/Badge';
 import { Clock, User, DollarSign, Eye, CheckCircle } from 'lucide-react';
 
 interface PedidoListItemProps {

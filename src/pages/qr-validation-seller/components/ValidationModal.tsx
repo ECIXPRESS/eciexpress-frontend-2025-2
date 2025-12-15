@@ -4,7 +4,7 @@
  */
 import React, { useEffect, useRef, useState } from 'react';
 import { X, QrCode, Hash, AlertCircle} from 'lucide-react';
-import { BrowserQRCodeReader } from '@zxing/library';
+import { BrowserMultiFormatReader } from '@zxing/library';
 
 interface ValidationModalProps {
   isOpen: boolean;
@@ -30,7 +30,7 @@ export const ValidationModal: React.FC<ValidationModalProps> = ({
   const [, setIsScanning] = useState(false);
   
   const videoRef = useRef<HTMLVideoElement>(null);
-  const codeReaderRef = useRef<BrowserQRCodeReader | null>(null);
+  const codeReaderRef = useRef<BrowserMultiFormatReader | null>(null);
 
   // Sincroniza la pestaña activa con initialTab cuando el modal se abre
   useEffect(() => {
@@ -75,7 +75,7 @@ export const ValidationModal: React.FC<ValidationModalProps> = ({
       setQrError(null);
       setIsScanning(true);
 
-      const codeReader = new BrowserQRCodeReader();
+      const codeReader = new BrowserMultiFormatReader();
       codeReaderRef.current = codeReader;
 
       const videoInputDevices = await codeReader.listVideoInputDevices();
