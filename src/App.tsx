@@ -14,18 +14,26 @@ import CartPage from "@/pages/cart/CartPage";
 import ChatPage from "@/pages/chat/ChatPage";
 
 // Importa componentes para inventory-seller
-import { ProductosList } from "@/pages/inventory-seller";
-import type { Producto } from "@/pages/inventory-seller";
+import { ProductosList, FiltrosInventario, EstadoNavigation } from "@/pages/inventory-seller";
+import type { Producto, FiltrosInventarioType, ResumenInventario } from "@/pages/inventory-seller";
 import { mockProductos } from "@/pages/inventory-seller/mocks/mockProductos";
+import { getEstadoStock } from "@/pages/inventory-seller/types/inventario";
 
 // Importa componentes para qr-validation-seller
-import { PedidosList } from "@/pages/qr-validation-seller";
-import type { Pedido } from "@/pages/qr-validation-seller";
+import { PedidosList, FiltrosPedidos, EstadoNavigation as EstadoNavigationPedidos } from "@/pages/qr-validation-seller";
+import type { Pedido, FiltrosPedidosType, ResumenPedidosType } from "@/pages/qr-validation-seller";
 import { mockPedidos } from "@/pages/qr-validation-seller/mocks/mockPedidos";
+import { useMemo } from "react";
 
 // Componente contenedor para inventory-seller
 function InventorySellerPage() {
   const [productos, setProductos] = useState<Producto[]>(mockProductos);
+  const [filtros, setFiltros] = useState<FiltrosInventarioType>({
+    query: '',
+    categoria: undefined,
+    estadoStock: undefined
+  });
+  const [estadoActivo, setEstadoActivo] = useState('todos');
 
   const handleUpdateStock = (id: string, newStock: number) => {
     setProductos(productos.map(p => 
@@ -33,11 +41,64 @@ function InventorySellerPage() {
     ));
   };
 
+  // Calcular resumen de inventario
+  const resumen: ResumenInventario = useMemo(() => {
+    const total = productos.length;
+    const stockBajo = productos.filter(p => 
+      getEstadoStock(p.stock, p.stockMinimo) === 'stock-bajo'
+    ).length;
+    const agotados = productos.filter(p => 
+      getEstadoStock(p.stock, p.stockMinimo) === 'agotado'
+    ).length;
+    const disponibles = productos.filter(p => 
+      getEstadoStock(p.stock, p.stockMinimo) === 'disponible'
+    ).length;
+    
+    return { total, stockBajo, disponibles, agotados };
+  }, [productos]);
+
+  // Filtrar productos
+  const productosFiltrados = useMemo(() => {
+    return productos.filter(p => {
+      // Filtro por búsqueda
+      if (filtros.query && !p.nombre.toLowerCase().includes(filtros.query.toLowerCase()) &&
+          !p.descripcion?.toLowerCase().includes(filtros.query.toLowerCase())) {
+        return false;
+      }
+      
+      // Filtro por categoría
+      if (filtros.categoria && p.categoria !== filtros.categoria) {
+        return false;
+      }
+      
+      // Filtro por estado de stock
+      const estado = getEstadoStock(p.stock, p.stockMinimo);
+      if (filtros.estadoStock && estado !== filtros.estadoStock) {
+        return false;
+      }
+      
+      return true;
+    });
+  }, [productos, filtros]);
+
   return (
-    <div className="p-8">
-      <h1 className="text-3xl font-bold mb-6">Inventario del Vendedor</h1>
+    <div className="p-8 space-y-6">
+      <h1 className="text-3xl font-bold">Inventario del Vendedor</h1>
+      
+      <EstadoNavigation 
+        resumen={resumen}
+        estadoActivo={estadoActivo}
+        onEstadoChange={setEstadoActivo}
+        ventasSemana={15}
+      />
+      
+      <FiltrosInventario 
+        filtros={filtros}
+        onFiltrosChange={setFiltros}
+      />
+      
       <ProductosList 
-        productos={productos}
+        productos={productosFiltrados}
         onUpdateStock={handleUpdateStock}
       />
     </div>
@@ -47,6 +108,11 @@ function InventorySellerPage() {
 // Componente contenedor para qr-validation-seller
 function QRValidationSellerPage() {
   const [pedidos, setPedidos] = useState<Pedido[]>(mockPedidos);
+  const [filtros, setFiltros] = useState<FiltrosPedidosType>({
+    query: '',
+    estado: undefined
+  });
+  const [estadoActivo, setEstadoActivo] = useState('todos');
 
   const handleValidatePedido = (id: string) => {
     setPedidos(pedidos.map(p =>
@@ -58,11 +124,50 @@ function QRValidationSellerPage() {
     console.log("Ver detalles del pedido:", id);
   };
 
+  // Calcular resumen de pedidos
+  const resumen: ResumenPedidosType = useMemo(() => {
+    const total = pedidos.length;
+    const pendientes = pedidos.filter(p => p.estado === 'preparacion').length;
+    const completados = pedidos.filter(p => p.estado === 'completado').length;
+    
+    return { total, pendientes, completados };
+  }, [pedidos]);
+
+  // Filtrar pedidos
+  const pedidosFiltrados = useMemo(() => {
+    return pedidos.filter(p => {
+      // Filtro por búsqueda
+      if (filtros.query && !p.nombreCliente.toLowerCase().includes(filtros.query.toLowerCase()) &&
+          !p.codigo.toLowerCase().includes(filtros.query.toLowerCase())) {
+        return false;
+      }
+      
+      // Filtro por estado
+      if (filtros.estado && p.estado !== filtros.estado) {
+        return false;
+      }
+      
+      return true;
+    });
+  }, [pedidos, filtros]);
+
   return (
-    <div className="p-8">
-      <h1 className="text-3xl font-bold mb-6">Validación QR de Pedidos</h1>
+    <div className="p-8 space-y-6">
+      <h1 className="text-3xl font-bold">Validación QR de Pedidos</h1>
+      
+      <EstadoNavigationPedidos 
+        resumen={resumen}
+        estadoActivo={estadoActivo}
+        onEstadoChange={setEstadoActivo}
+      />
+      
+      <FiltrosPedidos 
+        filtros={filtros}
+        onFiltrosChange={setFiltros}
+      />
+      
       <PedidosList 
-        pedidos={pedidos}
+        pedidos={pedidosFiltrados}
         onValidarPedido={handleValidatePedido}
         onVerDetalles={handleVerDetalles}
       />
