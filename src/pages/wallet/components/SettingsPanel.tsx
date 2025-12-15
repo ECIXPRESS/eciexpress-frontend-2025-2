@@ -278,7 +278,7 @@ export function SettingsPanel({
           }`}>
             <h3 className="text-lg font-bold text-[#262626] mb-3">Contraseña</h3>
             <p className="text-xs text-gray-500 mb-5 leading-relaxed">
-              Define el canal de entrega de las notificaciones, ya sea mediante correo electrónico o dentro de la aplicación.
+              Cambia tu contraseña actual por una nueva. Asegúrate de usar una contraseña segura con al menos 8 caracteres.
             </p>
 
             <div className="space-y-4">

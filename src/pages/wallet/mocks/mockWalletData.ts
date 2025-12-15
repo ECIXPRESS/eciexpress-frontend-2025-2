@@ -1,7 +1,7 @@
 import type { WalletData, ProximoPedido } from '../types';
 
 export const mockWalletData: WalletData = {
-  saldo: 120000,
+  saldo: 0,
   nombreUsuario: 'Katerine Silva Granados',
   numeroTarjeta: '100010012083',
   movimientos: [
