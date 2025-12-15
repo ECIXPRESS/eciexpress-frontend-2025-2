@@ -13,6 +13,7 @@ import {
   Tag,
   Menu} from 'lucide-react';
 import { useAuth } from '@/pages/login/hooks/useAuth';
+import { useWallet } from '@/utils/context/WalletProvider';
 import { useNavigate } from 'react-router-dom';
 
 interface MenuItem {
@@ -25,6 +26,7 @@ export default function Sidebar() {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const { user, logout } = useAuth();
+  const { walletData, profileImage } = useWallet();
   const navigate = useNavigate();
 
   const menuConfig: Record<string, MenuItem[]> = {
@@ -52,7 +54,7 @@ export default function Sidebar() {
   const userRole = user?.role || 'user';
   const menuItems = menuConfig[userRole] || menuConfig.user;
   const showBalance = userRole === 'user';
-  const userBalance = user?.balance || 0;
+  const userBalance = walletData.saldo;
 
   const shouldShowExpanded = isMobileOpen || isExpanded;
 
@@ -87,8 +89,15 @@ export default function Sidebar() {
         <div className="flex flex-col h-full">
           {/* Header - Usuario y Notificaciones */}
           <div className="flex items-center justify-between p-4 border-b border-gray-100">
-            <button className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center hover:bg-gray-300 transition-colors">
-              <User className="w-6 h-6 text-gray-600" />
+            <button 
+              onClick={() => navigate('/wallet')}
+              className="w-12 h-12 rounded-full bg-gray-200 overflow-hidden flex items-center justify-center hover:bg-gray-300 transition-colors"
+            >
+              {profileImage ? (
+                <img src={profileImage} alt="Perfil" className="w-full h-full object-cover" />
+              ) : (
+                <User className="w-6 h-6 text-gray-600" />
+              )}
             </button>
             
             {shouldShowExpanded && (
@@ -101,8 +110,11 @@ export default function Sidebar() {
            {/* Botón de agregar (solo cuando está colapsado EN DESKTOP) */}
           {!shouldShowExpanded && showBalance && (
             <div className="flex items-center justify-center py-4">
-              <button className="w-12 h-12 rounded-full bg-[#FDDF65] hover:bg-[#f5d74e] flex items-center justify-center transition-colors shadow-md">
-                <Plus className="w-6 h-6 text-[#262626]" />
+              <button 
+                onClick={() => navigate('/wallet')}
+                className="w-12 h-12 rounded-full bg-[#FDDF65] hover:bg-[#f5d74e] flex items-center justify-center transition-colors shadow-md"
+              >
+                <Plus className="w-6 h-6 text-white" />
               </button>
             </div>
           )}
@@ -110,15 +122,29 @@ export default function Sidebar() {
           {/* Balance Card - Solo para usuarios cuando está expandido */}
           {shouldShowExpanded && showBalance && (
             <div className="px-4 py-4 mb-4">
-              <div className="bg-gradient-to-br from-[#FDDF65] to-[#f5d74e] rounded-2xl p-4 shadow-lg">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm text-gray-700 font-medium">Balance:</span>
-                  <button className="w-8 h-8 rounded-full bg-white/50 hover:bg-white/80 flex items-center justify-center transition-colors">
-                    <Plus className="w-4 h-4 text-gray-800" />
-                  </button>
+              <div className="bg-gradient-to-br from-[#FDDF65] to-[#f5d74e] rounded-2xl p-4 shadow-lg relative overflow-hidden">
+                {/* Decoraciones de triángulos */}
+                <div className="absolute inset-0 opacity-10">
+                  <div className="absolute top-2 right-2 w-16 h-16 border-4 border-white transform rotate-45"></div>
+                  <div className="absolute bottom-2 right-8 w-8 h-8 border-2 border-white transform -rotate-12"></div>
                 </div>
-                <div className="text-2xl font-bold text-[#262626]">
-                  $ {userBalance.toLocaleString('es-CO')}
+                
+                <div className="relative z-10">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm text-white font-medium">Balance:</span>
+                    <button 
+                      onClick={() => {
+                        navigate('/wallet');
+                        setIsMobileOpen(false);
+                      }}
+                      className="w-8 h-8 rounded-full bg-white/50 hover:bg-white/80 flex items-center justify-center transition-colors"
+                    >
+                      <Plus className="w-4 h-4 text-white" />
+                    </button>
+                  </div>
+                  <div className="text-2xl font-bold text-white">
+                    $ {userBalance.toLocaleString('es-CO')}
+                  </div>
                 </div>
               </div>
             </div>
