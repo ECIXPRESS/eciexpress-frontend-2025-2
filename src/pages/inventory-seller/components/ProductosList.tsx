@@ -87,7 +87,16 @@ export const ProductosList: React.FC<ProductosListProps> = ({
     const producto = productos.find(p => p.id === id);
     if (producto) {
       setProductoSeleccionado(producto);
-      setModalEditarAbierto(true);
+      // Cierra el modal de detalles si está abierto
+      if (modalDetallesAbierto) {
+        setModalDetallesAbierto(false);
+        // Espera a que se complete la animación de cierre antes de abrir el de edición
+        setTimeout(() => {
+          setModalEditarAbierto(true);
+        }, 300);
+      } else {
+        setModalEditarAbierto(true);
+      }
     }
   };
 
@@ -95,17 +104,27 @@ export const ProductosList: React.FC<ProductosListProps> = ({
   const handleSaveStock = (id: string, newStock: number) => {
     onUpdateStock(id, newStock);
     setModalEditarAbierto(false);
-    setProductoSeleccionado(null);
+    // Mantiene el producto seleccionado para evitar parpadeo
+    setTimeout(() => {
+      setProductoSeleccionado(null);
+    }, 300);
   };
 
   const handleCloseDetalles = () => {
     setModalDetallesAbierto(false);
-    setTimeout(() => setProductoSeleccionado(null), 200);
+    // Solo limpia el producto si no se va a abrir el modal de edición
+    setTimeout(() => {
+      if (!modalEditarAbierto) {
+        setProductoSeleccionado(null);
+      }
+    }, 300);
   };
 
   const handleCloseEditar = () => {
     setModalEditarAbierto(false);
-    setTimeout(() => setProductoSeleccionado(null), 200);
+    setTimeout(() => {
+      setProductoSeleccionado(null);
+    }, 300);
   };
 
   // Estado vacío

@@ -35,7 +35,7 @@ export const ProductoModal: React.FC<ProductoModalProps> = ({
     
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && isOpen) {
-        onClose();
+        handleClose();
       }
     };
     
@@ -45,7 +45,24 @@ export const ProductoModal: React.FC<ProductoModalProps> = ({
       document.body.style.overflow = 'unset';
       document.removeEventListener('keydown', handleEscape);
     };
-  }, [isOpen, onClose]);
+  }, [isOpen]);
+
+  const handleClose = () => {
+    setIsAnimating(false);
+    setTimeout(() => {
+      onClose();
+    }, 300);
+  };
+
+  const handleEditStockClick = () => {
+    if (!producto) return;
+    // Inicia la animación de cierre
+    setIsAnimating(false);
+    // Espera a que termine la animación antes de abrir el otro modal
+    setTimeout(() => {
+      onEditStock(producto.id);
+    }, 300);
+  };
 
   if (!producto) return null;
 
@@ -58,7 +75,7 @@ export const ProductoModal: React.FC<ProductoModalProps> = ({
         transition-opacity duration-300
         ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}
       `}
-      onClick={onClose}
+      onClick={handleClose}
     >
       <div 
         className={`
@@ -79,13 +96,13 @@ export const ProductoModal: React.FC<ProductoModalProps> = ({
         `}
         style={{
           transitionTimingFunction: isAnimating 
-            ? 'cubic-bezier(0.34, 1.56, 0.64, 1)'
+            ? 'cubic-bezier(0.34, 1.56, 0.64, 1)' 
             : 'cubic-bezier(0.4, 0, 0.2, 1)'
         }}
         onClick={(e) => e.stopPropagation()}
       >
         <button
-          onClick={onClose}
+          onClick={handleClose}
           className={`
             absolute -top-12 right-0 bg-white hover:bg-gray-100 text-gray-700 
             p-2.5 rounded-lg shadow-lg hover:shadow-xl z-20 group
@@ -178,10 +195,7 @@ export const ProductoModal: React.FC<ProductoModalProps> = ({
             {/* Footer */}
             <div className="p-4 border-t border-gray-100 flex-shrink-0">
               <button
-                onClick={() => {
-                  onClose();
-                  onEditStock(producto.id);
-                }}
+                onClick={handleEditStockClick}
                 className="w-full bg-primary-500 hover:bg-primary-600 text-white py-3 px-4 rounded-xl font-semibold transition-all duration-200 shadow-md hover:shadow-lg"
               >
                 Editar Stock
