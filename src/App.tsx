@@ -25,9 +25,6 @@ function HomeWithMockUser() {
           userId: "d66d2d30-56cb-410b-a5f0-9191c38f380e",
           email: "Pepitotolitis@gmail.com",
           role: "user", 
-          userId: "1",
-          email: "usuario@eci.edu.co",
-          role: "user",  // user, seller, admin
           pfpURL: "",
           balance: 512000
         }
