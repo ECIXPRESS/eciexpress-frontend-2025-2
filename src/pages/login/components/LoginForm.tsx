@@ -1,6 +1,6 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
-import logoSrc from '@/assets/logotipo.svg';
+import { Link } from 'react-router-dom';
+import logotipo from '@/assets/logotipo.svg';
 import StandardInput from '@/lib/input/StandardInput';
 
 interface LoginFormProps {
@@ -28,9 +28,9 @@ const LoginForm: React.FC<LoginFormProps> = ({
                 {/* Logo */}
                 <div className="flex items-center justify-center mb-4">
                     <img
-                        src={logoSrc}
-                        alt="Logo"
                         className="w-96 h-12 object-contain"
+                        src={logotipo}
+                        alt="Logo"
                     />
                 </div>
 
