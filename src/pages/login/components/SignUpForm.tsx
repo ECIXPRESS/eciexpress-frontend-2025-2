@@ -34,7 +34,7 @@ const SignUpForm: React.FC<SignUpFormProps> = ({
                                                    onSwitchToLogin
                                                }) => {
     return (
-        <div className="w-full flex flex-col items-center justify-center">
+        <div className="w-full max-w-md flex flex-col items-center justify-center">
             <div
                 className="w-full h-full flex flex-col justify-center items-center px-2">
                 {/* Logo */}
