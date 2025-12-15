@@ -24,7 +24,7 @@
     "react-router-dom": "^7.9.6",
     "react-toastify": "^11.0.5",
     "react-transition-group": "^4.4.5",
-    "recharts": "^3.5.1",
+    "recharts": "^3.6.0",
     "socket.io-client": "^4.8.1",
     "sockjs-client": "^1.6.1",
     "vite": "^7.2.2"
