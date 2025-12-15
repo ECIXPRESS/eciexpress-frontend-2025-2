@@ -83,7 +83,7 @@ function InventorySellerPage() {
 
   return (
     <div className="p-8 space-y-6">
-      <h1 className="text-3xl font-bold">Inventario del Vendedor</h1>
+      <h1 className="text-3xl font-bold">Catálogo del Vendedor</h1>
       
       <EstadoNavigation 
         resumen={resumen}
@@ -153,7 +153,7 @@ function QRValidationSellerPage() {
 
   return (
     <div className="p-8 space-y-6">
-      <h1 className="text-3xl font-bold">Validación QR de Pedidos</h1>
+      <h1 className="text-3xl font-bold">Pedidos</h1>
       
       <EstadoNavigationPedidos 
         resumen={resumen}
@@ -185,7 +185,7 @@ function HomeWithMockUser() {
         {
           userId: "d66d2d30-56cb-410b-a5f0-9191c38f380e",
           email: "pepitotolitis@gmail.com",
-          role: "seller",
+          role: "user",
           pfpURL: "",
           balance: 512000
         }

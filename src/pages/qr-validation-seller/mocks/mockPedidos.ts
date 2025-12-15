@@ -69,7 +69,6 @@ export const mockPedidos: Pedido[] = [
     metodoPago: 'tarjeta',
     pagado: true,
     fechaCreacion: '2024-01-20',
-    observaciones: 'Entregar en recepción',
   },
   {
     id: '5',
@@ -136,7 +135,7 @@ export const mockPedidos: Pedido[] = [
     metodoPago: 'digital',
     pagado: true,
     fechaCreacion: '2024-01-20',
-    observaciones: 'Favor tocar el timbre',
+    observaciones: 'La hamburguesa sin tomate, por favor',
   },
   {
     id: '9',
