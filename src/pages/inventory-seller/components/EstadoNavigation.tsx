@@ -4,14 +4,13 @@
  * Estados: Total, Stock Bajo, Ventas vs Semana
  */
 import React, { useEffect, useState } from 'react';
-import { Package, AlertTriangle, TrendingUp } from 'lucide-react';
 import type { ResumenInventario } from '../types/inventario';
 
 interface EstadoNavigationProps {
   resumen: ResumenInventario;
   estadoActivo: string;
   onEstadoChange: (estado: string) => void;
-  ventasSemana?: number; // Porcentaje de cambio vs semana anterior
+  ventasSemana?: number;
 }
 
 /**
@@ -59,35 +58,28 @@ export const EstadoNavigation: React.FC<EstadoNavigationProps> = ({
       key: 'total',
       label: 'Productos Totales', 
       value: resumen.total,
-      icon: Package,
       color: 'text-primary-600',
       activeColor: 'text-white',
       bgColor: 'bg-white',
       activeBg: 'bg-gradient-to-br from-primary-500 to-primary-600',
       borderColor: 'border-gray-200',
       activeBorder: 'border-primary-500',
-      iconBg: 'bg-primary-100',
-      activeIconBg: 'bg-white/20',
     },
     { 
       key: 'stockBajo',
       label: 'Stock Bajo', 
       value: resumen.stockBajo,
-      icon: AlertTriangle,
       color: 'text-orange-600',
       activeColor: 'text-white',
       bgColor: 'bg-white',
       activeBg: 'bg-gradient-to-br from-orange-500 to-orange-600',
       borderColor: 'border-gray-200',
       activeBorder: 'border-orange-500',
-      iconBg: 'bg-orange-100',
-      activeIconBg: 'bg-white/20',
     },
     { 
       key: 'ventas',
       label: 'Ventas vs Semana', 
       value: ventasSemana,
-      icon: TrendingUp,
       isPercentage: true,
       color: 'text-green-600',
       activeColor: 'text-white',
@@ -95,8 +87,6 @@ export const EstadoNavigation: React.FC<EstadoNavigationProps> = ({
       activeBg: 'bg-gradient-to-br from-green-500 to-green-600',
       borderColor: 'border-gray-200',
       activeBorder: 'border-green-500',
-      iconBg: 'bg-green-100',
-      activeIconBg: 'bg-white/20',
     },
   ];
 
@@ -105,48 +95,53 @@ export const EstadoNavigation: React.FC<EstadoNavigationProps> = ({
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {items.map((item) => {
           const isActive = estadoActivo === item.key;
-          const Icon = item.icon;
           
           return (
             <button
               key={item.key}
               onClick={() => onEstadoChange(item.key)}
               className={`
-                relative p-5 rounded-xl border-2 transition-all duration-200
+                relative p-6 rounded-xl border-2 transition-all duration-200
                 ${isActive ? 
                   `${item.activeBg} ${item.activeBorder} shadow-lg` : 
                   `${item.bgColor} ${item.borderColor} hover:border-gray-300 hover:shadow-md`
                 }
               `}
             >
-              <div className="flex items-center gap-4">
-                {/* Icono */}
-                <div className={`
-                  flex items-center justify-center w-12 h-12 rounded-full transition-colors duration-200
-                  ${isActive ? item.activeIconBg : item.iconBg}
-                `}>
-                  <Icon className={`w-6 h-6 ${isActive ? 'text-white' : item.color}`} />
+              <div className="flex flex-col space-y-4">
+                {/* Título de la tarjeta */}
+                <div>
+                  <h3 className={`
+                    text-lg font-bold transition-colors duration-200 text-left
+                    ${isActive ? 'text-white' : 'text-gray-900'}
+                  `}>
+                    {item.label}
+                  </h3>
                 </div>
                 
-                {/* Contenido */}
-                <div className="flex-1 text-left">
+                {/* Contador animado */}
+                <div className="flex items-baseline space-x-2">
                   <div className={`
-                    text-3xl font-black transition-colors duration-200 tabular-nums
+                    text-5xl font-black transition-colors duration-200 tabular-nums
                     ${isActive ? item.activeColor : item.color}
                   `}>
                     {item.isPercentage ? '+' : ''}
                     <AnimatedCounter value={item.value} isActive={isActive} />
                     {item.isPercentage ? '%' : ''}
                   </div>
-                  <p className={`
-                    text-sm font-medium transition-colors duration-200
+                  <span className={`
+                    text-lg font-semibold transition-colors duration-200
                     ${isActive ? 'text-white/80' : 'text-gray-500'}
                   `}>
-                    {item.label}
-                  </p>
+                    {item.isPercentage 
+                      ? '' 
+                      : item.value === 1 ? 'producto' : 'productos'
+                    }
+                  </span>
                 </div>
               </div>
               
+              {/* Indicador inferior para estado activo */}
               {isActive && (
                 <div className="absolute bottom-0 left-0 right-0 h-1.5 bg-white/40 rounded-b-lg" />
               )}
