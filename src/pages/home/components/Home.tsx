@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Heart, Star, Clock, Plus } from 'lucide-react';
 import bannerImage from '@/assets/home/advertisement.png';
-import Sidebar from '@/utils/Sidebar';
+import Sidebar from '@/pages/Navbar/Sidebar';
 
 export default function Home() {
   const [activeCategory, setActiveCategory] = useState('cafeteria');

@@ -1,7 +1,7 @@
 import {useState} from 'react';
 import {ToastContainer} from 'react-toastify';
 import {Outlet} from 'react-router-dom';
-import Sidebar from "@/utils/Sidebar";
+import Sidebar from "@/pages/Navbar/Sidebar";
 
 const Layout = () => {
     const [isSidebarExpanded, setIsSidebarExpanded] = useState(false);

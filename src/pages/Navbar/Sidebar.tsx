@@ -1,7 +1,6 @@
 import {useState, useEffect} from 'react';
 import {
     User,
-    Plus,
     LayoutDashboard,
     ShoppingCart,
     ClipboardList,
@@ -12,7 +11,7 @@ import {
     Users,
     Tag, CirclePlus,
 } from 'lucide-react';
-import TriangleColor from "@/assets/TriangleColor.svg";
+import { BalanceCard } from "./components/BalanceCard";
 
 const useAuth = () => ({
     user: {
@@ -87,7 +86,7 @@ export default function Sidebar({isExpanded, onToggleExpand}: SidebarProps) {
                     hidden md:block h-full
                     inset-y-0 left-0 bg-gradient-to-b from-white to-gray-50 shadow-xl transition-all duration-300 z-40
                     border-r border-gray-200
-                    ${isExpanded ? 'w-64' : 'w-20'}
+                    ${isExpanded ? 'w-72' : 'w-20'} /* Aumenté el ancho a w-72 para mejor ajuste */
                 `}
                 onMouseEnter={() => onToggleExpand(true)}
                 onMouseLeave={() => onToggleExpand(false)}
@@ -125,30 +124,18 @@ export default function Sidebar({isExpanded, onToggleExpand}: SidebarProps) {
                             </button>
                         </div>
                     )}
+
+                    {/* Sección del balance con el nuevo componente */}
                     {isExpanded && showBalance && (
                         <div className="px-4 py-4 mb-4">
-                            <div
-                                className="bg-gradient-to-br from-[#ffcc4d] to-[#fddf65] rounded-3xl p-4 shadow-lg transform hover:-translate-y-0.5 transition-transform duration-200">
-                                <div className="flex items-center justify-between mb-2">
-                                    <span className="text-sm text-gray-700 font-medium">Balance:</span>
-                                    <button
-                                        className="w-16 h-16 rounded-full bg-black/20 hover:bg-black/10 flex items-center justify-center transition-colors shadow-sm hover:shadow">
-                                        <CirclePlus className="w-4 h-4 text-white"/>
-                                    </button>
-                                </div>
-                                <div className="text-2xl font-bold text-[#262626]">
-                                    $ {userBalance.toLocaleString('es-CO')}
-                                </div>
-                                <div className="text-xs text-gray-600 mt-1">
-                                    Saldo disponible
-                                </div>
-                            </div>
+                            <BalanceCard />
                         </div>
                     )}
 
                     {isExpanded && !showBalance && (
                         <div className="py-4"></div>
                     )}
+
                     <nav className="flex-1 px-3 overflow-y-auto">
                         {menuItems.map((item, index) => {
                             const Icon = item.icon;
@@ -178,6 +165,7 @@ export default function Sidebar({isExpanded, onToggleExpand}: SidebarProps) {
                             );
                         })}
                     </nav>
+
                     <div className="border-t border-gray-100 p-3">
                         <button
                             onClick={logout}
@@ -189,6 +177,8 @@ export default function Sidebar({isExpanded, onToggleExpand}: SidebarProps) {
                     </div>
                 </div>
             </div>
+
+            {/* Versión móvil - sin cambios */}
             <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-2xl z-50">
                 <div className="flex items-center justify-around px-2 py-2">
                     <button
