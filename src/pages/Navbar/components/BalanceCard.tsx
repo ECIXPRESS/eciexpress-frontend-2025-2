@@ -1,36 +1,47 @@
-import React, {JSX} from "react";
-import BalanceBackground from "@/assets/balanceCard.svg";
+import React from "react";
+import {CirclePlus} from "lucide-react";
+import {useNavigate} from "react-router-dom";
 
-export const BalanceCard = (): JSX.Element => {
+export const BalanceCard = () => {
+    const navigate = useNavigate();
+
+    const handleAddBalance = () => {
+        console.log("Agregar saldo");
+        navigate("/user-settings");
+    };
+
     return (
-        <div className="flex h-48 items-center gap-5 p-[30px] relative rounded-[40px] overflow-hidden">
-            <div className="flex-col items-start p-[15px] flex-1 self-stretch grow bg-[#ed86204f] rounded-[20px] overflow-hidden backdrop-blur-[2px] backdrop-brightness-[100%] [-webkit-backdrop-filter:blur(2px)_brightness(100%)] flex gap-2.5 relative">
-                <div className="flex-col items-start justify-center self-stretch w-full flex-[0_0_auto] flex gap-2.5 relative">
-                    <div className="relative w-fit mt-[-1.00px] [font-family:'Open_Sans-Regular',Helvetica] font-normal text-[#fffafa] text-2xl tracking-[0] leading-[normal]">
-                        Balance:
+        <div className="flex h-40 items-center gap-4 p-4 relative rounded-3xl overflow-hidden bg-gradient-to-br from-[#ffcc4d] to-[#fddf65] shadow-lg">
+            <div className="flex flex-col items-start p-4 flex-1 self-stretch bg-white/40 backdrop-blur-sm rounded-2xl overflow-hidden flex-grow gap-3">
+                <div className="flex flex-col items-start justify-center self-stretch w-full gap-1">
+                    <div className="font-medium text-gray-800 text-lg">
+                        Balance disponible
                     </div>
                 </div>
 
-                <div className="items-center justify-center self-stretch w-full flex-[0_0_auto] flex gap-2.5 relative">
-                    <div className="relative w-fit mt-[-1.00px] [font-family:'Arial_Rounded_MT_Bold-Regular',Helvetica] font-normal text-[#fffafa] text-[40px] tracking-[0] leading-[normal] whitespace-nowrap">
+                <div className="flex items-center justify-center self-stretch w-full gap-2">
+                    <div className="font-bold text-gray-800 text-3xl">
                         $
                     </div>
-
-                    <div className="relative w-fit mt-[-1.00px] [font-family:'Arial_Rounded_MT_Bold-Regular',Helvetica] font-normal text-[#fffafa] text-[40px] tracking-[0] leading-[normal] whitespace-nowrap">
-                        1.200
+                    <div className="font-bold text-gray-800 text-3xl">
+                        1,200.00
                     </div>
                 </div>
-            </div>
 
-            <div className="flex-col max-w-[75px] h-[76px] items-center justify-center p-[15px] flex-1 grow bg-[#ed86204f] rounded-[20px] overflow-hidden backdrop-blur-[2px] backdrop-brightness-[100%] [-webkit-backdrop-filter:blur(2px)_brightness(100%)] flex gap-2.5 relative">
-                <div className="flex flex-col max-w-[50px] max-h-[50px] h-[45px] items-center justify-center gap-2.5 p-0.5 relative w-full">
-                    <img
-                        className="relative flex-1 self-stretch w-full grow mt-[-2.50px] mb-[-2.50px] ml-[-2.50px] mr-[-2.50px]"
-                        alt="Vector"
-                        src={BalanceBackground}
-                    />
+                <div className="text-sm text-gray-600 mt-1">
+                    Última actualización: Hoy
                 </div>
             </div>
+
+            <button
+                onClick={handleAddBalance}
+                className="flex flex-col w-16 h-16 items-center justify-center p-1 bg-white/40 backdrop-blur-sm rounded-2xl overflow-hidden gap-2 hover:bg-white/60 transition-colors hover:shadow-md"
+            >
+                <div className="flex flex-col w-14 h-14 items-center justify-center gap-2 p-0.5 w-full text-gray-800">
+                    <CirclePlus className="w-8 h-8" />
+                </div>
+                <span className="text-xs text-gray-700 font-medium">Agregar</span>
+            </button>
         </div>
     );
 };

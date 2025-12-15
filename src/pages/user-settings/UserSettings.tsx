@@ -1,143 +1,261 @@
-import UserHeader from "@/pages/user-settings/components/UserHeader";
-import WalletCard from "@/pages/user-settings/components/WalletCard";
-import OrderCard from "@/pages/user-settings/components/OrderCard";
-import HistorialPanel from "@/pages/user-settings/components/HistorialPanel";
+import {useState, useEffect} from 'react';
+import {useNavigate, useLocation} from 'react-router-dom';
 import {
-    Order,
-    OrderStatus,
-    OrderType,
-    PaymentMethod, ProductType,
-    Receipt,
-    ReceiptStatus
-} from "@/pages/user-settings/components/types";
+    User,
+    LayoutDashboard,
+    ShoppingCart,
+    ClipboardList,
+    MessageCircle,
+    LogOut,
+    Bell,
+    BarChart3,
+    Users,
+    Tag,
+    CirclePlus,
+} from 'lucide-react';
+import {BalanceCard} from "./components/BalanceCard";
+import { useAuth } from '@/lib/context/AuthProvider';
 
-export const UserSettings: React.FC = () => {
-    const historial: Receipt[] = [
-        {
-            receiptId: "1a2b3c4d-5e6f-7g8h-9i0j-1k2l3m4n5o6p",
-            orderId: "1a2b3c4d-5e6f-7g8h-9i0j-1k2l3m4n5o6p",
-            clientId: "user-12345-67890-abcde-fghij",
-            storeId: "store-12345-67890-abcde-fghij",
-            paymentDetail: {
-                amount: 15.99,
-                currency: "USD",
-                transactionId: "txn_1234567890",
-                paymentDate: new Date("2025-12-14T12:30:00"),
-                paymentMethod: PaymentMethod.DEBIT_CARD
-            },
-            paymentMethod: PaymentMethod.DEBIT_CARD,
-            receiptStatus: ReceiptStatus.COMPLETED,
-            orderStatus: OrderStatus.COMPLETED,
-            timeStamps: {
-                createdAt: new Date("2025-12-14T12:00:00"),
-                updatedAt: new Date("2025-12-14T12:30:00")
-            }
-        },
-        {
-            receiptId: "2b3c4d5e-6f7g-8h9i-0j1k-2l3m4n5o6p7q",
-            orderId: "2b3c4d5e-6f7g-8h9i-0j1k-2l3m4n5o6p7q",
-            clientId: "user-12345-67890-abcde-fghij",
-            storeId: "store-23456-78901-bcdef-ghijk",
-            paymentDetail: {
-                amount: 12.50,
-                currency: "USD",
-                paymentDate: new Date("2025-12-13T19:15:00"),
-                paymentMethod: PaymentMethod.DEBIT_CARD
-            },
-            paymentMethod: PaymentMethod.DEBIT_CARD,
-            receiptStatus: ReceiptStatus.COMPLETED,
-            orderStatus: OrderStatus.COMPLETED,
-            timeStamps: {
-                createdAt: new Date("2025-12-13T19:00:00"),
-                updatedAt: new Date("2025-12-13T19:15:00")
-            }
-        },
-        {
-            receiptId: "3c4d5e6f-7g8h-9i0j-1k2l-3m4n5o6p7q8r",
-            orderId: "3c4d5e6f-7g8h-9i0j-1k2l-3m4n5o6p7q8r",
-            clientId: "user-12345-67890-abcde-fghij",
-            storeId: "store-34567-89012-cdefg-hijkl",
-            paymentDetail: {
-                amount: 18.75,
-                currency: "USD",
-                paymentDate: new Date("2025-12-12T13:45:00"),
-                paymentMethod: PaymentMethod.CASH
-            },
-            paymentMethod: PaymentMethod.CASH,
-            receiptStatus: ReceiptStatus.REFUNDED,
-            orderStatus: OrderStatus.CANCELLED,
-            timeStamps: {
-                createdAt: new Date("2025-12-12T13:30:00"),
-                updatedAt: new Date("2025-12-12T14:00:00")
-            }
-        }
-    ];
+interface MenuItem {
+    icon: typeof LayoutDashboard;
+    label: string;
+    path: string;
+}
 
-    const upcomingOrders: Order[] = [
-        {
-            userId: "user-12345-67890-abcde-fghij",
-            orderType: OrderType.PICKUP,
-            status: OrderStatus.PENDING,
-            items: [
-                {
-                    id: "item-12345",
-                    orderId: "1a2b3c4d-5e6f-7g8h-9i0j-1k2l3m4n5o6p",
-                    productId: "prod-12345",
-                    productName: "Combo Hamburguesa",
-                    productType: ProductType.FOOD,
-                    quantity: 1,
-                    unitPrice: 15.99,
-                    details: "Sin cebolla, con queso extra"
-                }
-            ],
-            store: "Reggio",
-            createdAt: new Date(),
-            scheduledPickup: new Date(Date.now() + 30 * 60 * 1000),
-            pickupLocation: "Mostrador principal",
-            total: 15.99,
-            trackingCode: "REG123456",
-            estimatedPreparationTime: 15,
-            specialInstructions: "Por favor empaquetar para llevar"
-        }
-    ];
+interface SidebarProps {
+    isExpanded: boolean;
+    onToggleExpand: (isExpanded: boolean) => void;
+}
+
+export default function Sidebar({isExpanded, onToggleExpand}: SidebarProps) {
+    const { user, logout } = useAuth(); // Usa tu hook real de autenticación
+    const navigate = useNavigate();
+    const location = useLocation();
+    const [isMobile, setIsMobile] = useState<boolean>(false);
+
+    useEffect(() => {
+        const checkIfMobile = () => {
+            setIsMobile(window.innerWidth < 768);
+        };
+
+        checkIfMobile();
+        window.addEventListener('resize', checkIfMobile);
+
+        return () => window.removeEventListener('resize', checkIfMobile);
+    }, []);
+
+    // Mapeo de rutas según el rol
+    const routeConfig: Record<string, MenuItem[]> = {
+        user: [
+            {icon: LayoutDashboard, label: 'Catálogo', path: '/home'},
+            {icon: ShoppingCart, label: 'Carrito', path: '/shoppingCart'},
+            {icon: ClipboardList, label: 'Pedidos', path: '/orders'},
+            {icon: MessageCircle, label: 'Chat', path: '/chat'},
+        ],
+        seller: [
+            {icon: ClipboardList, label: 'Pedidos', path: '/orders'},
+            {icon: LayoutDashboard, label: 'Catálogo', path: '/home'},
+            {icon: BarChart3, label: 'Estadísticas', path: '/stats'},
+            {icon: MessageCircle, label: 'Chat', path: '/chat'},
+        ],
+        admin: [
+            {icon: LayoutDashboard, label: 'Tablero', path: '/home'},
+            {icon: Users, label: 'Vendedores', path: '/sellers'},
+            {icon: MessageCircle, label: 'Chat', path: '/chat'},
+            {icon: Tag, label: 'Promociones', path: '/promotions'},
+            {icon: BarChart3, label: 'Estadísticas', path: '/stats'},
+        ],
+    };
+
+    const userRole = user?.role || 'user';
+    const menuItems = routeConfig[userRole] || routeConfig.user;
+    const showBalance = userRole === 'user';
+    const userBalance = user?.balance || 0;
+
+    const handleMenuItemClick = (path: string) => {
+        navigate(path);
+    };
+
+    const handleLogout = () => {
+        logout();
+        navigate('/auth');
+    };
+
+    const handleProfileClick = () => {
+        navigate('/user-settings');
+    };
+
+    const handleAddBalance = () => {
+        // Navegar o abrir modal para agregar saldo
+        navigate('/add-balance'); // O implementa un modal
+    };
 
     return (
-        <div className="flex flex-col flex-1 bg-snow rounded-3xl overflow-hidden scrollbar-hide">
-            <UserHeader
-                name="Katherin Silva Granados"
-                role="Estudiante"
-                onSettingsClick={() => console.log('Settings clicked')}
-            />
+        <>
+            {/* Sidebar desktop */}
+            <div
+                className={`
+                    hidden md:block h-full
+                    inset-y-0 left-0 bg-gradient-to-b from-white to-gray-50 shadow-xl transition-all duration-300 z-40
+                    border-r border-gray-200
+                    ${isExpanded ? 'w-72' : 'w-20'}
+                `}
+                onMouseEnter={() => onToggleExpand(true)}
+                onMouseLeave={() => onToggleExpand(false)}
+            >
+                <div className="flex flex-col h-full">
+                    {/* Header */}
+                    <div className="flex items-center justify-between p-4 border-b border-gray-100">
+                        <button
+                            onClick={handleProfileClick}
+                            className={`
+                                flex items-center justify-center transition-all duration-300
+                                ${isExpanded ? 'w-12 h-12' : 'w-12 h-12'}
+                                rounded-full bg-gradient-to-br from-[#FDDF65] to-[#f5d74e] 
+                                hover:from-[#f5d74e] hover:to-[#FDDF65] 
+                                shadow-md hover:shadow-lg
+                            `}
+                        >
+                            <User className="w-6 h-6 text-gray-800"/>
+                        </button>
 
-            <div className="flex flex-col lg:flex-row gap-2.5 p-2 sm:p-3 md:p-4 lg:p-5 flex-1 overflow-hidden">
-                <section className="flex flex-col w-full lg:w-2/5 gap-3 lg:gap-4 p-3 sm:p-4 md:p-5 lg:px-5 lg:py-6">
-                    <WalletCard
-                        balance={120000}
-                        cardholderName="Katerine Silva Granados"
-                        cardNumber="100010012083"
-                        onAddFunds={() => console.log('Add funds clicked')}
-                    />
-
-                    <h2 className="text-neutral-800 text-xl sm:text-2xl mt-2 sm:mt-4">
-                        Próximos pedidos
-                    </h2>
-
-                    <div className="flex flex-col gap-2 sm:gap-3 flex-1 overflow-y-auto scrollbar-hide">
-                        {upcomingOrders.map((order) => (
-                            <OrderCard
-                                key={order.trackingCode}
-                                order={order}
-                                onViewDetails={() => console.log('View order:', order.trackingCode)}
-                            />
-                        ))}
+                        {isExpanded && (
+                            <button
+                                className="w-10 h-10 rounded-full hover:bg-gray-100 flex items-center justify-center transition-colors relative">
+                                <Bell className="w-5 h-5 text-gray-600"/>
+                                <span
+                                    className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs flex items-center justify-center rounded-full">
+                                    3
+                                </span>
+                            </button>
+                        )}
                     </div>
-                </section>
 
-                <div className="w-full lg:w-3/5 sm:p-4 md:p-5 lg:px-5 lg:py-6">
-                    <HistorialPanel historial={historial}/>
+                    {/* Balance Card solo cuando está expandido y es usuario */}
+                    {isExpanded && showBalance && (
+                        <div className="p-4">
+                            <BalanceCard />
+                        </div>
+                    )}
+
+                    {/* Espaciador si no hay balance card */}
+                    {isExpanded && !showBalance && (
+                        <div className="py-4"></div>
+                    )}
+
+                    {/* Botón de acción rápido cuando está colapsado (solo para usuarios) */}
+                    {!isExpanded && showBalance && (
+                        <div className="flex items-center justify-center py-4">
+                            <button
+                                onClick={handleAddBalance}
+                                className="w-12 h-12 rounded-full bg-gradient-to-br from-[#ffcc4d] to-[#fddf65] hover:from-[#f5d74e] hover:to-[#FDDF65] flex items-center justify-center transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                            >
+                                <CirclePlus className="w-6 h-6 text-white"/>
+                            </button>
+                        </div>
+                    )}
+
+                    {/* Menú de navegación */}
+                    <nav className="flex-1 px-3 overflow-y-auto">
+                        {menuItems.map((item, index) => {
+                            const Icon = item.icon;
+                            const isSelected = location.pathname.startsWith(item.path);
+
+                            return (
+                                <button
+                                    key={index}
+                                    onClick={() => handleMenuItemClick(item.path)}
+                                    className={`
+                                        w-full p-3 flex items-center gap-3 rounded-xl transition-all duration-200 mb-2
+                                        ${isSelected
+                                        ? 'bg-gradient-to-r from-[#ffcc4d] to-[#fddf65] text-gray-800 shadow-md'
+                                        : 'hover:bg-gray-100 hover:shadow-sm'
+                                    }
+                                    `}
+                                >
+                                    <Icon
+                                        className={`w-6 h-6 flex-shrink-0 ${isSelected ? 'text-gray-800' : 'text-gray-500'}`}/>
+                                    {isExpanded && (
+                                        <span
+                                            className={`text-md font-medium ${isSelected ? 'text-gray-800 font-semibold' : 'text-gray-500'}`}>
+                                            {item.label}
+                                        </span>
+                                    )}
+                                </button>
+                            );
+                        })}
+                    </nav>
+
+                    {/* Logout */}
+                    <div className="border-t border-gray-100 p-3">
+                        <button
+                            onClick={handleLogout}
+                            className="w-full p-3 flex items-center gap-3 rounded-xl hover:bg-gray-100 transition-all duration-200 hover:shadow-sm"
+                        >
+                            <LogOut className="w-6 h-6 text-gray-600 flex-shrink-0"/>
+                            {isExpanded && <span className="text-sm font-medium text-gray-700">Salir</span>}
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
-    );
-};
 
+            {/* Sidebar móvil */}
+            <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-2xl z-50">
+                <div className="flex items-center justify-around px-2 py-2">
+                    {/* Botón de perfil */}
+                    <button
+                        onClick={handleProfileClick}
+                        className={`flex flex-col items-center justify-center gap-1 p-2 rounded-xl transition-all duration-200 min-w-[60px] ${
+                            location.pathname === '/user-settings' ? 'transform -translate-y-1' : ''
+                        }`}
+                    >
+                        <div className={`
+                            w-10 h-10 rounded-full flex items-center justify-center
+                            ${location.pathname === '/user-settings'
+                            ? 'bg-gradient-to-br from-[#FDDF65] to-[#f5d74e] shadow-md'
+                            : 'bg-gray-100'
+                        }
+                        `}>
+                            <User className={`w-5 h-5 ${location.pathname === '/user-settings' ? 'text-gray-800' : 'text-gray-600'}`}/>
+                        </div>
+                        <span
+                            className={`text-xs font-medium ${location.pathname === '/user-settings' ? 'text-gray-800 font-semibold' : 'text-gray-600'}`}>
+                            Perfil
+                        </span>
+                    </button>
+
+                    {menuItems.map((item, index) => {
+                        const Icon = item.icon;
+                        const isSelected = location.pathname.startsWith(item.path);
+
+                        return (
+                            <button
+                                key={index}
+                                onClick={() => handleMenuItemClick(item.path)}
+                                className={`
+                                    flex flex-col items-center justify-center gap-1 p-2 rounded-xl transition-all duration-200 min-w-[60px]
+                                    ${isSelected ? 'transform -translate-y-1' : ''}
+                                `}
+                            >
+                                <div className={`
+                                    w-10 h-10 rounded-xl flex items-center justify-center
+                                    ${isSelected
+                                    ? 'bg-gradient-to-r from-[#fddf65] to-[#ffcc4d] shadow-md'
+                                    : 'hover:bg-gray-100'
+                                }
+                                `}>
+                                    <Icon className={`w-5 h-5 ${isSelected ? 'text-gray-800' : 'text-gray-600'}`}/>
+                                </div>
+                                <span
+                                    className={`text-xs font-medium ${isSelected ? 'text-gray-800 font-semibold' : 'text-gray-600'}`}>
+                                    {item.label}
+                                </span>
+                            </button>
+                        );
+                    })}
+                </div>
+            </nav>
+        </>
+    );
+}
+[file content end]

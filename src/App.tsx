@@ -6,6 +6,7 @@ import Auth from "@/pages/login/Auth";
 import {PasswordRecoveryContainer} from "@/pages/password-recovery/passwordRecoveryContainer";
 import {AnimatePresence, motion} from "framer-motion";
 import {UserSettings} from "@/pages/user-settings/UserSettings";
+import Home from "@/pages/home/components/Home";
 
 function App() {
     const location = useLocation();
@@ -34,15 +35,25 @@ function App() {
 
                     <Route element={<ProtectedRoute/>}>
                         <Route element={<Layout/>}>
-                            <Route path="/home" element={<UserSettings/>}/>
-                            <Route path="/shoppingCart" element={<div>Shopping Cart</div>}/>
-                            <Route path="/orders" element={<div>Orders</div>}/>
-                            <Route path="/chat" element={<div>Chat</div>}/>
+                            {/* Rutas comunes */}
+                            <Route path="/home" element={<Home/>}/>
+                            <Route path="/user-settings" element={<UserSettings/>}/>
+                            <Route path="/shoppingCart" element={"shoppingCart"}/>
+                            <Route path="/orders" element={"Orders"}/>
+                            <Route path="/chat" element={"Chat"}/>
+
+                            {/* Rutas para seller */}
+                            <Route path="/stats" element={"Stats"}/>
+
+                            {/* Rutas para admin */}
+                            <Route path="/sellers" element={"Sellers"}/>
+                            <Route path="/promotions" element={"Promotions"}/>
+
                             <Route path="/" element={<Navigate to="/home" replace/>}/>
                         </Route>
                     </Route>
 
-                    <Route path="*" element={<Navigate to="/login" replace/>}/>
+                    <Route path="*" element={<Navigate to="/auth" replace/>}/>
                 </Routes>
             </AnimatePresence>
         </AuthProvider>
