@@ -3,7 +3,7 @@
  * Proporciona centrado horizontal, ancho máximo y padding uniforme
  */
 import React from 'react';
-import type { BaseComponentProps } from '../../types/common';
+import type { BaseComponentProps } from '@/utils/qr-validation.seller/types/common';
 
 export const Container: React.FC<BaseComponentProps> = ({ 
   children, 

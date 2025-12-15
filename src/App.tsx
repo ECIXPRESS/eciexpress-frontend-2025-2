@@ -80,7 +80,7 @@ function HomeWithMockUser() {
         {
           userId: "d66d2d30-56cb-410b-a5f0-9191c38f380e",
           email: "pepitotolitis@gmail.com",
-          role: "user",
+          role: "seller",
           pfpURL: "",
           balance: 512000
         }
@@ -106,16 +106,14 @@ function HomeWithMockUser() {
         {/* Ruta de chat */}
         <Route path="/chat" element={<ChatPage />} />
 
-        {/* Rutas para seller - Inventario */}
-        <Route path="/seller/inventory" element={<InventorySellerPage />} />
+        {/* Rutas para seller - Inventario/Catálogo */}
+        <Route path="/catalog" element={<InventorySellerPage />} />
         
         {/* Rutas para seller - Validación QR */}
         <Route path="/seller/qr-validation" element={<QRValidationSellerPage />} />
 
         {/* Rutas placeholder para otras secciones */}
         <Route path="/orders" element={<div className="p-8 text-2xl">Pedidos - Próximamente</div>} />
-        <Route path="/catalog" element={<div className="p-8 text-2xl">Catálogo - Próximamente</div>} />
-
         <Route path="/dashboard" element={<div className="p-8 text-2xl">Dashboard - Próximamente</div>} />
         <Route path="/sellers" element={<div className="p-8 text-2xl">Vendedores - Próximamente</div>} />
         <Route path="/promotions" element={<div className="p-8 text-2xl">Promociones - Próximamente</div>} />
