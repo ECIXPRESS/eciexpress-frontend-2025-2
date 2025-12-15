@@ -11,6 +11,7 @@ import {
   Menu
 } from 'lucide-react';
 import { useAuth } from '@/pages/login/hooks/useAuth';
+import { useWallet } from '@/utils/context/WalletProvider';
 import { useNavigate, NavLink } from 'react-router-dom';
 
 const navItems = [
@@ -24,9 +25,10 @@ export default function Sidebar() {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const { user, logout } = useAuth();
+  const { walletData, profileImage } = useWallet();
   const navigate = useNavigate();
 
-  const userBalance = user?.balance || 0;
+  const userBalance = walletData.saldo;
   const shouldShowExpanded = isMobileOpen || isExpanded;
 
   return (
@@ -60,8 +62,15 @@ export default function Sidebar() {
         <div className="flex flex-col h-full">
           {/* Header - Usuario y Notificaciones */}
           <div className="flex items-center justify-between p-4 border-b border-gray-100">
-            <button className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center hover:bg-gray-300 transition-colors">
-              <User className="w-6 h-6 text-gray-600" />
+            <button 
+              onClick={() => navigate('/wallet')}
+              className="w-12 h-12 rounded-full bg-gray-200 overflow-hidden flex items-center justify-center hover:bg-gray-300 transition-colors"
+            >
+              {profileImage ? (
+                <img src={profileImage} alt="Perfil" className="w-full h-full object-cover" />
+              ) : (
+                <User className="w-6 h-6 text-gray-600" />
+              )}
             </button>
             
             {shouldShowExpanded && (
@@ -85,7 +94,10 @@ export default function Sidebar() {
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-sm text-white font-medium">Balance:</span>
                     <button 
-                      onClick={() => navigate('/wallet')}
+                      onClick={() => {
+                        navigate('/wallet');
+                        setIsMobileOpen(false);
+                      }}
                       className="w-8 h-8 rounded-full bg-white/50 hover:bg-white/80 flex items-center justify-center transition-colors"
                     >
                       <Plus className="w-4 h-4 text-white" />

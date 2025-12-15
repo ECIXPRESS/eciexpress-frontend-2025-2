@@ -2,10 +2,13 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { ProtectedRoute } from "./utils/ProtectedRoute";
 import Layout from "./utils/Layout";
 import { AuthProvider } from "@/utils/context/AuthProvider";
+import { WalletProvider } from "@/utils/context/WalletProvider";
 import Auth from "@/pages/login/hooks/Auth";
 import { PasswordRecoveryContainer } from "@/pages/password-recovery/passwordRecoveryContainer";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/pages/login/hooks/useAuth";
+import { useWallet } from "@/utils/context/WalletProvider";
+import { toast } from 'react-toastify';
 
 import Home from "@/pages/home/components/Home";
 import StatisticsPage from "@/pages/statistics/StatisticsPage";
@@ -24,9 +27,9 @@ import type { Pedido } from "@/pages/qr-validation-seller";
 import { mockPedidos } from "@/pages/qr-validation-seller/mocks/mockPedidos";
 
 // Importa componentes para wallet
-import { WalletCard, MovementsList, RechargeModal } from "@/pages/wallet";
+import { WalletCard, MovementsList, RechargeModal, ProximosPedidos, SettingsPanel } from "@/pages/wallet";
 import type { WalletData } from "@/pages/wallet";
-import { mockWalletData } from "@/pages/wallet/mocks/mockWalletData";
+import { mockWalletData, mockProximosPedidos } from "@/pages/wallet/mocks/mockWalletData";
 
 // Componente contenedor para inventory-seller
 function InventorySellerPage() {
@@ -77,28 +80,41 @@ function QRValidationSellerPage() {
 
 // Componente contenedor para wallet
 function WalletPage() {
-  const [walletData, setWalletData] = useState<WalletData>(mockWalletData);
+  const { walletData, updateBalance, addMovement, profileImage, updateProfileImage } = useWallet();
   const [isRechargeModalOpen, setIsRechargeModalOpen] = useState(false);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
   const handleRecargar = () => {
     setIsRechargeModalOpen(true);
   };
 
   const handleConfirmRecharge = (amount: number) => {
-    const newMovement = {
-      id: Date.now().toString(),
-      tipo: 'recarga' as const,
-      descripcion: 'Recarga',
-      monto: amount,
-      fecha: new Date().toLocaleDateString('es-CO', { day: '2-digit', month: '2-digit' })
-    };
+    try {
+      // Actualizar el balance
+      updateBalance(amount);
+      
+      // Agregar el movimiento de recarga
+      addMovement({
+        tipo: 'recarga',
+        descripcion: 'Recarga',
+        monto: amount,
+        fecha: new Date().toLocaleDateString('es-CO', { day: '2-digit', month: '2-digit' })
+      });
 
-    setWalletData({
-      ...walletData,
-      saldo: walletData.saldo + amount,
-      movimientos: [newMovement, ...walletData.movimientos]
+      setIsRechargeModalOpen(false);
+    } catch (error) {
+      toast.error('Error al procesar la recarga. Por favor intenta nuevamente', {
+        position: 'bottom-right',
+      });
+    }
+  };
+
+  const handleVerDetallePedido = (pedidoId: string) => {
+    console.log('Ver detalle del pedido:', pedidoId);
+    toast.info('Cargando detalles del pedido...', {
+      position: 'bottom-right',
+      autoClose: 2000,
     });
-    setIsRechargeModalOpen(false);
   };
 
   return (
@@ -107,18 +123,38 @@ function WalletPage() {
         <div className="max-w-7xl mx-auto mt-16 md:mt-0">
           {/* Sección de información del usuario - Fondo blanco */}
           <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-md mb-6">
-            <div className="flex items-center gap-4">
-              <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gray-300 rounded-full flex-shrink-0"></div>
-              <div>
-                <h1 className="text-2xl sm:text-3xl font-bold text-[#FDDF65]">Hola,</h1>
-                <p className="text-lg sm:text-xl text-[#262626] font-semibold">{walletData.nombreUsuario}</p>
-                <p className="text-sm text-gray-500">Estudiante</p>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gray-200 rounded-full flex-shrink-0 overflow-hidden">
+                  {profileImage ? (
+                    <img src={profileImage} alt="Perfil" className="w-full h-full object-cover" />
+                  ) : (
+                    <div className="w-full h-full bg-gray-300"></div>
+                  )}
+                </div>
+                <div>
+                  <h1 className="text-2xl sm:text-3xl font-bold text-[#FDDF65]">Hola,</h1>
+                  <p className="text-lg sm:text-xl text-[#262626] font-semibold">{walletData.nombreUsuario}</p>
+                  <p className="text-sm text-gray-500">Estudiante</p>
+                </div>
               </div>
+              
+              {/* Botón de configuración */}
+              <button
+                onClick={() => setIsSettingsOpen(true)}
+                className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors flex-shrink-0"
+                aria-label="Configuración"
+              >
+                <svg className="w-6 h-6 sm:w-7 sm:h-7 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+              </button>
             </div>
           </div>
 
           {/* Grid de billetera y movimientos */}
-          <div className="grid lg:grid-cols-2 gap-6 lg:gap-8">
+          <div className="grid lg:grid-cols-2 gap-6 lg:gap-8 mb-6">
             {/* Sección de billetera - Fondo blanco */}
             <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-md">
               <h2 className="text-xl sm:text-2xl font-bold text-[#262626] mb-6">Billetera</h2>
@@ -130,14 +166,27 @@ function WalletPage() {
               />
             </div>
 
-            {/* Sección de movimientos - Ya tiene fondo blanco en su componente */}
             <MovementsList movimientos={walletData.movimientos} />
           </div>
+
+          <ProximosPedidos 
+            pedidos={mockProximosPedidos}
+            onVerDetalle={handleVerDetallePedido}
+          />
 
           <RechargeModal
             isOpen={isRechargeModalOpen}
             onClose={() => setIsRechargeModalOpen(false)}
             onConfirm={handleConfirmRecharge}
+          />
+
+          <SettingsPanel
+            isOpen={isSettingsOpen}
+            onClose={() => setIsSettingsOpen(false)}
+            userName={walletData.nombreUsuario}
+            userRole="Estudiante"
+            userAvatar={profileImage}
+            onProfileImageChange={updateProfileImage}
           />
         </div>
       </div>
@@ -212,7 +261,9 @@ function HomeWithMockUser() {
 function App() {
   return (
     <AuthProvider>
-      <HomeWithMockUser />
+      <WalletProvider>
+        <HomeWithMockUser />
+      </WalletProvider>
     </AuthProvider>
   );
 }

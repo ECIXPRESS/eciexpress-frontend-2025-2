@@ -1,4 +1,4 @@
-import type { WalletData } from '../types';
+import type { WalletData, ProximoPedido } from '../types';
 
 export const mockWalletData: WalletData = {
   saldo: 120000,
@@ -35,3 +35,13 @@ export const mockWalletData: WalletData = {
     }
   ]
 };
+
+export const mockProximosPedidos: ProximoPedido[] = [
+  {
+    id: '1',
+    titulo: 'Combo hamburguesa',
+    vendedor: 'Reggio',
+    estado: 'pendiente',
+    tiempoEstimado: 'Pagado - Recoge en 10:32 min'
+  }
+];

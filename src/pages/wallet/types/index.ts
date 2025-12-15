@@ -12,3 +12,12 @@ export interface WalletData {
   numeroTarjeta: string;
   movimientos: Movement[];
 }
+
+export interface ProximoPedido {
+  id: string;
+  titulo: string;
+  vendedor: string;
+  estado: 'pendiente' | 'en-preparacion' | 'listo';
+  tiempoEstimado: string;
+  avatarUrl?: string;
+}
