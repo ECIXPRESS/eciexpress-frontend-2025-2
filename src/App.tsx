@@ -32,7 +32,6 @@ function HomeWithMockUser() {
     }
   }, [user, login]);
 
-  return <Home />
   ;
   return (
     <Routes>
