@@ -18,8 +18,8 @@ export const PasswordRecoveryContainer = (): JSX.Element => {
         setCurrentStep('verification');
     };
 
-    const handleCodeVerified = (token:string) => {
-        setUserToken(token);
+    const handleCodeVerified = (code:string) => {
+        setUserToken(code);
         setCurrentStep('password');
     };
 
@@ -57,7 +57,7 @@ export const PasswordRecoveryContainer = (): JSX.Element => {
                     <motion.img
                         src={triangleSup}
                         alt="triangleSup"
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-cover object-right"
                         initial={{ x: "-50%" }}
                         animate={{ x: 1 }}
                         transition={{ duration: 0.7 }}

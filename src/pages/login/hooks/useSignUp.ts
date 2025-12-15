@@ -55,7 +55,7 @@ export const useSignUp = () => {
 
         try {
             const phoneNumber = 1234567890;
-            const response = await apiClient.post("/auth/register", {
+            const response = await apiClient.post("/users/customers", {
                 email,
                 fullName,
                 password,
