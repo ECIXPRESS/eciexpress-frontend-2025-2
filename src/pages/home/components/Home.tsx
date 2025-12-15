@@ -54,6 +54,10 @@ export default function Home() {
     navigate(`/product/${productSlug}`);
   };
 
+  const handleStoreClick = (storeId: number) => {
+    navigate(`/store/${storeId}`);
+  };
+
   return (
     <div className="flex min-h-screen bg-[#F6F6F6]">
       <Sidebar />
@@ -102,6 +106,7 @@ export default function Home() {
               {stores.map((store) => (
                 <button
                   key={store.id}
+                  onClick={() => handleStoreClick(store.id)}
                   className="flex flex-col items-center gap-3 group flex-shrink-0"
                 >
                   <div className="w-20 h-20 lg:w-24 lg:h-24 bg-gray-300 rounded-full shadow-md group-hover:scale-105 transition-transform"></div>
@@ -115,6 +120,7 @@ export default function Home() {
                 {stores.map((store) => (
                   <button
                     key={store.id}
+                    onClick={() => handleStoreClick(store.id)}
                     className="flex flex-col items-center gap-2 group"
                   >
                     <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gray-300 rounded-full shadow-md group-hover:scale-105 transition-transform"></div>

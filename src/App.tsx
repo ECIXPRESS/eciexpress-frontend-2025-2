@@ -12,6 +12,7 @@ import StatisticsPage from "@/pages/statistics/StatisticsPage";
 import ProductDetailPage from "@/pages/product-detail/components/ProductDetailPage";
 import CartPage from "@/pages/cart/CartPage";
 import ChatPage from "@/pages/chat/ChatPage";
+import StorePage from "@/pages/store/StorePage";
 
 // Importa componentes para inventory-seller
 import { ProductosList, FiltrosInventario, EstadoNavigation } from "@/pages/inventory-seller";
@@ -204,6 +205,9 @@ function HomeWithMockUser() {
         
         {/* Ruta de detalle de producto */}
         <Route path="/product/:id" element={<ProductDetailPage />} />
+        
+        {/* Ruta de tienda */}
+        <Route path="/store/:storeId" element={<StorePage />} />
         
         {/* Ruta de carrito */}
         <Route path="/cart" element={<CartPage />} />
