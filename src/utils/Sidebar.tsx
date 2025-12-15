@@ -11,9 +11,7 @@ import {
   BarChart3,
   Users,
   Tag,
-  Menu,
-  X
-} from 'lucide-react';
+  Menu} from 'lucide-react';
 import { useAuth } from '@/pages/login/hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 
@@ -34,7 +32,7 @@ export default function Sidebar() {
       { icon: LayoutDashboard, label: 'Catálogo', path: '/' },
       { icon: ShoppingCart, label: 'Carrito', path: '/cart' },
       { icon: ClipboardList, label: 'Pedidos' },
-      { icon: MessageCircle, label: 'Chat' },
+      { icon: MessageCircle, label: 'Chat', path: '/chat' },
     ],
     seller: [
       { icon: ClipboardList, label: 'Pedidos', path: '/orders' },

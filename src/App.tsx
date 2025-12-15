@@ -11,6 +11,7 @@ import Home from "@/pages/home/components/Home";
 import StatisticsPage from "@/pages/statistics/StatisticsPage";
 import ProductDetailPage from "@/pages/product-detail/components/ProductDetailPage";
 import CartPage from "@/pages/cart/CartPage";
+import ChatPage from "@/pages/chat/ChatPage";
 
 function HomeWithMockUser() {
   const { login, user } = useAuth();
@@ -45,10 +46,13 @@ function HomeWithMockUser() {
         {/* Ruta de carrito */}
         <Route path="/cart" element={<CartPage />} />
         
+        {/* Ruta de chat */}
+        <Route path="/chat" element={<ChatPage />} />
+
         {/* Rutas placeholder para otras secciones */}
         <Route path="/orders" element={<div className="p-8 text-2xl">Pedidos - Próximamente</div>} />
         <Route path="/catalog" element={<div className="p-8 text-2xl">Catálogo - Próximamente</div>} />
-        <Route path="/chat" element={<div className="p-8 text-2xl">Chat - Próximamente</div>} />
+
         <Route path="/dashboard" element={<div className="p-8 text-2xl">Dashboard - Próximamente</div>} />
         <Route path="/sellers" element={<div className="p-8 text-2xl">Vendedores - Próximamente</div>} />
         <Route path="/promotions" element={<div className="p-8 text-2xl">Promociones - Próximamente</div>} />
