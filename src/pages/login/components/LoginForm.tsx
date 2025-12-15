@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import logotipo from '@/assets/logotipo.svg';
-import StandardInput from '@/lib/input/standarInput';
+import StandardInput from '@/lib/input/StandardInput';
 
 interface LoginFormProps {
     email: string;

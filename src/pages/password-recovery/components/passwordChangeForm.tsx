@@ -1,4 +1,4 @@
-import StandardInput from "@/lib/input/standarInput";
+import StandardInput from "@/lib/input/StandardInput";
 import React from "react";
 import {toast} from "react-toastify";
 import {useChangePassword} from "@/pages/password-recovery/hooks/useChangePassword";

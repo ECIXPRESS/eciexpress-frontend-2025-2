@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Undo2 } from "lucide-react";
-import StandardInput from "@/lib/input/standarInput";
+import StandardInput from "@/lib/input/StandardInput";
 import React from "react";
 import { useSendVerificationCode } from "@/pages/password-recovery/hooks/useSendVerificationCode";
 import {toast} from "react-toastify";

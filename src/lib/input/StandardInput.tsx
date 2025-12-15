@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-interface StandarInputProps {
+interface StandardInputProps {
     id: string;
     value: string;
     onChange: (value: string) => void;
@@ -14,7 +14,7 @@ interface StandarInputProps {
     errorMessage?: string;
 }
 
-const StandarInput: React.FC<StandarInputProps> = ({
+const StandardInput: React.FC<StandardInputProps> = ({
     id,
     value,
     onChange,
@@ -30,19 +30,25 @@ const StandarInput: React.FC<StandarInputProps> = ({
     const [hasError, setHasError] = useState(false);
 
     useEffect(() => {
+        console.log(`Campo ${id}: value="${value}", touched=${touched}, required=${required}`);
         if (touched) {
-            setHasError(required && !value.trim());
+            setHasError(required && !value);
         }
     }, [value, touched, required]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         onChange(e.target.value);
+        if (touched && required && !e.target.value) {
+            setHasError(true);
+        } else if (touched && hasError && e.target.value) {
+            setHasError(false);
+        }
     };
 
     const handleBlur = () => {
         setTouched(true);
         if (required) {
-            setHasError(!value.trim());
+            setHasError(!value);
         }
     };
 
@@ -78,4 +84,4 @@ const StandarInput: React.FC<StandarInputProps> = ({
     );
 };
 
-export default StandarInput;
+export default StandardInput;

@@ -1,17 +1,17 @@
-import { useState } from 'react';
-import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-import { useAuth } from "@/pages/login/hooks/useAuth";
+import {useState} from 'react';
+import {useNavigate} from "react-router-dom";
+import {toast} from "react-toastify";
+import {useAuth} from "@/pages/login/hooks/useAuth";
 import apiClient from "@/lib/interceptors/apiClient";
 
 const roleRoutes: Record<string, string> = {
-    STUDENT: "/dashboard",
+    CUSTOMER: "/home",
     TEACHER: "/dashboard",
     DEAN: "/dashboard",
 };
 
 export const useLogin = () => {
-    const { login } = useAuth();
+    const {login} = useAuth();
     const navigate = useNavigate();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -28,15 +28,42 @@ export const useLogin = () => {
         }
 
         try {
-            const response = await apiClient.post("/auth/login", { email, password});
-            const { token, user } = response.data;
+            const response = await apiClient.post("/auth/login", {email, password});
+            const {accessToken, refreshToken, userInfo} = response.data;
 
-            login(token, user);
-            const redirectPath = roleRoutes[user.role] || "/dashboard";
-            navigate(redirectPath, { replace: true });
-        } catch (err: unknown) {
-            const error = err as { response?: { data?: { message?: string } } };
-            toast.error(error.response?.data?.message || "Error al iniciar sesión");
+            const user = {
+                userId: userInfo.userId,
+                email: userInfo.email,
+                role: userInfo.role,
+                pfpURL: userInfo.pfpURL || ''
+            };
+
+            login(accessToken, user);
+            const redirectPath = roleRoutes[user.role] || "/home";
+            navigate(redirectPath, {replace: true});
+        } catch (err: any) {
+            console.error('Error en login:', err);
+
+            if (err.message === 'Network Error') {
+                toast.error('Error de conexión. Verifica tu conexión a internet');
+                return;
+            }
+
+            const errorMessage = err.response?.data?.message ||
+                err.response?.data?.error ||
+                err.message ||
+                'Error desconocido al iniciar sesión';
+
+            if (err.response) {
+                console.error('Detalles del error:', {
+                    status: err.response.status,
+                    statusText: err.response.statusText,
+                    data: err.response.data,
+                    headers: err.response.headers
+                });
+            }
+
+            toast.error(`Error: ${errorMessage}`);
         } finally {
             setLoading(false);
         }
