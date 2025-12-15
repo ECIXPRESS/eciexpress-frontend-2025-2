@@ -214,7 +214,7 @@ function HomeWithMockUser() {
         {/* Rutas para seller - Inventario/Catálogo */}
         <Route path="/catalog" element={<InventorySellerPage />} />
         
-        {/* Rutas para seller - Validación QR */}
+        {/* Rutas para seller - Pedidos */}
         <Route path="/orders-seller" element={<QRValidationSellerPage />} />
 
         <Route path="/dashboard" element={<div className="p-8 text-2xl">Dashboard - Próximamente</div>} />

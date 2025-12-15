@@ -101,16 +101,16 @@ export const PedidoModal: React.FC<PedidoModalProps> = ({
         <div className="bg-white rounded-xl shadow-2xl overflow-hidden">
           <div className="h-full flex flex-col max-h-[85vh]">
             {/* Header con gradiente y total del pedido */}
-            <div className="bg-gradient-to-r from-primary-500 to-primary-600 text-white p-4 flex-shrink-0">
+            <div className="bg-gradient-to-r from-blue-500 to-blue-600 text-white p-4 flex-shrink-0">
               <div className="flex justify-between items-start mb-2">
                 <div>
                   <h3 className="font-bold text-lg">Pedido #{pedido.codigo}</h3>
-                  <p className="text-sm text-primary-100">{pedido.nombreCliente}</p>
+                  <p className="text-sm text-blue-100">{pedido.nombreCliente}</p>
                 </div>
               </div>
               
               <div className="flex items-center justify-between mt-3 pt-3 border-t border-white/20">
-                <span className="text-sm text-primary-100">Total del Pedido</span>
+                <span className="text-sm text-blue-100">Total del Pedido</span>
                 <div className="flex items-center text-2xl font-bold">
                   <DollarSign className="w-6 h-6" />
                   <span>{pedido.total.toLocaleString()}</span>
@@ -166,7 +166,7 @@ export const PedidoModal: React.FC<PedidoModalProps> = ({
               {/* Sección: Lista de productos */}
               <div className="mb-4">
                 <h4 className="font-bold text-gray-900 text-sm mb-2 flex items-center">
-                  <ChefHat className="w-4 h-4 mr-1.5 text-primary-600" />
+                  <ChefHat className="w-4 h-4 mr-1.5 text-blue-600" />
                   Productos Ordenados
                 </h4>
                 <div className="space-y-2">
@@ -175,7 +175,7 @@ export const PedidoModal: React.FC<PedidoModalProps> = ({
                       <div className="flex items-start justify-between">
                         <div className="flex-1 min-w-0">
                           <p className="font-medium text-sm text-gray-900">
-                            <span className="text-primary-600">{producto.cantidad}x</span> {producto.nombre}
+                            <span className="text-blue-600">{producto.cantidad}x</span> {producto.nombre}
                           </p>
                           {producto.observaciones && (
                             <p className="text-xs text-gray-500 mt-1">
@@ -183,7 +183,7 @@ export const PedidoModal: React.FC<PedidoModalProps> = ({
                             </p>
                           )}
                         </div>
-                        <span className="font-bold text-sm text-primary-600 ml-2 flex-shrink-0">
+                        <span className="font-bold text-sm text-blue-600 ml-2 flex-shrink-0">
                           ${(producto.cantidad * producto.precioUnitario).toLocaleString()}
                         </span>
                       </div>

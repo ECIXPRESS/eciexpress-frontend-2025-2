@@ -54,7 +54,7 @@ export const Pagination: React.FC<PaginationProps> = ({
           className={`
             min-w-[40px] h-10 px-3 rounded-lg font-semibold transition-all duration-200
             ${page === currentPage
-              ? 'bg-primary-500 text-white shadow-md'
+              ? 'bg-blue-500 text-white shadow-md'
               : page === '...'
               ? 'cursor-default'
               : 'border border-gray-300 hover:bg-gray-50'

@@ -22,10 +22,10 @@ export const SlideNavigation: React.FC<SlideNavigationProps> = ({
       <button
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
-        className="group p-3 rounded-full bg-white border-2 border-gray-300 hover:border-primary-500 hover:bg-primary-50 disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-200 shadow-md hover:shadow-lg"
+        className="group p-3 rounded-full bg-white border-2 border-gray-300 hover:border-blue-500 hover:bg-blue-50 disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-200 shadow-md hover:shadow-lg"
         title="Anterior"
       >
-        <ChevronLeft className="w-6 h-6 text-gray-700 group-hover:text-primary-600 transition-colors duration-200" />
+        <ChevronLeft className="w-6 h-6 text-gray-700 group-hover:text-blue-600 transition-colors duration-200" />
       </button>
 
       {/* Indicadores de página (dots) */}
@@ -37,7 +37,7 @@ export const SlideNavigation: React.FC<SlideNavigationProps> = ({
             className={`
               h-2 rounded-full transition-all duration-300
               ${page === currentPage
-                ? 'w-8 bg-primary-500'
+                ? 'w-8 bg-blue-500'
                 : 'w-2 bg-gray-300 hover:bg-gray-400'
               }
             `}
@@ -50,10 +50,10 @@ export const SlideNavigation: React.FC<SlideNavigationProps> = ({
       <button
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
-        className="group p-3 rounded-full bg-white border-2 border-gray-300 hover:border-primary-500 hover:bg-primary-50 disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-200 shadow-md hover:shadow-lg"
+        className="group p-3 rounded-full bg-white border-2 border-gray-300 hover:border-blue-500 hover:bg-blue-50 disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-200 shadow-md hover:shadow-lg"
         title="Siguiente"
       >
-        <ChevronRight className="w-6 h-6 text-gray-700 group-hover:text-primary-600 transition-colors duration-200" />
+        <ChevronRight className="w-6 h-6 text-gray-700 group-hover:text-blue-600 transition-colors duration-200" />
       </button>
     </div>
   );

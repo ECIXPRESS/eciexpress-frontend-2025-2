@@ -59,7 +59,7 @@ export const ProductoListItem: React.FC<ProductoListItemProps> = ({
             </div>
             {/* Precio */}
             <div className="text-right flex-shrink-0">
-              <div className="flex items-center text-xl font-bold text-primary-600">
+              <div className="flex items-center text-xl font-bold text-blue-600">
                 <DollarSign className="w-5 h-5" />
                 <span>{producto.precio.toLocaleString()}</span>
               </div>
@@ -81,14 +81,14 @@ export const ProductoListItem: React.FC<ProductoListItemProps> = ({
         <div className="flex flex-col gap-2 flex-shrink-0">
           <button
             onClick={() => onVerDetalles(producto.id)}
-            className="bg-white hover:bg-gray-50 text-primary-600 border-2 border-primary-500 py-2 px-4 rounded-lg text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-2 min-w-[130px]"
+            className="bg-white hover:bg-gray-50 text-blue-600 border-2 border-blue-500 py-2 px-4 rounded-lg text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-2 min-w-[130px]"
           >
             <Eye className="w-4 h-4" />
             Ver Detalles
           </button>
           <button
             onClick={() => onEditStock(producto.id)}
-            className="bg-primary-500 hover:bg-primary-600 text-white py-2 px-4 rounded-lg text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-2 shadow-md hover:shadow-lg min-w-[130px]"
+            className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-2 shadow-md hover:shadow-lg min-w-[130px]"
           >
             <Edit3 className="w-4 h-4" />
             Editar Stock
