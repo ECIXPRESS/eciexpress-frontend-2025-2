@@ -186,7 +186,15 @@ export default function Home() {
                 onClick={() => handleProductClick(product.id)}
               >
                 <div className="relative">
-                  <div className="w-full h-48 sm:h-56 bg-gray-300"></div>
+                  <div className="w-full h-48 sm:h-56 bg-gray-300">
+                    {product.image && (
+                      <img 
+                        src={product.image} 
+                        alt={product.name} 
+                        className="w-full h-full object-cover"
+                      />
+                    )}
+                  </div>
                   <button 
                     onClick={(e) => {
                       e.stopPropagation();

@@ -28,6 +28,7 @@ export const productsByCategoryData = {
       rating: 4.0,
       time: 15,
       isFavorite: true,
+      image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=800',
     },
     {
       id: 2,
@@ -37,6 +38,7 @@ export const productsByCategoryData = {
       rating: 4.2,
       time: 10,
       isFavorite: false,
+      image: 'https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=800',
     },
     {
       id: 3,
@@ -46,6 +48,7 @@ export const productsByCategoryData = {
       rating: 4.5,
       time: 15,
       isFavorite: false,
+      image: 'https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=800',
     },
   ],
   papeleria: [
@@ -57,6 +60,7 @@ export const productsByCategoryData = {
       rating: 5.0,
       time: null,
       isFavorite: false,
+      image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=800',
     },
     {
       id: 5,
@@ -66,6 +70,7 @@ export const productsByCategoryData = {
       rating: 4.0,
       time: null,
       isFavorite: false,
+      image: 'https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=800',
     },
     {
       id: 6,
@@ -75,6 +80,7 @@ export const productsByCategoryData = {
       rating: 4.4,
       time: null,
       isFavorite: false,
+      image: 'https://images.unsplash.com/photo-1612198188060-c7c2a3b66eae?w=800',
     },
   ],
 };
