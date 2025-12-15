@@ -1,12 +1,5 @@
-/**
- * index.ts - Barrel file del módulo qr-validation-seller
- * Exporta todos los componentes y tipos del módulo para facilitar importaciones
- * Uso: import { PedidosList, Pedido } from '@pages/qr-validation-seller';
- */
-
 // Componentes de lista y visualización de pedidos
 export { PedidosList } from './components/PedidosList';
-export { PedidoCard } from './components/PedidoCard';
 export { PedidoListItem } from './components/PedidoListItem';
 export { PedidoModal } from './components/PedidoModal';
 
