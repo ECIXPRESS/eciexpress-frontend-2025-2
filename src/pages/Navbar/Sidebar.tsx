@@ -1,5 +1,3 @@
-[file name]: Sidebar.tsx
-    [file content begin]
 import {useState, useEffect} from 'react';
 import {useNavigate, useLocation} from 'react-router-dom';
 import {
@@ -16,18 +14,7 @@ import {
     CirclePlus,
 } from 'lucide-react';
 import {BalanceCard} from "./components/BalanceCard";
-
-// Simulación de auth (reemplazar con tu hook real)
-const useAuth = () => ({
-    user: {
-        role: 'user',
-        balance: 150000
-    },
-    logout: () => {
-        console.log('Logout');
-        // Aquí deberías redirigir a /auth después del logout
-    }
-});
+import { useAuth } from '@/lib/context/AuthProvider';
 
 interface MenuItem {
     icon: typeof LayoutDashboard;
@@ -41,7 +28,7 @@ interface SidebarProps {
 }
 
 export default function Sidebar({isExpanded, onToggleExpand}: SidebarProps) {
-    const {user, logout} = useAuth();
+    const { user, logout } = useAuth(); // Usa tu hook real de autenticación
     const navigate = useNavigate();
     const location = useLocation();
     const [isMobile, setIsMobile] = useState<boolean>(false);
@@ -57,7 +44,6 @@ export default function Sidebar({isExpanded, onToggleExpand}: SidebarProps) {
         return () => window.removeEventListener('resize', checkIfMobile);
     }, []);
 
-    // Mapeo de rutas según el rol
     const routeConfig: Record<string, MenuItem[]> = {
         user: [
             {icon: LayoutDashboard, label: 'Catálogo', path: '/home'},
@@ -85,11 +71,6 @@ export default function Sidebar({isExpanded, onToggleExpand}: SidebarProps) {
     const showBalance = userRole === 'user';
     const userBalance = user?.balance || 0;
 
-    // Encontrar el ítem seleccionado basado en la ruta actual
-    const getSelectedIndex = () => {
-        return menuItems.findIndex(item => item.path === location.pathname);
-    };
-
     const handleMenuItemClick = (path: string) => {
         navigate(path);
     };
@@ -101,6 +82,11 @@ export default function Sidebar({isExpanded, onToggleExpand}: SidebarProps) {
 
     const handleProfileClick = () => {
         navigate('/user-settings');
+    };
+
+    const handleAddBalance = () => {
+        // Navegar o abrir modal para agregar saldo
+        navigate('/add-balance'); // O implementa un modal
     };
 
     return (
@@ -156,10 +142,13 @@ export default function Sidebar({isExpanded, onToggleExpand}: SidebarProps) {
                         <div className="py-4"></div>
                     )}
 
-                    {/* Botón de acción rápido cuando está colapsado */}
+                    {/* Botón de acción rápido cuando está colapsado (solo para usuarios) */}
                     {!isExpanded && showBalance && (
                         <div className="flex items-center justify-center py-4">
-                            <button className="w-12 h-12 rounded-full bg-gradient-to-br from-[#ffcc4d] to-[#fddf65] hover:from-[#f5d74e] hover:to-[#FDDF65] flex items-center justify-center transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+                            <button
+                                onClick={handleAddBalance}
+                                className="w-12 h-12 rounded-full bg-gradient-to-br from-[#ffcc4d] to-[#fddf65] hover:from-[#f5d74e] hover:to-[#FDDF65] flex items-center justify-center transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                            >
                                 <CirclePlus className="w-6 h-6 text-white"/>
                             </button>
                         </div>
@@ -169,7 +158,7 @@ export default function Sidebar({isExpanded, onToggleExpand}: SidebarProps) {
                     <nav className="flex-1 px-3 overflow-y-auto">
                         {menuItems.map((item, index) => {
                             const Icon = item.icon;
-                            const isSelected = item.path === location.pathname;
+                            const isSelected = location.pathname.startsWith(item.path);
 
                             return (
                                 <button
@@ -196,6 +185,7 @@ export default function Sidebar({isExpanded, onToggleExpand}: SidebarProps) {
                         })}
                     </nav>
 
+                    {/* Logout */}
                     <div className="border-t border-gray-100 p-3">
                         <button
                             onClick={handleLogout}
@@ -208,9 +198,10 @@ export default function Sidebar({isExpanded, onToggleExpand}: SidebarProps) {
                 </div>
             </div>
 
+            {/* Sidebar móvil */}
             <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-2xl z-50">
                 <div className="flex items-center justify-around px-2 py-2">
-
+                    {/* Botón de perfil */}
                     <button
                         onClick={handleProfileClick}
                         className={`flex flex-col items-center justify-center gap-1 p-2 rounded-xl transition-all duration-200 min-w-[60px] ${
@@ -232,9 +223,10 @@ export default function Sidebar({isExpanded, onToggleExpand}: SidebarProps) {
                         </span>
                     </button>
 
+                    {/* Items del menú */}
                     {menuItems.map((item, index) => {
                         const Icon = item.icon;
-                        const isSelected = item.path === location.pathname;
+                        const isSelected = location.pathname.startsWith(item.path);
 
                         return (
                             <button
@@ -266,4 +258,3 @@ export default function Sidebar({isExpanded, onToggleExpand}: SidebarProps) {
         </>
     );
 }
-[file content end]

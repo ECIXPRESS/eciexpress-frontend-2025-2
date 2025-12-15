@@ -9,7 +9,6 @@ export const BalanceCard = () => {
         console.log("Agregar saldo");
         navigate("/user-settings");
     };
-
     return (
         <div className="flex h-40 items-center gap-4 p-4 relative rounded-3xl overflow-hidden bg-gradient-to-br from-[#ffcc4d] to-[#fddf65] shadow-lg">
             <div className="flex flex-col items-start p-4 flex-1 self-stretch bg-white/40 backdrop-blur-sm rounded-2xl overflow-hidden flex-grow gap-3">
