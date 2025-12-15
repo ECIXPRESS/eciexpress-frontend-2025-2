@@ -97,4 +97,4 @@ export const ProductoListItem: React.FC<ProductoListItemProps> = ({
       </div>
     </div>
   );
-};export default ProductoListItem;
+}; export default ProductoListItem;
