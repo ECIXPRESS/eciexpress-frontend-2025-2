@@ -6,8 +6,10 @@ import {AnimatePresence, motion} from "framer-motion";
 import {VerificationCodeForm} from "@/pages/password-recovery/components/verificationCodeForm";
 import PasswordChangeForm from "@/pages/password-recovery/components/passwordChangeForm";
 import EmailForm from "@/pages/password-recovery/components/emailForm";
+import {useNavigate} from "react-router-dom";
 
 export const PasswordRecoveryContainer = (): JSX.Element => {
+    const navigate = useNavigate();
     const [currentStep, setCurrentStep] = useState<'email' | 'verification' | 'password'>('email');
     const [userToken, setUserToken] = useState('');
     const [userEmail, setUserEmail] = useState('');
@@ -18,14 +20,15 @@ export const PasswordRecoveryContainer = (): JSX.Element => {
         setCurrentStep('verification');
     };
 
-    const handleCodeVerified = (code:string) => {
-        setUserToken(code);
+    const handleCodeVerified = (token:string) => {
+        setUserToken(token);
         setCurrentStep('password');
     };
 
     const handlePasswordChanged = () => {
         toast.success('Contraseña cambiada exitosamente');
         console.log('Contraseña cambiada exitosamente');
+        navigate("/auth")
     };
 
     return (
@@ -135,7 +138,7 @@ export const PasswordRecoveryContainer = (): JSX.Element => {
                     <motion.img
                         src={triangleInf}
                         alt="triangleInf"
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-cover object-left"
                         initial={{ x: "50%" }}
                         animate={{ x: "0%"}}
                         transition={{ duration: 0.7 }}

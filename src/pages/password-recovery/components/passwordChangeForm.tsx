@@ -46,8 +46,8 @@ const PasswordChangeForm: React.FC<PasswordChangeFormProps> = ({email, token, on
         try {
             await changePassword({
                 email: email,
-                password,
-                token: token,
+                newPassword: password,
+                code: token,
             });
             toast.success("Contraseña cambiada exitosamente");
             onPasswordChanged();

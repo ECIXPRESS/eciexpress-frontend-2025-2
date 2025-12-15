@@ -51,10 +51,7 @@ export const VerificationCodeForm: React.FC<VerificationCodeFormProps> = ({email
         if (code.length === 6) {
             try {
                 const token = await verifyCode(email, code);
-                onCodeVerified({
-                    code: token,
-                    email
-                });
+                onCodeVerified(token);
             } catch (error) {
                 console.error("Error al verificar el código:", error);
             }

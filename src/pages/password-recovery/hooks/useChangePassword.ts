@@ -4,29 +4,24 @@ import {useState} from "react";
 
 interface ChangePasswordParams {
     email: string;
-    password: string;
-    token: string;
+    newPassword: string;
+    code: string;
 }
 
 export const useChangePassword = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const changePassword = async ({ email, password, token }: ChangePasswordParams) => {
+    const changePassword = async ({ email, newPassword, code }: ChangePasswordParams) => {
         setLoading(true);
         setError(null);
 
         try {
             const response = await apiClient.put("/users/password/reset", {
                 email,
-                token,
-                password
+                code: code,
+                newPassword: newPassword,
             });
-
-            if (response.data.success) {
-                toast.success("Contraseña cambiada exitosamente");
-                return response.data;
-            }
 
             throw new Error(response.data.message || "Error al cambiar la contraseña");
         } catch (err: unknown) {
