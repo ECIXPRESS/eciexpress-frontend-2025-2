@@ -1,13 +1,20 @@
+import reggioLogo from '@/assets/home/reggio-logo.png';
+import harviesLogo from '@/assets/home/harvies-logo.png';
+import arepasLogo from '@/assets/home/arepas-logo.png';
+import paperflashLogo from '@/assets/home/paperflash-logo.png';
+import fondeciLogo from '@/assets/home/fondeci-logo.png';
+import papeleriaULogo from '@/assets/home/papeleria-u-logo.png';
+
 export const storesByCategoryData = {
   cafeteria: [
-    { id: 1, name: 'Reggio' },
-    { id: 2, name: 'Harvies' },
-    { id: 3, name: 'Arepas' },
+    { id: 1, name: 'Reggio', logo: reggioLogo },
+    { id: 2, name: 'Harvies', logo: harviesLogo },
+    { id: 3, name: 'Arepas', logo: arepasLogo },
   ],
   papeleria: [
-    { id: 6, name: 'PaperFlash' },
-    { id: 7, name: 'Fondeci' },
-    { id: 8, name: 'Papelería U' },
+    { id: 6, name: 'PaperFlash', logo: paperflashLogo },
+    { id: 7, name: 'Fondeci', logo: fondeciLogo },
+    { id: 8, name: 'Papelería U', logo: papeleriaULogo },
   ],
 };
 
