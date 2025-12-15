@@ -80,7 +80,7 @@ function HomeWithMockUser() {
         {
           userId: "d66d2d30-56cb-410b-a5f0-9191c38f380e",
           email: "pepitotolitis@gmail.com",
-          role: "seller",
+          role: "user",
           pfpURL: "",
           balance: 512000
         }
