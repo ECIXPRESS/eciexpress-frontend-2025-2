@@ -1,4 +1,10 @@
 import { Store } from '../types/store.types';
+import reggioImg from '@/assets/stores/reggio.jpg';
+import harviesImg from '@/assets/stores/harvies.jpg';
+import arepasImg from '@/assets/stores/arepas.jpg';
+import paperflashImg from '@/assets/stores/paperFlash.jpg';
+import fondeciImg from '@/assets/stores/fondeci.jpg';
+import papeleriaUImg from '@/assets/stores/papeleriaU.jpg';
 
 export const storesMockData: Record<number, Store> = {
   1: {
@@ -6,7 +12,7 @@ export const storesMockData: Record<number, Store> = {
     name: 'Reggio',
     category: 'cafeteria',
     rating: 4.5,
-    image: '/assets/stores/reggio.jpg',
+    image: reggioImg,
     schedules: [
       {
         weekday: 'Lunes - Viernes',
@@ -92,7 +98,7 @@ export const storesMockData: Record<number, Store> = {
     name: 'Harvies',
     category: 'cafeteria',
     rating: 4.3,
-    image: '/assets/stores/harvies.jpg',
+    image: harviesImg,
     schedules: [
       {
         weekday: 'Lunes - Viernes',
@@ -130,7 +136,7 @@ export const storesMockData: Record<number, Store> = {
     name: 'Arepas',
     category: 'cafeteria',
     rating: 4.7,
-    image: '/assets/stores/arepas.jpg',
+    image: arepasImg,
     schedules: [
       {
         weekday: 'Lunes - Viernes',
@@ -147,7 +153,7 @@ export const storesMockData: Record<number, Store> = {
     name: 'PaperFlash',
     category: 'papeleria',
     rating: 4.2,
-    image: '/assets/stores/paperflash.jpg',
+    image: paperflashImg,
     schedules: [
       {
         weekday: 'Lunes - Viernes',
@@ -177,7 +183,7 @@ export const storesMockData: Record<number, Store> = {
     name: 'Fondeci',
     category: 'papeleria',
     rating: 4.6,
-    image: '/assets/stores/fondeci.jpg',
+    image: fondeciImg,
     schedules: [
       {
         weekday: 'Lunes - Viernes',
@@ -259,7 +265,7 @@ export const storesMockData: Record<number, Store> = {
     name: 'Papelería U',
     category: 'papeleria',
     rating: 4.4,
-    image: '/assets/stores/papeleria-u.jpg',
+    image: papeleriaUImg,
     schedules: [
       {
         weekday: 'Lunes - Viernes',
