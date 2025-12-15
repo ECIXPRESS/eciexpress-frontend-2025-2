@@ -215,10 +215,8 @@ function HomeWithMockUser() {
         <Route path="/catalog" element={<InventorySellerPage />} />
         
         {/* Rutas para seller - Validación QR */}
-        <Route path="/seller/qr-validation" element={<QRValidationSellerPage />} />
+        <Route path="/orders-seller" element={<QRValidationSellerPage />} />
 
-        {/* Rutas placeholder para otras secciones */}
-        <Route path="/orders" element={<div className="p-8 text-2xl">Pedidos - Próximamente</div>} />
         <Route path="/dashboard" element={<div className="p-8 text-2xl">Dashboard - Próximamente</div>} />
         <Route path="/sellers" element={<div className="p-8 text-2xl">Vendedores - Próximamente</div>} />
         <Route path="/promotions" element={<div className="p-8 text-2xl">Promociones - Próximamente</div>} />

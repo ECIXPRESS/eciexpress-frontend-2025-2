@@ -35,7 +35,7 @@ export default function Sidebar() {
       { icon: MessageCircle, label: 'Chat', path: '/chat' },
     ],
     seller: [
-      { icon: ClipboardList, label: 'Pedidos', path: '/orders' },
+      { icon: ClipboardList, label: 'Pedidos', path: '/orders-seller' },
       { icon: LayoutDashboard, label: 'Catálogo', path: '/catalog' },
       { icon: BarChart3, label: 'Estadísticas', path: '/statistics' },
       { icon: MessageCircle, label: 'Chat', path: '/chat' },
