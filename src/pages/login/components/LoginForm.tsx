@@ -29,8 +29,8 @@ const LoginForm: React.FC<LoginFormProps> = ({
                 <div className="flex items-center justify-center mb-4">
                     <img
                         className="w-96 h-12 object-contain"
-                        alt="Logotipo ECIEXPRESS"
                         src={logotipo}
+                        alt="Logo"
                     />
                 </div>
 
