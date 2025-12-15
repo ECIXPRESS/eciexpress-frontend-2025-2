@@ -10,9 +10,35 @@ export default function Home() {
   const navigate = useNavigate();
   const [activeCategory, setActiveCategory] = useState('cafeteria');
   const [activeTab, setActiveTab] = useState('populares');
+  const [favorites, setFavorites] = useState<Set<number>>(new Set([1])); // Inicialmente el producto 1 es favorito
 
   const stores = storesByCategoryData[activeCategory as keyof typeof storesByCategoryData];
-  const products = productsByCategoryData[activeCategory as keyof typeof productsByCategoryData];
+  const allProducts = productsByCategoryData[activeCategory as keyof typeof productsByCategoryData];
+
+  // Filtrar productos según la pestaña activa
+  const products = activeTab === 'favoritos' 
+    ? allProducts.filter(product => favorites.has(product.id))
+    : allProducts;
+
+  const toggleFavorite = (productId: number) => {
+    setFavorites(prev => {
+      const newFavorites = new Set(prev);
+      if (newFavorites.has(productId)) {
+        newFavorites.delete(productId);
+        toast.info('Producto eliminado de favoritos', {
+          position: 'bottom-right',
+          autoClose: 2000
+        });
+      } else {
+        newFavorites.add(productId);
+        toast.success('Producto agregado a favoritos', {
+          position: 'bottom-right',
+          autoClose: 2000
+        });
+      }
+      return newFavorites;
+    });
+  };
 
   const handleAddToCart = (productId: number, productName: string) => {
     // Aquí se agregaría al carrito real (Context/Redux)
@@ -142,13 +168,13 @@ export default function Home() {
                   <button 
                     onClick={(e) => {
                       e.stopPropagation();
-                      // Toggle favorito
+                      toggleFavorite(product.id);
                     }}
                     className="absolute top-3 right-3 sm:top-4 sm:right-4 w-10 h-10 sm:w-12 sm:h-12 bg-white rounded-full shadow-lg flex items-center justify-center hover:scale-110 transition-transform"
                   >
                     <Heart
                       className={`w-5 h-5 sm:w-6 sm:h-6 ${
-                        product.isFavorite
+                        favorites.has(product.id)
                           ? 'fill-[#FDDF65] text-[#FDDF65]'
                           : 'text-gray-400'
                       }`}
