@@ -1,4 +1,4 @@
-import { StoreLocation } from '../../types/store.types';
+import { StoreLocation } from '../types/store.types';
 import { MapPin } from 'lucide-react';
 
 interface StoreLocationInfoProps {

@@ -1,4 +1,4 @@
-import { StoreSchedule } from '../../types/store.types';
+import { StoreSchedule } from '../types/store.types';
 
 interface StoreSchedulesProps {
   schedules: StoreSchedule[];
