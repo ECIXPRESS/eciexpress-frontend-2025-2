@@ -1,35 +1,51 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import {Routes, Route, Navigate, useLocation} from "react-router-dom";
+import {ProtectedRoute} from "./lib/navegation/ProtectedRoute";
+import Layout from "./lib/navegation/Layout";
+import {AuthProvider} from "@/lib/context/AuthProvider";
+import Auth from "@/pages/login/Auth";
+import {PasswordRecoveryContainer} from "@/pages/password-recovery/passwordRecoveryContainer";
+import {AnimatePresence, motion} from "framer-motion";
 
 function App() {
-  const [count, setCount] = useState(0)
+    const location = useLocation();
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    return (
+        <AuthProvider>
+            <AnimatePresence mode="wait">
+                <Routes location={location} key={location.pathname}>
+                    <Route path="/auth" element={<Auth/>}/>
+                    <Route path="/login" element={<Navigate to="/auth" replace/>}/>
+                    <Route path="/signup" element={<Navigate to="/auth" replace/>}/>
+
+                    <Route
+                        path="/forgot-password"
+                        element={
+                            <motion.div
+                                initial={{opacity: 0}}
+                                animate={{opacity: 1}}
+                                exit={{opacity: 0}}
+                                transition={{duration: 0.5}}
+                            >
+                                <PasswordRecoveryContainer/>
+                            </motion.div>
+                        }
+                    />
+
+                    <Route element={<ProtectedRoute/>}>
+                        <Route element={<Layout/>}>
+                            <Route path="/home" element={<div>Catalog</div>}/>
+                            <Route path="/shoppingCart" element={<div>Shopping Cart</div>}/>
+                            <Route path="/orders" element={<div>Orders</div>}/>
+                            <Route path="/chat" element={<div>Chat</div>}/>
+                            <Route path="/" element={<Navigate to="/home" replace/>}/>
+                        </Route>
+                    </Route>
+
+                    <Route path="*" element={<Navigate to="/login" replace/>}/>
+                </Routes>
+            </AnimatePresence>
+        </AuthProvider>
+    );
 }
 
-export default App
+export default App;
