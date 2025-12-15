@@ -1,4 +1,3 @@
-// pages/Auth.tsx
 import React from 'react';
 import {useAuthNavigation} from "@/pages/login/hooks/useAuthNavigation";
 import {useLogin} from "@/pages/login/hooks/useLogin";
