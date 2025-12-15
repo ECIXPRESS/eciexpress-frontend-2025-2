@@ -1,7 +1,7 @@
 import {Routes, Route, Navigate, useLocation} from "react-router-dom";
-import {ProtectedRoute} from "./utils/ProtectedRoute";
-import Layout from "./utils/Layout";
-import {AuthProvider} from "@/utils/context/AuthProvider";
+import {ProtectedRoute} from "./lib/navegation/ProtectedRoute";
+import Layout from "./lib/navegation/Layout";
+import {AuthProvider} from "@/lib/context/AuthProvider";
 import Auth from "@/pages/login/Auth";
 import {PasswordRecoveryContainer} from "@/pages/password-recovery/passwordRecoveryContainer";
 import {AnimatePresence, motion} from "framer-motion";

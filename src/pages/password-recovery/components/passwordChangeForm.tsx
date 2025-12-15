@@ -1,4 +1,4 @@
-import StandardInput from "@/lib/input/standarInput";
+import StandardInput from "@/lib/input/StandardInput";
 import React from "react";
 import {toast} from "react-toastify";
 import {useChangePassword} from "@/pages/password-recovery/hooks/useChangePassword";
@@ -46,8 +46,8 @@ const PasswordChangeForm: React.FC<PasswordChangeFormProps> = ({email, token, on
         try {
             await changePassword({
                 email: email,
-                password,
-                token: token,
+                newPassword: password,
+                code: token,
             });
             toast.success("Contraseña cambiada exitosamente");
             onPasswordChanged();
@@ -86,7 +86,7 @@ const PasswordChangeForm: React.FC<PasswordChangeFormProps> = ({email, token, on
                         />
 
                         <div className="flex flex-col gap-0 w-full">
-                            {passwordRequeriments.map(requirement => (
+                            {passwordRequirements.map(requirement => (
                                     <p id={requirement.message} className="text-neutral-500 text-sm">
                                         {requirement.message}
                                     </p>

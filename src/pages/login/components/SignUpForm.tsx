@@ -1,12 +1,14 @@
 import React from 'react';
 import logotipo from '@/assets/logotipo.svg';
-import StandardInput from '@/lib/input/standarInput';
+import StandardInput from "@/lib/input/StandardInput";
 
 interface SignUpFormProps {
-    name: string;
-    setName: (name: string) => void;
+    fullName: string;
+    setFullName: (name: string) => void;
     email: string;
     setEmail: (email: string) => void;
+    identityDocument: string;
+    setIdentityDocument: (identityDocument: string) => void;
     password: string;
     setPassword: (password: string) => void;
     confirmPassword: string;
@@ -17,10 +19,12 @@ interface SignUpFormProps {
 }
 
 const SignUpForm: React.FC<SignUpFormProps> = ({
-                                                   name,
-                                                   setName,
+                                                   fullName,
+                                                   setFullName,
                                                    email,
                                                    setEmail,
+                                                   identityDocument,
+                                                   setIdentityDocument,
                                                    password,
                                                    setPassword,
                                                    confirmPassword,
@@ -52,7 +56,7 @@ const SignUpForm: React.FC<SignUpFormProps> = ({
                     onSubmit={onSubmit}
                     className="w-full flex flex-col gap-2 items-cente   r p-4"
                 >
-                    <div className="w-full flex flex-col gap-1 md:gap-3">
+                    <div className="w-full flex flex-col gap-1 md:gap-1.5">
                         <label
                             htmlFor="signup-name"
                             className="text-gray-600 font-semibold md:text-lg"
@@ -61,16 +65,16 @@ const SignUpForm: React.FC<SignUpFormProps> = ({
                         </label>
                         <StandardInput
                             id="signup-name"
-                            value={name}
-                            onChange={setName}
+                            value={fullName}
+                            onChange={setFullName}
                             required
-                            placeholder="Ingresa tu nombre completo"
+                            placeholder="Ej: John Doe"
                             type="text"
                             name="name"
                         />
                     </div>
 
-                    <div className="w-full flex flex-col gap-1 md:gap-3">
+                    <div className="w-full flex flex-col gap-1 md:gap-1.5">
                         <label
                             htmlFor="signup-email"
                             className="text-gray-600 font-semibold md:text-lg"
@@ -82,13 +86,31 @@ const SignUpForm: React.FC<SignUpFormProps> = ({
                             value={email}
                             onChange={setEmail}
                             required
-                            placeholder="correo institucional"
+                            placeholder="Ej: john.Doe@mail.escuelaing.edu.co"
                             type="email"
                             name="email"
                         />
                     </div>
 
-                    <div className="w-full flex flex-col gap-1 md:gap-3">
+                    <div className="w-full flex flex-col gap-1 md:gap-1.5">
+                        <label
+                            htmlFor="signup-email"
+                            className="text-gray-600 font-semibold md:text-lg"
+                        >
+                            Documento institucional
+                        </label>
+                        <StandardInput
+                            id="identity-document"
+                            value={identityDocument}
+                            onChange={setIdentityDocument}
+                            required
+                            placeholder="Ej: 1000000123"
+                            type="text"
+                            name="identityDocument"
+                        />
+                    </div>
+
+                    <div className="w-full flex flex-col gap-1 md:gap-1.5">
                         <label
                             htmlFor="signup-password"
                             className="text-gray-600 font-semibold md:text-lg"
@@ -100,13 +122,13 @@ const SignUpForm: React.FC<SignUpFormProps> = ({
                             value={password}
                             onChange={setPassword}
                             required
-                            placeholder="Crea una contraseña"
+                            placeholder="**********"
                             type="password"
                             name="password"
                         />
                     </div>
 
-                    <div className="w-full flex flex-col gap-1 md:gap-3">
+                    <div className="w-full flex flex-col gap-1 md:gap-1.5">
                         <label
                             htmlFor="signup-confirm-password"
                             className="text-gray-600 font-semibold md:text-lg"
@@ -118,7 +140,7 @@ const SignUpForm: React.FC<SignUpFormProps> = ({
                             value={confirmPassword}
                             onChange={setConfirmPassword}
                             required
-                            placeholder="Confirma tu contraseña"
+                            placeholder="**********"
                             type="password"
                             name="confirmPassword"
                         />

@@ -6,7 +6,7 @@ export const useVerifySecurityCode = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const verifyCode = async (email: string, code: string) => {
+    const verifyCode = async (email: string, code: string): Promise<string> => {
         setLoading(true);
         setError(null);
 
@@ -16,12 +16,12 @@ export const useVerifySecurityCode = () => {
                 code
             });
 
-            if (response.data.token) {
+            if (response.data.success) {
                 toast.success("Código verificado correctamente");
-                return response.data.token;
+                return code;
             }
 
-            return null
+            throw new Error(response.data.message || "Error al verificar el código");
         } catch (err: unknown) {
             const error = err as { response?: { data?: { message?: string } }};
             const errorMessage = error.response?.data?.message || "Error al verificar el código";
@@ -33,9 +33,5 @@ export const useVerifySecurityCode = () => {
         }
     };
 
-    return {
-        verifyCode,
-        loading,
-        error
-    };
+    return {verifyCode, loading, error};
 };
