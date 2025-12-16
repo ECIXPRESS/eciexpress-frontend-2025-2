@@ -18,6 +18,7 @@ import StorePage from "@/pages/store/StorePage";
 import WalletPage from "@/pages/wallet/WalletPage";
 import InventorySellerPage from "@/pages/inventory-seller/InventorySellerPage";
 import QRValidationSellerPage from "@/pages/qr-validation-seller/QRValidationSellerPage";
+import OrdersUserPage from "@/pages/orders-user/OrdersUserPage";
 
 function HomeWithMockUser() {
   const { login, user } = useAuth();
@@ -57,7 +58,7 @@ function HomeWithMockUser() {
         
         {/* Ruta de carrito */}
         <Route path="/cart" element={<CartPage />} />
-        
+        <Route path="/orders" element={<OrdersUserPage />} />
         {/* Ruta de chat */}
         <Route path="/chat" element={<ChatPage />} />
 

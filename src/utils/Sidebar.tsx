@@ -33,7 +33,7 @@ export default function Sidebar() {
     user: [
       { icon: LayoutDashboard, label: 'Catálogo', path: '/' },
       { icon: ShoppingCart, label: 'Carrito', path: '/cart' },
-      { icon: ClipboardList, label: 'Pedidos' },
+      { icon: ClipboardList, label: 'Pedidos', path: '/orders' },
       { icon: MessageCircle, label: 'Chat', path: '/chat' },
     ],
     seller: [
