@@ -38,7 +38,7 @@ export default function StockChart({ data }: StockChartProps) {
               fontSize: '12px'
             }}
           />
-          <Bar dataKey="value" fill="#FDDF65" radius={[8, 8, 0, 0]} />
+          <Bar dataKey="value" fill="#FBBF24" radius={[8, 8, 0, 0]} />
         </BarChart>
       </ResponsiveContainer>
     </div>

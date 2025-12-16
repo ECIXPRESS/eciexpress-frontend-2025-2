@@ -29,7 +29,7 @@ export default function ExportModal({ isOpen, onClose, onExport }: ExportModalPr
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-3xl w-full max-w-md overflow-hidden shadow-2xl">
         {/* Header */}
-        <div className="bg-[#FDDF65] px-6 py-5 relative">
+        <div className="bg-yellow-400 px-6 py-5 relative">
           <button
             onClick={onClose}
             className="absolute top-4 left-4 w-10 h-10 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center transition-colors"
@@ -46,7 +46,7 @@ export default function ExportModal({ isOpen, onClose, onExport }: ExportModalPr
           {/* Fecha del reporte */}
           <div className="flex items-center justify-between">
             <span className="text-sm font-medium text-gray-700">Fecha del reporte:</span>
-            <span className="text-sm text-[#FDDF65] font-medium">{currentDate}</span>
+            <span className="text-sm text-yellow-400 font-medium">{currentDate}</span>
           </div>
 
           {/* Formato */}
@@ -95,7 +95,7 @@ export default function ExportModal({ isOpen, onClose, onExport }: ExportModalPr
           {/* Botón Descargar */}
           <button
             onClick={handleExport}
-            className="w-full bg-[#FDDF65] hover:bg-[#f5d74e] text-[#262626] font-bold py-4 rounded-2xl transition-colors shadow-md hover:shadow-lg"
+            className="w-full bg-yellow-400 hover:bg-yellow-500 text-[#262626] font-bold py-4 rounded-2xl transition-colors shadow-md hover:shadow-lg"
           >
             Descargar
           </button>

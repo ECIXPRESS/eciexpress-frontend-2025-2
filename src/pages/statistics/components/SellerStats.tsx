@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { DollarSign, ShoppingBag, TrendingUp, Download, Calendar } from 'lucide-react';
+import DatePicker from './DatePicker';
 import StatsCard from './StatsCard';
 import WeeklySalesChart from './WeeklySalesChart';
 import StockChart from './StockChart';
@@ -21,6 +22,32 @@ export default function SellerStats() {
   const [endDate, setEndDate] = useState('');
   const [selectedProduct, setSelectedProduct] = useState('');
 
+  const startPickerRef = useRef<HTMLDivElement | null>(null);
+  const endPickerRef = useRef<HTMLDivElement | null>(null);
+  const [showStartPicker, setShowStartPicker] = useState(false);
+  const [showEndPicker, setShowEndPicker] = useState(false);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (startPickerRef.current && !startPickerRef.current.contains(e.target as Node)) {
+        setShowStartPicker(false);
+      }
+      if (endPickerRef.current && !endPickerRef.current.contains(e.target as Node)) {
+        setShowEndPicker(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const formatDisplay = (d: string) => {
+    if (!d) return '';
+    try {
+      const [y, m, day] = d.split('-');
+      return `${day}/${m}/${y.slice(2)}`;
+    } catch { return d; }
+  };
+
   const handleExport = async (format: 'pdf' | 'excel') => {
     await statisticsService.exportAllStatistics('STORE-01', format);
   };
@@ -34,7 +61,7 @@ export default function SellerStats() {
       <div className="max-w-7xl mx-auto space-y-6">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          <h1 className="text-3xl font-bold text-[#FDDF65]">Estadísticas</h1>
+          <h1 className="text-3xl font-bold text-yellow-400">Estadísticas</h1>
           <button
             onClick={() => setIsExportModalOpen(true)}
             className="flex items-center justify-center gap-2 bg-[#5AC7E1] hover:bg-[#4ab5cf] text-white px-6 py-3 rounded-2xl font-medium transition-colors shadow-md"
@@ -49,28 +76,46 @@ export default function SellerStats() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Fecha inicio</label>
-              <div className="relative">
+              <div className="relative" ref={startPickerRef}>
                 <input
                   type="text"
                   placeholder="dd/mm/yy"
-                  value={startDate}
-                  onChange={(e) => setStartDate(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#5AC7E1] focus:border-transparent"
+                  readOnly
+                  value={formatDisplay(startDate)}
+                  onClick={() => setShowStartPicker(prev => !prev)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#5AC7E1] focus:border-transparent cursor-pointer"
                 />
-                <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <button type="button" onClick={() => setShowStartPicker(prev => !prev)} className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full flex items-center justify-center bg-white/0 hover:bg-gray-50 transition-colors">
+                  <Calendar className="w-5 h-5 text-gray-400" />
+                </button>
+
+                {showStartPicker && (
+                  <div className="absolute z-50 right-0 mt-2 w-72">
+                    <DatePicker value={startDate} onChange={(v) => { setStartDate(v); setShowStartPicker(false); }} />
+                  </div>
+                )}
               </div>
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Fecha fin</label>
-              <div className="relative">
+              <div className="relative" ref={endPickerRef}>
                 <input
                   type="text"
                   placeholder="dd/mm/yy"
-                  value={endDate}
-                  onChange={(e) => setEndDate(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#5AC7E1] focus:border-transparent"
+                  readOnly
+                  value={formatDisplay(endDate)}
+                  onClick={() => setShowEndPicker(prev => !prev)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#5AC7E1] focus:border-transparent cursor-pointer"
                 />
-                <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <button type="button" onClick={() => setShowEndPicker(prev => !prev)} className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full flex items-center justify-center bg-white/0 hover:bg-gray-50 transition-colors">
+                  <Calendar className="w-5 h-5 text-gray-400" />
+                </button>
+
+                {showEndPicker && (
+                  <div className="absolute z-50 right-0 mt-2 w-72">
+                    <DatePicker value={endDate} onChange={(v) => { setEndDate(v); setShowEndPicker(false); }} />
+                  </div>
+                )}
               </div>
             </div>
             <div>
@@ -86,7 +131,7 @@ export default function SellerStats() {
             <div className="flex items-end">
               <button
                 onClick={handleFilter}
-                className="w-full bg-[#FDDF65] hover:bg-[#f5d74e] text-[#262626] font-medium px-6 py-2 rounded-xl transition-colors"
+                className="w-full bg-yellow-400 hover:bg-yellow-500 text-[#FFFFFF] font-medium px-6 py-2 rounded-xl transition-colors"
               >
                 Filtrar
               </button>
@@ -104,7 +149,7 @@ export default function SellerStats() {
           />
           <StatsCard
             icon={ShoppingBag}
-            iconColor="bg-[#FDDF65]"
+            iconColor="bg-yellow-400"
             title="Total ventas"
             value={mockSummaryReport.totalOrders.toLocaleString('es-CO')}
           />

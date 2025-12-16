@@ -47,7 +47,7 @@ export default function TopProductsTable({ products }: TopProductsTableProps) {
                 <tr key={product.productId} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
                   <td className="py-4 px-2">
                     <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${
-                      index === 0 ? 'bg-[#FDDF65] text-[#262626]' : 'bg-gray-100 text-gray-600'
+                      index === 0 ? 'bg-yellow-400 text-[#FFFFFF]' : 'bg-gray-100 text-gray-600'
                     }`}>
                       {index + 1}
                     </div>
@@ -64,7 +64,7 @@ export default function TopProductsTable({ products }: TopProductsTableProps) {
                     </span>
                   </td>
                   <td className="py-4 px-2 text-right">
-                    <span className="inline-flex items-center gap-1 text-[#FDDF65] font-medium">
+                    <span className="inline-flex items-center gap-1 text-yellow-400 font-medium">
                       <Star className="w-4 h-4 fill-current" />
                       {rating}
                     </span>
