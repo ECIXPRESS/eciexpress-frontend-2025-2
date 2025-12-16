@@ -42,7 +42,8 @@ function App() {
                             {/* Rutas protegidas */}
                             <Route element={<ProtectedRoute />}>
                                 <Route element={<Layout />}>
-                                    <Route path="/" element={<Home/>}/>
+                                    <Route path="/" element={<Navigate to="/catalog-user" replace/>}/>
+                                    <Route path="/catalog-user" element={<Home/>}/>
                                     <Route path="/statistics" element={<StatisticsPage/>}/>
                                     <Route path="/wallet" element={<WalletPage/>}/>
                                     <Route path="/product/:id" element={<ProductDetailPage/>}/>

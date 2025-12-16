@@ -12,7 +12,7 @@ export default function Sidebar() {
     const navigate = useNavigate();
     const menuConfig = {
         user: [
-            { icon: LayoutDashboard, label: 'Catálogo', path: '/' },
+            { icon: LayoutDashboard, label: 'Catálogo', path: '/catalog-user' },
             { icon: ShoppingCart, label: 'Carrito', path: '/cart' },
             { icon: ClipboardList, label: 'Pedidos', path: '/orders' },
             { icon: MessageCircle, label: 'Chat', path: '/chat' },

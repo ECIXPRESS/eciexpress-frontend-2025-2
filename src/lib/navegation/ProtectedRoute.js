@@ -1,14 +1,13 @@
 import { jsx as _jsx } from "react/jsx-runtime";
-import { Navigate, Outlet, useLocation } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "@/pages/login/hooks/useAuth";
 export const ProtectedRoute = () => {
     const { user } = useAuth();
-    const location = useLocation();
+    console.log("ProtectedRoute - Usuario actual:", user);
     if (!user) {
-        return _jsx(Navigate, { to: "/login", replace: true });
+        console.log("ProtectedRoute - No hay usuario, redirigiendo a /Auth");
+        return _jsx(Navigate, { to: "/Auth", replace: true });
     }
-    if (location.pathname === "/") {
-        return _jsx(Navigate, { to: "/dashboard", replace: true });
-    }
+    console.log("ProtectedRoute - Usuario autenticado, permitiendo acceso");
     return _jsx(Outlet, {});
 };

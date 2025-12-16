@@ -30,6 +30,7 @@ export const AuthProvider = ({ children }) => {
         }
     }, []);
     const login = (token, user, refreshToken, expiresIn) => {
+        console.log("AuthProvider.login - Iniciando login con:", { token: token?.substring(0, 20) + '...', user });
         const expirationTime = expiresIn ? Date.now() + expiresIn * 1000 : Date.now() + 3600 * 1000; // Default 1 hour
         setToken(token);
         setUser(user);
@@ -41,6 +42,11 @@ export const AuthProvider = ({ children }) => {
         localStorage.setItem("token", token);
         localStorage.setItem("user", JSON.stringify(user));
         localStorage.setItem("expiresAt", expirationTime.toString());
+        console.log("AuthProvider.login - Login completado. Usuario guardado:", user);
+        console.log("AuthProvider.login - localStorage:", {
+            token: localStorage.getItem("token")?.substring(0, 20) + '...',
+            user: localStorage.getItem("user")
+        });
     };
     const logout = () => {
         setToken(null);
@@ -53,8 +59,8 @@ export const AuthProvider = ({ children }) => {
         localStorage.removeItem("expiresAt");
     };
     const authValue = useMemo(() => ({
-        token: token || '',
-        refreshToken: refreshToken || '',
+        token: token || null,
+        refreshToken: refreshToken || null,
         user: user,
         expiresAt: expiresAt || 0,
         login,

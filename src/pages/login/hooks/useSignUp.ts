@@ -65,8 +65,14 @@ export const useSignUp = () => {
             console.log("Número de teléfono generado para el registro:", phoneNumber);
             const {token, user} = response.data;
 
-            login(token, user);
-            navigate("/dashboard", {replace: true});
+            // Los nuevos usuarios son siempre CUSTOMER, mapear a "user"
+            const mappedUser = {
+                ...user,
+                role: user.role === "CUSTOMER" ? "user" : user.role
+            };
+
+            login(token, mappedUser);
+            navigate("/", {replace: true});
         } catch (err: unknown) {
             const error = err as { response?: { data?: { message?: string } }};
             toast.error(error.response?.data?.message || "Error al crear la cuenta");

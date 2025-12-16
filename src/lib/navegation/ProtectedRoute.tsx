@@ -1,17 +1,16 @@
-import {Navigate, Outlet, useLocation} from "react-router-dom";
+import {Navigate, Outlet} from "react-router-dom";
 import {useAuth} from "@/pages/login/hooks/useAuth";
 
 export const ProtectedRoute = () => {
     const {user} = useAuth();
-    const location = useLocation();
+
+    console.log("ProtectedRoute - Usuario actual:", user);
 
     if (!user) {
-        return <Navigate to="/login" replace/>;
+        console.log("ProtectedRoute - No hay usuario, redirigiendo a /Auth");
+        return <Navigate to="/Auth" replace/>;
     }
 
-    if (location.pathname === "/") {
-        return <Navigate to="/dashboard" replace/>;
-    }
-
+    console.log("ProtectedRoute - Usuario autenticado, permitiendo acceso");
     return <Outlet/>;
 };

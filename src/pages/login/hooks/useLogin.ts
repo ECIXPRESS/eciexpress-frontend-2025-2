@@ -4,10 +4,16 @@ import {toast} from "react-toastify";
 import {useAuth} from "@/pages/login/hooks/useAuth";
 import apiClient from "@/lib/interceptors/apiClient";
 
+const roleMapping: Record<string, string> = {
+    CUSTOMER: "user",
+    TEACHER: "seller",
+    DEAN: "admin",
+};
+
 const roleRoutes: Record<string, string> = {
-    CUSTOMER: "/home",
-    TEACHER: "/dashboard",
-    DEAN: "/dashboard",
+    user: "/",
+    seller: "/",
+    admin: "/",
 };
 
 export const useLogin = () => {
@@ -31,16 +37,24 @@ export const useLogin = () => {
             const response = await apiClient.post("/auth/login", {email, password});
             const {accessToken, refreshToken, userInfo} = response.data;
 
+            console.log("Login exitoso - Datos recibidos:", {accessToken, userInfo});
+
+            // Mapear el rol del backend al rol del frontend
+            const mappedRole = roleMapping[userInfo.role] || "user";
+
             const user = {
                 userId: userInfo.userId,
                 email: userInfo.email,
-                role: userInfo.role,
+                role: mappedRole,
                 pfpURL: userInfo.pfpURL || ''
             };
 
+            console.log("Usuario a guardar:", user);
+
             login(accessToken, user);
-            const redirectPath = roleRoutes[user.role] || "/home";
-            navigate(redirectPath, {replace: true});
+            console.log("Login ejecutado, el Auth component manejará la redirección");
+            
+            // No navegamos aquí, dejamos que el useEffect en Auth maneje la navegación
         } catch (err: any) {
             console.error('Error en login:', err);
 
