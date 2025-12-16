@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { SlidersHorizontal } from 'lucide-react';
 import { OrdersList } from './components/OrdersList';
 
 export default function OrdersUserPage() {
@@ -43,7 +44,7 @@ export default function OrdersUserPage() {
 
             <div className="relative" ref={filterRef}>
               <button onClick={() => setShowFilters(prev => !prev)} className="flex items-center gap-2 bg-yellow-400 hover:bg-yellow-500 text-white px-4 py-2 rounded-full">
-                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10h-6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                <SlidersHorizontal className="w-4 h-4" />
                 Filtrar
               </button>
 

@@ -1,9 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { X, QrCode, MessageCircle } from 'lucide-react';
 
 export default function OrderDetailsDrawer({ order, isOpen, onClose }: { order: any | null; isOpen: boolean; onClose: () => void }) {
   const [showQr, setShowQr] = useState(false);
   const [status, setStatus] = useState(order?.status || 'pendiente');
+  const [isClosing, setIsClosing] = useState(false);
+  const timerRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    // reset when opened
+    if (isOpen) {
+      setShowQr(false);
+      setIsClosing(false);
+      setStatus(order?.status || 'pendiente');
+    }
+    return () => {
+      if (timerRef.current) window.clearTimeout(timerRef.current);
+    };
+  }, [isOpen, order]);
 
   if (!isOpen || !order) return null;
 
@@ -13,13 +27,32 @@ export default function OrderDetailsDrawer({ order, isOpen, onClose }: { order: 
     setShowQr(true);
   };
 
+  const handleRequestClose = () => {
+    // play exit animation then call onClose
+    setIsClosing(true);
+    timerRef.current = window.setTimeout(() => {
+      onClose();
+    }, 250); // match animation duration
+  };
+
   return (
     <div className="fixed inset-0 z-50 flex justify-end">
-      <div className="absolute inset-0 bg-black/30" onClick={onClose} />
+      <style>{`
+        @keyframes slideInFromRight { from { transform: translateX(24px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        @keyframes slideOutToRight { from { transform: translateX(0); opacity: 1; } to { transform: translateX(24px); opacity: 0; } }
+        @keyframes fadeInOverlay { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeOutOverlay { from { opacity: 1; } to { opacity: 0; } }
+        .drawer-slide-in { animation: slideInFromRight 320ms cubic-bezier(.22,1,.36,1) forwards; }
+        .drawer-slide-out { animation: slideOutToRight 220ms ease-in forwards; }
+        .overlay-fade-in { animation: fadeInOverlay 200ms ease-out forwards; }
+        .overlay-fade-out { animation: fadeOutOverlay 180ms ease-in forwards; }
+      `}</style>
 
-      <aside className="relative bg-white w-full max-w-sm h-full overflow-y-auto shadow-2xl">
+      <div className={`absolute inset-0 bg-black/30 ${isClosing ? 'overlay-fade-out' : 'overlay-fade-in'}`} onClick={handleRequestClose} />
+
+      <aside className={`relative bg-white w-full max-w-sm h-full overflow-y-auto shadow-2xl ${isClosing ? 'drawer-slide-out' : 'drawer-slide-in'}`}>
         <div className="bg-gradient-to-r from-yellow-400 to-yellow-500 pt-20 pb-6 p-5 text-white relative">
-          <button onClick={onClose} className="absolute left-4 top-8 text-white">
+          <button onClick={handleRequestClose} className="absolute left-4 top-8 text-white">
             <X className="w-5 h-5" />
           </button>
           <h2 className="text-2xl font-semibold">Detalles</h2>
