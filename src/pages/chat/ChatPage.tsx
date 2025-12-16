@@ -25,13 +25,13 @@ const REGIO_USER_ID = 'Regio';
 
 // Mapeo de IDs a nombres - EXPORTADO para que ConversationList lo pueda usar
 export const MOCK_USER_NAMES:  Record<string, string> = {
-  [HARVIES_USER_ID]: 'Harvies',
-  [REGIO_USER_ID]:  'Regio',
+  [HARVIES_USER_ID]:  'Harvies',
+  [REGIO_USER_ID]: 'Regio',
 };
 
-const MOCK_CONVERSATIONS:  ConversationResponse[] = [
+const MOCK_CONVERSATIONS: ConversationResponse[] = [
   {
-    conversationId:  'conv-harvies-001',
+    conversationId: 'conv-harvies-001',
     creationDate: new Date().toISOString(),
     usersIds: [userId, HARVIES_USER_ID],
     messageResponses: [],
@@ -54,11 +54,11 @@ const ChatPage = () => {
   const [sending, setSending] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
   const [otherUserTyping, setOtherUserTyping] = useState(false);
-  const [showMobileList, setShowMobileList] = useState(true); // Para mobile navigation
+  const [showMobileList, setShowMobileList] = useState(true);
   const typingTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const autoResponseTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const messages = currentConversation ?  (allMessages[currentConversation. conversationId] || []) : [];
+  const messages = currentConversation ?  (allMessages[currentConversation.conversationId] || []) : [];
 
   useEffect(() => {
     return () => {
@@ -73,7 +73,7 @@ const ChatPage = () => {
 
   const handleSelectConversation = (conversation: ConversationResponse) => {
     setCurrentConversation(conversation);
-    setShowMobileList(false); // En mobile, ocultar lista al seleccionar conversación
+    setShowMobileList(false);
     if (! allMessages[conversation.conversationId]) {
       setAllMessages(prev => ({
         ...prev,
@@ -91,9 +91,9 @@ const ChatPage = () => {
     const value = e. target.value;
     setMessageText(value);
 
-    if (!currentConversation) return;
+    if (! currentConversation) return;
 
-    if (value.trim() && !isTyping) {
+    if (value.trim() && ! isTyping) {
       setIsTyping(true);
     }
 
@@ -107,7 +107,7 @@ const ChatPage = () => {
   };
 
   const generateAutoResponse = () => {
-    if (!currentConversation) return;
+    if (! currentConversation) return;
 
     const randomResponse = AUTO_RESPONSES[Math.floor(Math.random() * AUTO_RESPONSES.length)];
     const otherUserId = currentConversation.usersIds.find((id: string) => id !== userId);
@@ -118,15 +118,15 @@ const ChatPage = () => {
       messageId: `msg-${Date.now()}-${Math.random()}`,
       conversationId: currentConversation.conversationId,
       authorId: otherUserId,
-      text: randomResponse,
+      text:  randomResponse,
       creationDate: new Date().toISOString(),
       isRead: false,
     };
 
     setAllMessages(prev => ({
       ...prev,
-      [currentConversation.conversationId]:  [
-        ...(prev[currentConversation. conversationId] || []),
+      [currentConversation.conversationId]: [
+        ...(prev[currentConversation.conversationId] || []),
         responseMessage
       ]
     }));
@@ -166,7 +166,7 @@ const ChatPage = () => {
       setAllMessages(prev => ({
         ... prev,
         [currentConversation.conversationId]: [
-          ...(prev[currentConversation. conversationId] || []),
+          ...(prev[currentConversation.conversationId] || []),
           newMessage
         ]
       }));
@@ -199,7 +199,7 @@ const ChatPage = () => {
     }
   };
 
-  const getConversationName = (conversation:  ConversationResponse) => {
+  const getConversationName = (conversation: ConversationResponse) => {
     const userIds = conversation.usersIds || [];
     const otherUserId = userIds.find((id: string) => id !== userId);
     
@@ -208,6 +208,19 @@ const ChatPage = () => {
     }
     
     return 'Conversación';
+  };
+
+  // Obtener el ID del otro usuario para el TypingIndicator
+  const getOtherUserId = () => {
+    if (! currentConversation) return null;
+    return currentConversation.usersIds.find((id: string) => id !== userId) || null;
+  };
+
+  // Obtener el nombre del otro usuario para el TypingIndicator
+  const getOtherUserName = () => {
+    const otherUserId = getOtherUserId();
+    if (!otherUserId) return '';
+    return MOCK_USER_NAMES[otherUserId] || '';
   };
 
   return (
@@ -224,19 +237,18 @@ const ChatPage = () => {
           flex-shrink-0
         `}
       >
-        {/* Header de la lista */}
         <div className="p-3 sm:p-4 bg-white border-b border-gray-200 flex-shrink-0">
           <div className="flex items-center justify-between">
             <h1 className="text-lg sm:text-xl font-semibold text-gray-700">Chats</h1>
             
             <div className="flex items-center space-x-1 sm:space-x-2">
-              <button className="p-1. 5 sm:p-2 hover:bg-gray-100 rounded-lg transition-colors" title="Ordenar">
-                <svg className="w-4 h-4 sm: w-5 sm:h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <button className="p-1.5 sm:p-2 hover:bg-gray-100 rounded-lg transition-colors" title="Ordenar">
+                <svg className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
                 </svg>
               </button>
               <button className="p-1.5 sm:p-2 hover:bg-gray-100 rounded-lg transition-colors" title="Filtrar">
-                <svg className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-4 h-4 sm:w-5 sm: h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4h18M3 12h18M3 20h18" />
                 </svg>
               </button>
@@ -249,7 +261,6 @@ const ChatPage = () => {
           </div>
         </div>
 
-        {/* Lista scrolleable */}
         <div className="flex-1 overflow-hidden">
           <ConversationList
             userId={userId}
@@ -274,10 +285,8 @@ const ChatPage = () => {
       >
         {currentConversation ? (
           <div className="flex-1 flex flex-col h-full">
-            {/* Header del chat */}
             <div className="p-3 sm:p-4 bg-white border-b border-gray-200 flex-shrink-0">
               <div className="flex items-center space-x-2 sm:space-x-3">
-                {/* Botón de volver en mobile */}
                 <button 
                   onClick={handleBackToList}
                   className="md:hidden p-2 hover: bg-gray-100 rounded-lg transition-colors"
@@ -301,12 +310,11 @@ const ChatPage = () => {
               </div>
             </div>
 
-            {/* Mensajes */}
             <div className="flex-1 overflow-y-auto">
               {messages.length === 0 && (
                 <div className="flex flex-col items-center justify-center h-full px-4 sm:px-6 space-y-3">
                   <p className="text-xs sm:text-sm text-gray-400 font-medium">
-                    {new Date().toLocaleDateString('es-ES', { day: '2-digit', month:  '2-digit', year: 'numeric' })}
+                    {new Date().toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' })}
                   </p>
                   <p className="text-xs sm:text-sm text-gray-500 text-center">
                     Te has unido a una conversación con {getConversationName(currentConversation)}
@@ -323,10 +331,27 @@ const ChatPage = () => {
                 loading={false}
               />
               
-              <TypingIndicator show={otherUserTyping} />
+              {/* TypingIndicator con el nombre y avatar correctos */}
+              {otherUserTyping && (
+                <div className="px-4 py-2">
+                  <div className="flex items-end space-x-2">
+                    <div className="w-8 h-8 rounded-full bg-black flex items-center justify-center flex-shrink-0">
+                      <span className="text-white font-bold text-xs">
+                        {getOtherUserName()[0]?.toUpperCase() || '? '}
+                      </span>
+                    </div>
+                    <div className="bg-gray-200 rounded-2xl px-4 py-2">
+                      <div className="flex space-x-1">
+                        <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+                        <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
+                        <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
 
-            {/* Input de mensaje */}
             <div className="p-3 sm:p-4 bg-white flex-shrink-0 border-t border-gray-100">
               <div className="flex items-center space-x-2 sm:space-x-3">
                 <input
@@ -357,7 +382,7 @@ const ChatPage = () => {
                     <div className="animate-spin rounded-full h-4 w-4 sm:h-5 sm:w-5 border-b-2 border-white"></div>
                   ) : (
                     <svg className="w-5 h-5 sm:w-6 sm:h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1. 6" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M22 12 L5 4 Q7 6. 4 8. 5 9.3 L10 12 L8.5 14.7 Q7 17.6 5 20 L22 12 Z" />
+                      <path d="M22 12 L5 4 Q7 6.4 8.5 9.3 L10 12 L8.5 14.7 Q7 17.6 5 20 L22 12 Z" />
                       <path d="M22 12 L10 12" />
                     </svg>
                   )}
