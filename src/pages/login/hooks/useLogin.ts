@@ -7,13 +7,14 @@ import apiClient from "@/lib/interceptors/apiClient";
 const roleMapping: Record<string, string> = {
     CUSTOMER: "user",
     TEACHER: "seller",
+    SELLER: "seller",
     DEAN: "admin",
 };
 
 const roleRoutes: Record<string, string> = {
-    user: "/",
-    seller: "/",
-    admin: "/",
+    user: "/catalog-user",
+    seller: "/orders-seller",
+    admin: "/dashboard",
 };
 
 export const useLogin = () => {
@@ -52,9 +53,12 @@ export const useLogin = () => {
             console.log("Usuario a guardar:", user);
 
             login(accessToken, user);
-            console.log("Login ejecutado, el Auth component manejará la redirección");
+            console.log("Login ejecutado, navegando según rol:", mappedRole);
             
-            // No navegamos aquí, dejamos que el useEffect en Auth maneje la navegación
+            // Navegar a la ruta específica según el rol
+            const redirectPath = roleRoutes[mappedRole] || "/catalog-user";
+            console.log("Navegando a:", redirectPath);
+            navigate(redirectPath, {replace: true});
         } catch (err: any) {
             console.error('Error en login:', err);
 
