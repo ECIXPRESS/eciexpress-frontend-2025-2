@@ -1,10 +1,10 @@
 import { Store } from '../types/store.types';
-import reggioImg from '@/assets/stores/reggio.jpg';
-import harviesImg from '@/assets/stores/harvies.jpg';
-import arepasImg from '@/assets/stores/arepas.jpg';
-import paperflashImg from '@/assets/stores/paperFlash.jpg';
-import fondeciImg from '@/assets/stores/fondeci.jpg';
-import papeleriaUImg from '@/assets/stores/papeleriaU.jpg';
+import reggioImg from '@/assets/stores/reggio.png';
+import harviesImg from '@/assets/stores/harvies.png';
+import arepasImg from '@/assets/stores/arepas.png';
+import paperflashImg from '@/assets/stores/paperFlash.png';
+import fondeciImg from '@/assets/stores/fondeci.png';
+import papeleriaUImg from '@/assets/stores/papeleriaU.png';
 
 export const storesMockData: Record<number, Store> = {
   1: {
