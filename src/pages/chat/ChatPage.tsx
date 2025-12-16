@@ -7,14 +7,11 @@ import { toast } from 'react-toastify';
 
 // Respuestas automáticas del bot
 const AUTO_RESPONSES = [
-  "En este momento tu pedido está siendo realizado, si ocurre alguna novedad, te avisaremos 📦",
-  "En este momento tenemos muchas órdenes, tu pedido puede sufrir un poco de retraso ⏰",
-  "Tu pedido va en camino, llegaremos en aproximadamente 20 minutos 🚗",
-  "¡Todo va perfecto! Tu pedido está siendo preparado con mucho cuidado 👨‍🍳",
-  "Estamos verificando tu pedido, cualquier actualización te la haremos saber 📋",
-  "Hay un poco de tráfico, pero vamos en camino.   Gracias por tu paciencia 🛵",
-  "Tu pedido ha sido confirmado y está en proceso ✅",
-  "El repartidor salió con tu pedido, llegará pronto 🎯",
+  "Ya estamos revisando tu pedido y en un momento te damos más info.",
+  "Estamos con tu pedido en este momento, apenas tengamos algo te avisamos.",
+  "Tenemos mas pedidos de lo normal, paciencia porfavor",
+  "Seguimos con tu pedido, cualquier cambio te avisamos.",
+  "Tu pedido sigue en proceso, te avisamos ante cualquier novedad."
 ];
 
 const userId = 'd66d2d30-56cb-410b-a5f0-9191c38f380e';
