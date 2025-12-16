@@ -133,8 +133,8 @@ export const ErrorModal: React.FC<ErrorModalProps> = ({
       case 'camera-unavailable':
         return {
           icon: CameraOff,
-          iconBg: 'bg-blue-100',
-          iconColor: 'text-blue-600',
+          iconBg: 'bg-amber-100',
+          iconColor: 'text-amber-600',
           title: 'Cámara No Disponible',
           message: 'No se pudo acceder a la cámara del dispositivo',
           details: 'Redirigiendo a validación manual...',
@@ -144,7 +144,7 @@ export const ErrorModal: React.FC<ErrorModalProps> = ({
             onClick: () => {
               if (onManualEntry) onManualEntry();
             },
-            color: 'bg-blue-500 hover:bg-blue-600',
+            color: 'bg-amber-500 hover:bg-amber-600',
           },
           secondaryAction: null,
         };

@@ -84,7 +84,7 @@ export const ProductoCard: React.FC<ProductoCardProps> = ({
 
         {/* Precio y stock */}
         <div className="flex items-center justify-between mb-3 pb-3 border-b border-gray-100">
-          <div className="flex items-center text-lg font-bold text-blue-600">
+          <div className="flex items-center text-lg font-bold text-amber-600">
             <DollarSign className="w-5 h-5" />
             <span>{producto.precio.toLocaleString()}</span>
           </div>
@@ -105,13 +105,13 @@ export const ProductoCard: React.FC<ProductoCardProps> = ({
         <div className="flex gap-2 mt-auto">
           <button 
             onClick={handleFlip}
-            className="flex-1 bg-white hover:bg-gray-50 text-blue-600 border-2 border-blue-500 py-2.5 px-3 rounded-xl text-sm font-semibold transition-all duration-200 flex items-center justify-center"
+            className="flex-1 bg-white hover:bg-gray-50 text-amber-600 border-2 border-amber-500 py-2.5 px-3 rounded-xl text-sm font-semibold transition-all duration-200 flex items-center justify-center"
           >
             Ver Detalles
           </button>
           <button 
             onClick={() => onEditStock(producto.id)}
-            className="flex-1 bg-blue-500 hover:bg-blue-600 text-white py-2.5 px-3 rounded-xl text-sm font-semibold transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg"
+            className="flex-1 bg-amber-500 hover:bg-amber-600 text-white py-2.5 px-3 rounded-xl text-sm font-semibold transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg"
           >
             <Edit3 className="w-4 h-4 mr-1.5" />
             Editar
@@ -125,11 +125,11 @@ export const ProductoCard: React.FC<ProductoCardProps> = ({
   const CardBack = () => (
     <div className="h-full flex flex-col">
       {/* Header con gradiente */}
-      <div className="bg-gradient-to-r from-blue-500 to-blue-600 text-white p-4 rounded-t-xl">
+      <div className="bg-gradient-to-r from-amber-500 to-amber-600 text-white p-4 rounded-t-xl">
         <div className="flex justify-between items-start mb-2">
           <div className="flex-1 min-w-0 mr-2">
             <h3 className="font-bold text-lg truncate">{producto.nombre}</h3>
-            <p className="text-sm text-blue-100">{producto.categoria}</p>
+            <p className="text-sm text-amber-100">{producto.categoria}</p>
           </div>
           <button 
             onClick={handleFlip}
@@ -140,7 +140,7 @@ export const ProductoCard: React.FC<ProductoCardProps> = ({
         </div>
         
         <div className="flex items-center justify-between mt-3 pt-3 border-t border-white/20">
-          <span className="text-sm text-blue-100">Precio</span>
+          <span className="text-sm text-amber-100">Precio</span>
           <div className="flex items-center text-2xl font-bold">
             <DollarSign className="w-6 h-6" />
             <span>{producto.precio.toLocaleString()}</span>
@@ -180,9 +180,9 @@ export const ProductoCard: React.FC<ProductoCardProps> = ({
         )}
 
         {/* Última actualización */}
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
-          <p className="text-xs font-semibold text-blue-800 mb-1">Última actualización</p>
-          <p className="text-sm text-blue-900">
+        <div className="bg-amber-50 border border-amber-200 rounded-lg p-3">
+          <p className="text-xs font-semibold text-amber-800 mb-1">Última actualización</p>
+          <p className="text-sm text-amber-900">
             {new Date(producto.fechaActualizacion).toLocaleDateString('es-CO', {
               day: 'numeric',
               month: 'long',
@@ -198,7 +198,7 @@ export const ProductoCard: React.FC<ProductoCardProps> = ({
       <div className="p-4 border-t border-gray-100">
         <button 
           onClick={() => onEditStock(producto.id)}
-          className="w-full bg-blue-500 hover:bg-blue-600 text-white py-3 px-4 rounded-xl font-semibold transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg"
+          className="w-full bg-amber-500 hover:bg-amber-600 text-white py-3 px-4 rounded-xl font-semibold transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg"
         >
           <Edit3 className="w-4 h-4 mr-2" />
           Editar Stock

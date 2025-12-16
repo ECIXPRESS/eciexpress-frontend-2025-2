@@ -52,7 +52,7 @@ export const PedidoCard: React.FC<PedidoCardProps> = ({ pedido, onValidar, onVer
           </div>
           <div className="flex flex-col items-end gap-1 text-xs text-gray-600">
             <div className="flex items-center gap-1 font-semibold text-gray-800">
-              <CreditCard className="w-4 h-4 text-blue-600" />
+              <CreditCard className="w-4 h-4 text-amber-600" />
               <span className="capitalize">{pedido.metodoPago}</span>
             </div>
             <span className={`px-2 py-1 rounded-full text-[11px] font-semibold ${pedido.pagado ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'}`}>
@@ -62,7 +62,7 @@ export const PedidoCard: React.FC<PedidoCardProps> = ({ pedido, onValidar, onVer
         </div>
 
         <div className="bg-gray-50 border border-gray-200 rounded-lg p-3 text-sm text-gray-700">
-          <p className="font-semibold text-blue-600 mb-1">{pedido.productos.length} producto(s)</p>
+          <p className="font-semibold text-amber-600 mb-1">{pedido.productos.length} producto(s)</p>
           <p className="text-gray-600 leading-snug">
             {resumen}
             {restantes > 0 && ` +${restantes} más`}
@@ -78,7 +78,7 @@ export const PedidoCard: React.FC<PedidoCardProps> = ({ pedido, onValidar, onVer
         <div className="mt-auto grid grid-cols-2 gap-2">
           <button
             onClick={() => onVerDetalles(pedido.id)}
-            className="w-full bg-white border-2 border-blue-500 text-blue-600 hover:bg-blue-50 rounded-lg py-2.5 px-3 text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-2"
+            className="w-full bg-white border-2 border-amber-500 text-amber-600 hover:bg-amber-50 rounded-lg py-2.5 px-3 text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-2"
           >
             <Eye className="w-4 h-4" />
             Ver detalles
@@ -88,7 +88,7 @@ export const PedidoCard: React.FC<PedidoCardProps> = ({ pedido, onValidar, onVer
             disabled={pedido.estado !== 'preparacion'}
             className={`w-full rounded-lg py-2.5 px-3 text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-2 ${
               pedido.estado === 'preparacion'
-                ? 'bg-blue-500 hover:bg-blue-600 text-white shadow-md hover:shadow-lg'
+                ? 'bg-amber-500 hover:bg-amber-600 text-white shadow-md hover:shadow-lg'
                 : 'bg-gray-200 text-gray-500 cursor-not-allowed'
             }`}
           >

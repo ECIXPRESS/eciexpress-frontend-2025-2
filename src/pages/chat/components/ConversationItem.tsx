@@ -62,13 +62,13 @@ const ConversationItem = ({ conversation, isActive, onClick, currentUserId, getU
       onClick={onClick}
       className={`
         flex items-center space-x-3 p-4 cursor-pointer transition-colors border-b border-gray-100
-        ${isActive ? 'bg-blue-50 border-l-4 border-l-blue-600' : 'hover:bg-gray-50'}
+        ${isActive ? 'bg-amber-50 border-l-4 border-l-amber-600' : 'hover:bg-gray-50'}
       `}
     >
       {/* Avatar */}
       <div className={`
         w-12 h-12 rounded-full flex items-center justify-center text-white font-bold flex-shrink-0
-        ${isActive ? 'bg-blue-600' : 'bg-gradient-to-br from-blue-400 to-blue-600'}
+        ${isActive ? 'bg-amber-600' : 'bg-gradient-to-br from-amber-400 to-amber-600'}
       `}>
         {getInitial()}
       </div>
@@ -76,7 +76,7 @@ const ConversationItem = ({ conversation, isActive, onClick, currentUserId, getU
       {/* Info */}
       <div className="flex-1 min-w-0">
         <div className="flex items-center justify-between mb-1">
-          <h3 className={`font-semibold truncate ${isActive ? 'text-blue-900' : 'text-gray-900'}`}>
+          <h3 className={`font-semibold truncate ${isActive ? 'text-amber-900' : 'text-gray-900'}`}>
             {getConversationName()}
           </h3>
           <span className="text-xs text-gray-500 flex-shrink-0 ml-2">
@@ -90,7 +90,7 @@ const ConversationItem = ({ conversation, isActive, onClick, currentUserId, getU
 
       {/* Unread badge */}
       {unreadCount > 0 && (
-        <div className="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
+        <div className="w-6 h-6 bg-amber-600 rounded-full flex items-center justify-center flex-shrink-0">
           <span className="text-xs text-white font-bold">
             {unreadCount > 9 ? '9+' : unreadCount}
           </span>

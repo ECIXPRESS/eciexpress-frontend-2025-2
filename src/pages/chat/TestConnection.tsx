@@ -167,7 +167,7 @@ const TestConnection = () => {
           </p>
         </div>
 
-        <div className="mb-4 p-4 bg-blue-50 rounded-lg">
+        <div className="mb-4 p-4 bg-amber-50 rounded-lg">
           <p className="text-lg font-semibold mb-2">Estado: {status}</p>
         </div>
 
@@ -187,7 +187,7 @@ const TestConnection = () => {
             <button
               onClick={testGateway}
               disabled={loading}
-              className="px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-400 transition-colors font-medium"
+              className="px-4 py-3 bg-amber-600 text-white rounded-lg hover:bg-amber-700 disabled:bg-gray-400 transition-colors font-medium"
             >
               {loading ? '⏳ Probando.. .' : '🌐 Test Gateway'}
             </button>
@@ -223,7 +223,7 @@ const TestConnection = () => {
         </div>
       </div>
 
-      <div className="bg-blue-50 border-l-4 border-blue-400 p-4 rounded mb-4">
+      <div className="bg-amber-50 border-l-4 border-amber-400 p-4 rounded mb-4">
         <h3 className="font-semibold mb-2">💡 Explicación: </h3>
         <ul className="list-disc list-inside text-sm space-y-1">
           <li><strong>SockJS/STOMP:</strong> El método correcto para tu servidor</li>

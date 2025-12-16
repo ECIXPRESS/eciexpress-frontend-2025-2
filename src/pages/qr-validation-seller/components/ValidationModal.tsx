@@ -220,7 +220,7 @@ export const ValidationModal: React.FC<ValidationModalProps> = ({
                   flex-1 flex items-center justify-center gap-2 py-4 px-4 font-semibold text-sm
                   transition-all duration-200 relative
                   ${activeTab === 'qr'
-                    ? 'text-blue-600 bg-white'
+                    ? 'text-amber-600 bg-white'
                     : 'text-gray-500 bg-gray-50 hover:text-gray-700 hover:bg-gray-100'
                   }
                 `}
@@ -228,7 +228,7 @@ export const ValidationModal: React.FC<ValidationModalProps> = ({
                 <QrCode className="w-5 h-5" />
                 <span>Escanear QR</span>
                 {activeTab === 'qr' && (
-                  <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600" />
+                  <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-amber-600" />
                 )}
               </button>
               
@@ -239,7 +239,7 @@ export const ValidationModal: React.FC<ValidationModalProps> = ({
                   flex-1 flex items-center justify-center gap-2 py-4 px-4 font-semibold text-sm
                   transition-all duration-200 relative
                   ${activeTab === 'manual'
-                    ? 'text-blue-600 bg-white'
+                    ? 'text-amber-600 bg-white'
                     : 'text-gray-500 bg-gray-50 hover:text-gray-700 hover:bg-gray-100'
                   }
                 `}
@@ -247,18 +247,18 @@ export const ValidationModal: React.FC<ValidationModalProps> = ({
                 <Hash className="w-5 h-5" />
                 <span>Código Manual</span>
                 {activeTab === 'manual' && (
-                  <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600" />
+                  <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-amber-600" />
                 )}
               </button>
             </div>
 
             {/* Título dinámico según pestaña */}
             <div className="text-center p-6">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-3">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-amber-100 rounded-full mb-3">
                 {activeTab === 'qr' ? (
-                  <QrCode className="w-8 h-8 text-blue-600" />
+                  <QrCode className="w-8 h-8 text-amber-600" />
                 ) : (
-                  <Hash className="w-8 h-8 text-blue-600" />
+                  <Hash className="w-8 h-8 text-amber-600" />
                 )}
               </div>
               <h3 className="font-bold text-xl text-gray-900 mb-1">
@@ -334,7 +334,7 @@ export const ValidationModal: React.FC<ValidationModalProps> = ({
                       <p className="text-gray-300 text-sm mb-6 max-w-xs mx-auto">{qrError}</p>
                       <button
                         onClick={startScanning}
-                        className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-xl text-sm font-semibold transition-all duration-200 shadow-lg"
+                        className="bg-amber-500 hover:bg-amber-600 text-white px-6 py-3 rounded-xl text-sm font-semibold transition-all duration-200 shadow-lg"
                       >
                         Reintentar
                       </button>
@@ -367,7 +367,7 @@ export const ValidationModal: React.FC<ValidationModalProps> = ({
                       className={`
                         w-full px-3 py-3 bg-gray-50 rounded-lg text-center text-base font-bold uppercase
                         border-2 transition-all duration-200
-                        focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
+                        focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500
                         placeholder:text-gray-400 placeholder:font-normal placeholder:normal-case placeholder:text-sm
                         ${error ? 'border-red-400 shake bg-red-50' : 'border-gray-200'}
                       `}
@@ -485,7 +485,7 @@ export const ValidationModal: React.FC<ValidationModalProps> = ({
                       window.dispatchEvent(event);
                     }, 300);
                   }}
-                  className="text-xs bg-blue-50 hover:bg-blue-100 text-blue-700 py-2.5 px-3 rounded-lg font-semibold transition-colors duration-200 border border-blue-200"
+                  className="text-xs bg-amber-50 hover:bg-amber-100 text-amber-700 py-2.5 px-3 rounded-lg font-semibold transition-colors duration-200 border border-amber-200"
                 >
                   Cámara No Disponible
                 </button>

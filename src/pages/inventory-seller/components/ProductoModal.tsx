@@ -101,7 +101,7 @@ export const ProductoModal: React.FC<ProductoModalProps> = ({
         <div className="bg-white rounded-xl shadow-2xl overflow-hidden">
           <div className="h-full flex flex-col max-h-[85vh]">
             {/* Header */}
-            <div className="bg-gradient-to-r from-blue-500 to-blue-600 text-white p-4 flex-shrink-0">
+            <div className="bg-gradient-to-r from-amber-500 to-amber-600 text-white p-4 flex-shrink-0">
               <div className="flex justify-between items-start mb-2">
                 <div>
                   <h3 className="font-bold text-lg">{producto.nombre}</h3>
@@ -112,7 +112,7 @@ export const ProductoModal: React.FC<ProductoModalProps> = ({
               </div>
               
               <div className="flex items-center justify-between mt-3 pt-3 border-t border-white/20">
-                <span className="text-sm text-blue-100">Precio de venta</span>
+                <span className="text-sm text-amber-100">Precio de venta</span>
                 <div className="flex items-center text-2xl font-bold">
                   <DollarSign className="w-6 h-6" />
                   <span>{producto.precio.toLocaleString()}</span>
@@ -125,7 +125,7 @@ export const ProductoModal: React.FC<ProductoModalProps> = ({
               {/* Estado del stock */}
               <div className="mb-4">
                 <h4 className="font-bold text-gray-900 text-sm mb-2 flex items-center">
-                  <Package className="w-4 h-4 mr-1.5 text-blue-600" />
+                  <Package className="w-4 h-4 mr-1.5 text-amber-600" />
                   Información de Stock
                 </h4>
                 <div className="bg-gray-50 rounded-lg p-3 space-y-2">
@@ -148,7 +148,7 @@ export const ProductoModal: React.FC<ProductoModalProps> = ({
               {producto.descripcion && (
                 <div className="mb-4">
                   <h4 className="font-bold text-gray-900 text-sm mb-2 flex items-center">
-                    <Tag className="w-4 h-4 mr-1.5 text-blue-600" />
+                    <Tag className="w-4 h-4 mr-1.5 text-amber-600" />
                     Descripción
                   </h4>
                   <p className="text-sm text-gray-600 bg-gray-50 rounded-lg p-3">
@@ -158,12 +158,12 @@ export const ProductoModal: React.FC<ProductoModalProps> = ({
               )}
 
               {/* Última actualización */}
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+              <div className="bg-amber-50 border border-amber-200 rounded-lg p-3">
                 <div className="flex items-center gap-2 mb-1">
-                  <Calendar className="w-4 h-4 text-blue-600" />
-                  <p className="text-xs font-semibold text-blue-800">Última actualización</p>
+                  <Calendar className="w-4 h-4 text-amber-600" />
+                  <p className="text-xs font-semibold text-amber-800">Última actualización</p>
                 </div>
-                <p className="text-sm text-blue-900">
+                <p className="text-sm text-amber-900">
                   {new Date(producto.fechaActualizacion).toLocaleDateString('es-CO', {
                     day: 'numeric',
                     month: 'long',
@@ -182,7 +182,7 @@ export const ProductoModal: React.FC<ProductoModalProps> = ({
                   onClose();
                   onEditStock(producto.id);
                 }}
-                className="w-full bg-blue-500 hover:bg-blue-600 text-white py-3 px-4 rounded-xl font-semibold transition-all duration-200 shadow-md hover:shadow-lg"
+                className="w-full bg-amber-500 hover:bg-amber-600 text-white py-3 px-4 rounded-xl font-semibold transition-all duration-200 shadow-md hover:shadow-lg"
               >
                 Editar Stock
               </button>
