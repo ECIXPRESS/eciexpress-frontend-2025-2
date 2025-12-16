@@ -25,11 +25,6 @@
     font-style: normal;
 }
 
-. {
-    font-family: "OpenSans";
-    font-weight: 400;
-}
-
 #root {
     font-family: "OpenSans", system-ui, Avenir, Helvetica, Arial, sans-serif;
     font-size: 16px;
@@ -70,12 +65,12 @@ a:hover {
 }
 
 body {
-    background-color: #F1F1F1;
+    font-family: "OpenSans", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    font-weight: 400;
     margin: 0;
+    min-height: 100vh;
     display: flex;
-    place-items: center;
-    height: 100%;
-    width: 100%;
+    flex-direction: column;
 }
 
 label {
