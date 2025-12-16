@@ -9,5 +9,14 @@ export default defineConfig({
         alias: {
             '@': path.resolve(__dirname, './src')
         }
+    },
+  define: {
+    global: 'globalThis',
+    'process.env':  {}
+  },
+  server: {
+    port: 5173,
+    proxy: {
     }
+  }
 })
