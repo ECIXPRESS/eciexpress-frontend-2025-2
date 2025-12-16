@@ -131,7 +131,7 @@ export const StockEditModal: React.FC<StockEditModalProps> = ({
         
         <div className="bg-white rounded-2xl shadow-2xl overflow-hidden">
           {/* Header */}
-          <div className="bg-gradient-to-r from-amber-500 to-amber-600 text-white p-6 text-center">
+          <div className="bg-gradient-to-r from-yellow-400 to-yellow-500 text-white p-6 text-center">
             <div className="inline-flex items-center justify-center w-16 h-16 bg-white/20 rounded-full mb-3">
               <Package className="w-8 h-8 text-white" />
             </div>
@@ -165,15 +165,15 @@ export const StockEditModal: React.FC<StockEditModalProps> = ({
                   type="number"
                   value={newStock}
                   onChange={handleInputChange}
-                  className="w-24 text-center text-3xl font-bold text-gray-900 border-2 border-gray-200 rounded-xl py-3 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
+                  className="w-24 text-center text-3xl font-bold text-gray-900 border-2 border-gray-200 rounded-xl py-3 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
                   min="0"
                 />
                 
                 <button
                   onClick={handleIncrement}
-                  className="w-12 h-12 rounded-full bg-amber-100 hover:bg-amber-200 transition-colors duration-200 flex items-center justify-center"
+                  className="w-12 h-12 rounded-full bg-yellow-50 hover:bg-yellow-100 transition-colors duration-200 flex items-center justify-center"
                 >
-                  <Plus className="w-5 h-5 text-amber-700" />
+                  <Plus className="w-5 h-5 text-yellow-700" />
                 </button>
               </div>
             </div>
@@ -217,7 +217,7 @@ export const StockEditModal: React.FC<StockEditModalProps> = ({
                 className={`
                   w-full py-3.5 px-4 rounded-xl font-bold transition-all duration-200
                   ${hasChanged
-                    ? 'bg-amber-500 hover:bg-amber-600 text-white shadow-lg hover:shadow-xl'
+                    ? 'bg-yellow-400 hover:bg-yellow-500 text-white shadow-lg hover:shadow-xl'
                     : 'bg-gray-200 text-gray-400 cursor-not-allowed'
                   }
                 `}
