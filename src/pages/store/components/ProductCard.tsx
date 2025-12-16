@@ -1,6 +1,7 @@
 import { StoreProduct } from '../types/store.types';
 import { Star, Clock, Plus } from 'lucide-react';
 import { toast } from 'react-toastify';
+import { useCart } from '../../cart/context/CartContext';
 
 interface ProductCardProps {
   product: StoreProduct;
@@ -8,9 +9,22 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ product, onProductClick }: ProductCardProps) {
-  const handleAddToCart = (e: React.MouseEvent, productName: string) => {
+  const { addToCart } = useCart();
+  
+  const handleAddToCart = (e: React.MouseEvent) => {
     e.stopPropagation();
-    toast.success(`${productName} agregado al carrito`, {
+    addToCart(
+      {
+        productId: product.id.toString(),
+        name: product.name,
+        description: product.description,
+        price: product.price,
+        imageUrl: '',
+        maxQuantity: 99
+      },
+      1
+    );
+    toast.success(`${product.name} agregado al carrito`, {
       position: 'bottom-right',
       autoClose: 2000,
     });
@@ -56,7 +70,7 @@ export default function ProductCard({ product, onProductClick }: ProductCardProp
             )}
           </div>
           <button
-            onClick={(e) => handleAddToCart(e, product.name)}
+            onClick={handleAddToCart}
             className="w-12 h-12 sm:w-14 sm:h-14 bg-[#5AC7E1] hover:bg-cyan-500 rounded-xl flex items-center justify-center transition-colors shadow-md"
           >
             <Plus className="w-6 h-6 sm:w-7 sm:h-7 text-white stroke-[3]" />

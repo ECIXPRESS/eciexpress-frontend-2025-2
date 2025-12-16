@@ -5,6 +5,7 @@ import ProductImage from './ProductImage';
 import ProductInfo from './ProductInfo';
 import RelatedProducts from './RelatedProducts';
 import { getProductById, getRelatedProducts } from '../mock/productMock';
+import { useCart } from '../../cart/context/CartContext';
 
 /**
  * Página principal de detalle de producto
@@ -14,6 +15,7 @@ import { getProductById, getRelatedProducts } from '../mock/productMock';
 export default function ProductDetailPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const { addToCart } = useCart();
 
   // Obtener producto desde mock data
   const product = id ? getProductById(id) : undefined;
@@ -42,13 +44,16 @@ export default function ProductDetailPage() {
   }
 
   const handleAddToCart = (quantity: number, selectedOptions: Record<string, string>) => {
-    console.log('Agregado al carrito:', {
-      productId: product.id,
-      quantity,
-      selectedOptions,
-      totalPrice: product.price * quantity
-    });
-    
+    addToCart(
+      {
+        productId: product.id,
+        name: product.name,
+        price: product.price,
+        imageUrl: product.imageUrl,
+        maxQuantity: product.stock
+      },
+      quantity
+    );
   };
 
   const handleShare = () => {
