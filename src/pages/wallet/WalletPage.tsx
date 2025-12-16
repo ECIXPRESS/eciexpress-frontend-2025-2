@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useWallet } from '@/utils/context/WalletProvider';
+import { useWallet } from '@/lib/context/WalletProvider';
 import { toast } from 'react-toastify';
 import { WalletCard, MovementsList, RechargeModal, ProximosPedidos, SettingsPanel } from './index';
 import { mockProximosPedidos } from './mock/mockWalletData';

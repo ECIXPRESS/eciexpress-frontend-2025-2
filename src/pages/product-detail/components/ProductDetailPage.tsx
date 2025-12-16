@@ -48,6 +48,7 @@ export default function ProductDetailPage() {
       {
         productId: product.id,
         name: product.name,
+        description: product.description,
         price: product.price,
         imageUrl: product.imageUrl,
         maxQuantity: product.stock

@@ -4,6 +4,7 @@ import {CartProvider} from "@/pages/cart/context/CartContext";
 import {AuthProvider} from "@/lib/context/AuthProvider";
 import {WalletProvider} from "@/lib/context/WalletProvider";
 import Layout from "@/lib/navegation/Layout";
+import { ProtectedRoute } from "@/lib/navegation/ProtectedRoute";
 
 const Auth = lazy(() => import("@/pages/login/Auth"));
 const Home = lazy(() => import("@/pages/home/components/Home"));
@@ -31,56 +32,34 @@ function App() {
                 <CartProvider>
                     <Suspense fallback={<LoadingFallback/>}>
                         <Routes>
-                            <Route path="/auth" element={<Auth/>}/>
-                            <Route path="/login" element={<Navigate to="/auth" replace/>}/>
-                            <Route path="/signup" element={<Navigate to="/auth" replace/>}/>
-
-                            <Route
-                                path="/forgot-password"
-                                element={<PasswordRecoveryContainer/>}
-                            />
-                            {/* Ruta principal */}
-                            <Route path="/" element={<Layout/>}>
-                                <Route index element={<Home/>}/>
-
-                                {/* Ruta de estadísticas */}
-                                <Route path="/statistics" element={<StatisticsPage/>}/>
-
-                                {/* Ruta de billetera */}
-                                <Route path="/wallet" element={<WalletPage/>}/>
-
-                                {/* Ruta de detalle de producto */}
-                                <Route path="/product/:id" element={<ProductDetailPage/>}/>
-
-                                {/* Ruta de tienda */}
-                                <Route path="/store/:storeId" element={<StorePage/>}/>
-
-                                {/* Ruta de carrito */}
-                                <Route path="/cart" element={<CartPage/>}/>
-                                <Route path="/orders" element={<OrdersUserPage/>}/>
-                                {/* Ruta de chat */}
-                                <Route path="/chat" element={<ChatPage/>}/>
-
-                                {/* Rutas para seller - Inventario/Catálogo */}
-                                <Route path="/catalog" element={<InventorySellerPage/>}/>
-
-                                {/* Rutas para seller - Pedidos */}
-                                <Route path="/orders-seller" element={<QRValidationSellerPage/>}/>
-
-                                <Route path="/dashboard"
-                                       element={<div className="p-8 text-2xl">Dashboard - Próximamente</div>}/>
-                                <Route path="/sellers"
-                                       element={<div className="p-8 text-2xl">Vendedores - Próximamente</div>}/>
-                                <Route path="/promotions"
-                                       element={<div className="p-8 text-2xl">Promociones - Próximamente</div>}/>
-                            </Route>
-
-                            {/* Ruta de autenticación */}
-                            <Route path="/auth" element={<Auth/>}/>
+                            {/* Rutas públicas */}
+                            <Route path="/Auth" element={<Auth/>}/>
+                            <Route path="/login" element={<Navigate to="/Auth" replace/>}/>
+                            <Route path="/signup" element={<Navigate to="/Auth" replace/>}/>
+                            <Route path="/forgot-password" element={<PasswordRecoveryContainer/>}/>
                             <Route path="/password-recovery" element={<PasswordRecoveryContainer/>}/>
 
-                            {/* Redirigir cualquier otra ruta al home */}
-                            <Route path="*" element={<Navigate to="/" replace/>}/>
+                            {/* Rutas protegidas */}
+                            <Route element={<ProtectedRoute />}>
+                                <Route element={<Layout />}>
+                                    <Route path="/" element={<Home/>}/>
+                                    <Route path="/statistics" element={<StatisticsPage/>}/>
+                                    <Route path="/wallet" element={<WalletPage/>}/>
+                                    <Route path="/product/:id" element={<ProductDetailPage/>}/>
+                                    <Route path="/store/:storeId" element={<StorePage/>}/>
+                                    <Route path="/cart" element={<CartPage/>}/>
+                                    <Route path="/orders" element={<OrdersUserPage/>}/>
+                                    <Route path="/chat" element={<ChatPage/>}/>
+                                    <Route path="/catalog" element={<InventorySellerPage/>}/>
+                                    <Route path="/orders-seller" element={<QRValidationSellerPage/>}/>
+                                    <Route path="/dashboard" element={<div className="p-8 text-2xl">Dashboard - Próximamente</div>}/>
+                                    <Route path="/sellers" element={<div className="p-8 text-2xl">Vendedores - Próximamente</div>}/>
+                                    <Route path="/promotions" element={<div className="p-8 text-2xl">Promociones - Próximamente</div>}/>
+                                </Route>
+                            </Route>
+
+                            {/* Redirigir cualquier otra ruta a Auth */}
+                            <Route path="*" element={<Navigate to="/Auth" replace/>}/>
                         </Routes>
                     </Suspense>
                 </CartProvider>
@@ -88,6 +67,5 @@ function App() {
         </AuthProvider>
     );
 }
-
 
 export default App;
