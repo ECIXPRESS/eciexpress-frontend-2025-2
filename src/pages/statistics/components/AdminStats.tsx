@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { DollarSign, ShoppingBag, Users as UsersIcon, Download, Calendar } from 'lucide-react';
+import DatePicker from './DatePicker';
 import StatsCard from './StatsCard';
 import OrdersChart from './OrdersChart';
 import UsersChart from './UsersChart';
@@ -19,6 +20,32 @@ export default function AdminStats() {
   const [selectedStore, setSelectedStore] = useState('');
   const [selectedProduct, setSelectedProduct] = useState('');
   const [activeTab, setActiveTab] = useState('Reggio');
+
+  const startPickerRef = useRef<HTMLDivElement | null>(null);
+  const endPickerRef = useRef<HTMLDivElement | null>(null);
+  const [showStartPicker, setShowStartPicker] = useState(false);
+  const [showEndPicker, setShowEndPicker] = useState(false);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (startPickerRef.current && !startPickerRef.current.contains(e.target as Node)) {
+        setShowStartPicker(false);
+      }
+      if (endPickerRef.current && !endPickerRef.current.contains(e.target as Node)) {
+        setShowEndPicker(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const formatDisplay = (d: string) => {
+    if (!d) return '';
+    try {
+      const [y, m, day] = d.split('-');
+      return `${day}/${m}/${y.slice(2)}`;
+    } catch { return d; }
+  };
 
   const handleExport = async (format: 'pdf' | 'excel') => {
     await statisticsService.exportAllStatistics('ALL-STORES', format);
@@ -55,28 +82,46 @@ export default function AdminStats() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Fecha inicio</label>
-              <div className="relative">
+              <div className="relative" ref={startPickerRef}>
                 <input
                   type="text"
                   placeholder="dd/mm/yy"
-                  value={startDate}
-                  onChange={(e) => setStartDate(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#5AC7E1] focus:border-transparent"
+                  readOnly
+                  value={formatDisplay(startDate)}
+                  onClick={() => setShowStartPicker(prev => !prev)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#5AC7E1] focus:border-transparent cursor-pointer"
                 />
-                <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <button type="button" onClick={() => setShowStartPicker(prev => !prev)} className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full flex items-center justify-center bg-white/0 hover:bg-gray-50 transition-colors">
+                  <Calendar className="w-5 h-5 text-gray-400" />
+                </button>
+
+                {showStartPicker && (
+                  <div className="absolute z-50 right-0 mt-2 w-72">
+                    <DatePicker value={startDate} onChange={(v) => { setStartDate(v); setShowStartPicker(false); }} />
+                  </div>
+                )}
               </div>
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Fecha fin</label>
-              <div className="relative">
+              <div className="relative" ref={endPickerRef}>
                 <input
                   type="text"
                   placeholder="dd/mm/yy"
-                  value={endDate}
-                  onChange={(e) => setEndDate(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#5AC7E1] focus:border-transparent"
+                  readOnly
+                  value={formatDisplay(endDate)}
+                  onClick={() => setShowEndPicker(prev => !prev)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#5AC7E1] focus:border-transparent cursor-pointer"
                 />
-                <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <button type="button" onClick={() => setShowEndPicker(prev => !prev)} className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full flex items-center justify-center bg-white/0 hover:bg-gray-50 transition-colors">
+                  <Calendar className="w-5 h-5 text-gray-400" />
+                </button>
+
+                {showEndPicker && (
+                  <div className="absolute z-50 right-0 mt-2 w-72">
+                    <DatePicker value={endDate} onChange={(v) => { setEndDate(v); setShowEndPicker(false); }} />
+                  </div>
+                )}
               </div>
             </div>
             <div>
@@ -187,7 +232,7 @@ export default function AdminStats() {
               <span className="text-sm text-gray-600">Harvies</span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-4 h-4 rounded bg-[#FDDF65]"></div>
+              <div className="w-4 h-4 rounded bg-yellow-400" />
               <span className="text-sm text-gray-600">Cafetería I-H</span>
             </div>
           </div>
