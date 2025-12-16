@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { PedidosList, FiltrosPedidos, EstadoNavigation as EstadoNavigationPedidos, ValidationModal } from './index';
+import { PedidosList, FiltrosPedidos, EstadoNavigation as EstadoNavigationPedidos, ValidationModal, SuccessModal, ErrorModal } from './index';
 import type { Pedido, FiltrosPedidosType, ResumenPedidosType } from './index';
 import { mockPedidos } from './mocks/mockPedidos';
 
@@ -12,10 +12,17 @@ export default function QRValidationSellerPage() {
   const [estadoActivo, setEstadoActivo] = useState('todos');
   const [modalValidacionAbierto, setModalValidacionAbierto] = useState(false);
   const [pedidoSeleccionado, setPedidoSeleccionado] = useState<string | null>(null);
+  const [successModalOpen, setSuccessModalOpen] = useState(false);
+  const [errorModalOpen, setErrorModalOpen] = useState(false);
+  const [validatedCode, setValidatedCode] = useState<string>('');
+  const [errorType, setErrorType] = useState<'qr-invalid' | 'order-not-found' | 'camera-unavailable'>('qr-invalid');
+  const [errorCode, setErrorCode] = useState<string>('');
+  const [initialTab, setInitialTab] = useState<'qr' | 'manual'>('qr');
 
   const handleValidatePedido = (id: string) => {
     // Abrir el modal de validación en lugar de completar directamente
     setPedidoSeleccionado(id);
+    setInitialTab('qr');
     setModalValidacionAbierto(true);
   };
 
@@ -27,13 +34,42 @@ export default function QRValidationSellerPage() {
         p.id === pedidoSeleccionado ? { ...p, estado: "completado" } : p
       ));
     }
+    setValidatedCode(codigo);
     setModalValidacionAbierto(false);
-    setPedidoSeleccionado(null);
+    setSuccessModalOpen(true);
   };
 
   const handleCerrarModal = () => {
     setModalValidacionAbierto(false);
     setPedidoSeleccionado(null);
+    setInitialTab('qr');
+  };
+
+  const handleCloseSuccess = () => {
+    setSuccessModalOpen(false);
+    setPedidoSeleccionado(null);
+    setValidatedCode('');
+  };
+
+  const handleCloseError = () => {
+    setErrorModalOpen(false);
+    setErrorCode('');
+  };
+
+  const handleErrorManualEntry = () => {
+    setErrorModalOpen(false);
+    setInitialTab('manual');
+    setTimeout(() => {
+      setModalValidacionAbierto(true);
+    }, 300);
+  };
+
+  const handleErrorRetry = () => {
+    setErrorModalOpen(false);
+    setInitialTab('qr');
+    setTimeout(() => {
+      setModalValidacionAbierto(true);
+    }, 300);
   };
 
   const handleVerDetalles = (id: string) => {
@@ -94,6 +130,24 @@ export default function QRValidationSellerPage() {
         onClose={handleCerrarModal}
         onSuccess={handleValidacionExitosa}
         pedidoId={pedidoSeleccionado || ''}
+        initialTab={initialTab}
+      />
+
+      {/* Modal de éxito */}
+      <SuccessModal
+        isOpen={successModalOpen}
+        onClose={handleCloseSuccess}
+        code={validatedCode}
+      />
+
+      {/* Modal de error */}
+      <ErrorModal
+        isOpen={errorModalOpen}
+        onClose={handleCloseError}
+        errorType={errorType}
+        code={errorCode}
+        onManualEntry={handleErrorManualEntry}
+        onRetry={handleErrorRetry}
       />
     </div>
   );
