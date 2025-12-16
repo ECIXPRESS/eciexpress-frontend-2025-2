@@ -9,7 +9,7 @@ export default function QRValidationSellerPage() {
     query: '',
     estado: undefined
   });
-  const [estadoActivo, setEstadoActivo] = useState('todos');
+  const [estadoActivo, setEstadoActivo] = useState('total');
   const [modalValidacionAbierto, setModalValidacionAbierto] = useState(false);
   const [pedidoSeleccionado, setPedidoSeleccionado] = useState<string | null>(null);
   const [successModalOpen, setSuccessModalOpen] = useState(false);
@@ -76,6 +76,20 @@ export default function QRValidationSellerPage() {
     console.log("Ver detalles del pedido:", id);
   };
 
+  /**
+   * handleEstadoChange - sincroniza el estado activo del header con los filtros
+   * mapea las keys del header ('total','pendientes','completados') a los valores
+   * de filtros.estado (undefined,'preparacion','completado') para que ambos
+   * controles se mantengan sincronizados.
+   */
+  const handleEstadoChange = (key: string) => {
+    setEstadoActivo(key);
+    setFiltros(prev => ({
+      ...prev,
+      estado: key === 'pendientes' ? 'preparacion' : key === 'completados' ? 'completado' : undefined
+    }));
+  };
+
   // Calcular resumen de pedidos
   const resumen: ResumenPedidosType = useMemo(() => {
     const total = pedidos.length;
@@ -110,7 +124,7 @@ export default function QRValidationSellerPage() {
       <EstadoNavigationPedidos 
         resumen={resumen}
         estadoActivo={estadoActivo}
-        onEstadoChange={setEstadoActivo}
+        onEstadoChange={handleEstadoChange}
       />
       
       <FiltrosPedidos 
