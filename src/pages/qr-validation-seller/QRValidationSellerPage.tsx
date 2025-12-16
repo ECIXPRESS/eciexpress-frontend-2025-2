@@ -119,7 +119,7 @@ export default function QRValidationSellerPage() {
 
   return (
     <div className="p-8 space-y-6">
-      <h1 className="text-3xl font-bold">Pedidos</h1>
+      <h1 className="text-3xl font-bold text-yellow-400">Pedidos</h1>
       
       <EstadoNavigationPedidos 
         resumen={resumen}

@@ -34,7 +34,7 @@ export default function SellerStats() {
       <div className="max-w-7xl mx-auto space-y-6">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          <h1 className="text-3xl font-bold text-[#FDDF65]">Estadísticas</h1>
+          <h1 className="text-3xl font-bold text-yellow-400">Estadísticas</h1>
           <button
             onClick={() => setIsExportModalOpen(true)}
             className="flex items-center justify-center gap-2 bg-[#5AC7E1] hover:bg-[#4ab5cf] text-white px-6 py-3 rounded-2xl font-medium transition-colors shadow-md"
@@ -86,7 +86,7 @@ export default function SellerStats() {
             <div className="flex items-end">
               <button
                 onClick={handleFilter}
-                className="w-full bg-[#FDDF65] hover:bg-[#f5d74e] text-[#262626] font-medium px-6 py-2 rounded-xl transition-colors"
+                className="w-full bg-yellow-400 hover:bg-yellow-500 text-[#FFFFFF] font-medium px-6 py-2 rounded-xl transition-colors"
               >
                 Filtrar
               </button>
@@ -104,7 +104,7 @@ export default function SellerStats() {
           />
           <StatsCard
             icon={ShoppingBag}
-            iconColor="bg-[#FDDF65]"
+            iconColor="bg-yellow-400"
             title="Total ventas"
             value={mockSummaryReport.totalOrders.toLocaleString('es-CO')}
           />

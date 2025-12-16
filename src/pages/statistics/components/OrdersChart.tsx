@@ -18,11 +18,11 @@ export default function OrdersChart({ data }: OrdersChartProps) {
         <h3 className="text-lg font-bold text-[#262626]">Pedidos</h3>
         <div className="flex items-center gap-4 text-sm">
           <div className="flex items-center gap-2">
-            <div className="w-3 h-3 rounded-full bg-[#5AC7E1]"></div>
+            <div className="w-3 h-3 rounded-full bg-[#5AC7E1]" />
             <span className="text-gray-600">Total pedidos</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-3 h-3 rounded-full bg-[#FDDF65]"></div>
+            <div className="w-3 h-3 rounded-full bg-yellow-400" />
             <span className="text-gray-600">Completados</span>
           </div>
         </div>
@@ -58,9 +58,9 @@ export default function OrdersChart({ data }: OrdersChartProps) {
           <Line 
             type="monotone" 
             dataKey="Completados" 
-            stroke="#FDDF65" 
+            stroke="#FBBF24" 
             strokeWidth={2}
-            dot={{ fill: '#FDDF65', r: 4 }}
+            dot={{ fill: '#FBBF24', r: 4 }}
           />
         </LineChart>
       </ResponsiveContainer>

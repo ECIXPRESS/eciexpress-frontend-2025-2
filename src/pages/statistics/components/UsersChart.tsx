@@ -22,7 +22,7 @@ export default function UsersChart({ data }: UsersChartProps) {
             <span className="text-gray-600">Nuevos</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-3 h-3 rounded-full bg-[#FDDF65]"></div>
+            <div className="w-3 h-3 rounded-full bg-yellow-400" />
             <span className="text-gray-600">Activos</span>
           </div>
         </div>
@@ -49,7 +49,7 @@ export default function UsersChart({ data }: UsersChartProps) {
             }}
           />
           <Bar dataKey="Nuevos" fill="#5AC7E1" radius={[8, 8, 0, 0]} />
-          <Bar dataKey="Activos" fill="#FDDF65" radius={[8, 8, 0, 0]} />
+          <Bar dataKey="Activos" fill="#FBBF24" radius={[8, 8, 0, 0]} />
         </BarChart>
       </ResponsiveContainer>
     </div>

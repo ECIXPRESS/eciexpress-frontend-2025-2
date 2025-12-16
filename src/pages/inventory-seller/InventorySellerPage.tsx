@@ -61,7 +61,7 @@ export default function InventorySellerPage() {
 
   return (
     <div className="p-8 space-y-6">
-      <h1 className="text-3xl font-bold">Catálogo del Vendedor</h1>
+      <h1 className="text-3xl font-bold text-yellow-400">Catálogo del Vendedor</h1>
       
       <EstadoNavigation 
         resumen={resumen}
