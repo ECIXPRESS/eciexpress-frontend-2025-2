@@ -4,12 +4,13 @@ import { CartItem } from '../types/cart.types';
 interface CartSummaryProps {
   items: CartItem[];
   onContinue: () => void;
+  buttonText?: string;
 }
 
 /**
  * Componente de resumen del pedido
  */
-export default function CartSummary({ items, onContinue }: CartSummaryProps) {
+export default function CartSummary({ items, onContinue, buttonText = 'Continuar' }: CartSummaryProps) {
   // Calcular subtotal
   const subtotal = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
   
@@ -60,7 +61,7 @@ export default function CartSummary({ items, onContinue }: CartSummaryProps) {
         </div>
       </div>
 
-      {/* Botón Continuar */}
+      {/* Botón de acción */}
       <button
         onClick={onContinue}
         disabled={items.length === 0}
@@ -70,11 +71,13 @@ export default function CartSummary({ items, onContinue }: CartSummaryProps) {
           transition-all duration-300 shadow-md
           ${items.length === 0
             ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-            : 'bg-[#5AC7E1] text-white hover:bg-[#4ab5cf] active:scale-[0.98] hover:shadow-lg'
+            : buttonText === 'Comprar' 
+              ? 'bg-[#FDDF65] text-[#262626] hover:bg-[#f5d74e] active:scale-[0.98] hover:shadow-lg'
+              : 'bg-[#5AC7E1] text-white hover:bg-[#4ab5cf] active:scale-[0.98] hover:shadow-lg'
           }
         `}
       >
-        Continuar
+        {buttonText}
       </button>
 
       {/* Disclaimer */}

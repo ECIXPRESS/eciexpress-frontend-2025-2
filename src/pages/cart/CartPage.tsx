@@ -7,6 +7,8 @@ import CartSummary from './components/CartSummary';
 import PaymentSection from './components/PaymentSection';
 import PickupSection from './components/PickupSection';
 import DeliverySchedule from './components/DeliverySchedule';
+import OrderDetailsView from './components/OrderDetailsView';
+import { OrderSuccessModal } from './components/OrderSuccessModal';
 import { useCart } from './context/CartContext';
 import { CartTab } from './types/cart.types';
 
@@ -16,7 +18,9 @@ import { CartTab } from './types/cart.types';
 export default function CartPage() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<CartTab>('carrito');
-  const { cart, updateQuantity, removeItem } = useCart();
+  const { cart, updateQuantity, removeItem, clearCart } = useCart();
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+  const [orderNumber, setOrderNumber] = useState('');
 
   const handleQuantityChange = (itemId: string, newQuantity: number) => {
     updateQuantity(itemId, newQuantity);
@@ -39,8 +43,28 @@ export default function CartPage() {
       return;
     }
 
-    // Navegar a pago
-    setActiveTab('pago');
+    // Navegar a la siguiente pestaña
+    if (activeTab === 'carrito') {
+      setActiveTab('pago');
+    } else if (activeTab === 'pago') {
+      setActiveTab('detalles');
+    }
+  };
+
+  const handleCompletePurchase = () => {
+    // Generar número de orden aleatorio
+    const orderNum = Math.floor(100000 + Math.random() * 900000).toString();
+    setOrderNumber(orderNum);
+    
+    // Mostrar modal de éxito
+    setIsSuccessModalOpen(true);
+  };
+
+  const handleCloseSuccessModal = () => {
+    setIsSuccessModalOpen(false);
+    // Limpiar carrito y redirigir
+    clearCart();
+    navigate('/orders-seller');
   };
 
   const handleFilter = () => {
@@ -75,7 +99,6 @@ export default function CartPage() {
                     {/* Tab button */}
                     <button
                       onClick={() => setActiveTab(tab.id)}
-                      disabled={tab.id === 'detalles'}
                       className={`
                         flex items-center gap-2 md:gap-3 px-3 md:px-4 py-2 md:py-2.5 rounded-full
                         transition-all duration-300
@@ -85,7 +108,7 @@ export default function CartPage() {
                             ? 'bg-[#FDDF65] text-[#262626]'
                             : 'bg-gray-200 text-gray-400'
                         }
-                        ${tab.id === 'detalles' ? 'cursor-not-allowed opacity-60' : 'cursor-pointer'}
+                        cursor-pointer
                       `}
                     >
                       <Icon className="w-5 h-5 md:w-6 md:h-6" />
@@ -165,15 +188,13 @@ export default function CartPage() {
 
             {/* Tab: Detalles */}
             {activeTab === 'detalles' && (
-              <div className="bg-white rounded-3xl p-8 text-center shadow-sm">
-                <FileText className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                <h3 className="text-xl font-bold text-gray-400 mb-2">
-                  Detalles del pedido
-                </h3>
-                <p className="text-gray-500">
-                  Esta sección estará disponible próximamente
-                </p>
-              </div>
+              <OrderDetailsView
+                selectedPaymentMethod="Billetera"
+                selectedPickupMethod="Punto de venta"
+                pickupLocation="Harvies - Costado Oeste del coliseo El otoño"
+                deliveryDate="11 nov, 2025"
+                deliveryTime="12:50 pm"
+              />
             )}
           </div>
 
@@ -183,7 +204,8 @@ export default function CartPage() {
             <div className="hidden lg:block lg:sticky lg:top-6">
               <CartSummary
                 items={cart.items}
-                onContinue={handleContinue}
+                onContinue={activeTab === 'detalles' ? handleCompletePurchase : handleContinue}
+                buttonText={activeTab === 'detalles' ? 'Comprar' : 'Continuar'}
               />
             </div>
 
@@ -219,6 +241,14 @@ export default function CartPage() {
           </div>
         </div>
       </div>
+
+      {/* Modal de éxito */}
+      <OrderSuccessModal
+        isOpen={isSuccessModalOpen}
+        onClose={handleCloseSuccessModal}
+        orderNumber={orderNumber}
+        total={cart.summary.total}
+      />
     </div>
   );
 }
