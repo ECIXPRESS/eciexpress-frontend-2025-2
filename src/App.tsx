@@ -1,5 +1,13 @@
-import { useState } from 'react'
-import './App.css'
+import { Routes, Route, Navigate } from "react-router-dom";
+import { ProtectedRoute } from "./utils/ProtectedRoute";
+import Layout from "./utils/Layout";
+import { AuthProvider } from "@/utils/context/AuthProvider";
+import { WalletProvider } from "@/utils/context/WalletProvider";
+import { CartProvider } from "@/pages/cart/context/CartContext";
+import Auth from "@/pages/login/hooks/Auth";
+import { PasswordRecoveryContainer } from "@/pages/password-recovery/passwordRecoveryContainer";
+import { useEffect, useState } from "react";
+import { useAuth } from "@/pages/login/hooks/useAuth";
 
 import Home from "@/pages/home/components/Home";
 import StatisticsPage from "@/pages/statistics/StatisticsPage";
@@ -77,23 +85,14 @@ function HomeWithMockUser() {
 
 function App() {
   return (
-    <>
-      <div>
-      </div>
-      <h1>EciExpress</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <AuthProvider>
+      <WalletProvider>
+        <CartProvider>
+          <HomeWithMockUser />
+        </CartProvider>
+      </WalletProvider>
+    </AuthProvider>
+  );
 }
 
 export default App;

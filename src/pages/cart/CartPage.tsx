@@ -74,7 +74,7 @@ export default function CartPage() {
     setIsSuccessModalOpen(false);
     // Limpiar carrito y redirigir
     clearCart();
-    navigate('/orders-seller');
+    navigate('/orders');
   };
 
   const handleFilter = () => {
