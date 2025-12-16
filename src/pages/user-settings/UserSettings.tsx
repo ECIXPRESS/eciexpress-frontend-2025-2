@@ -6,72 +6,13 @@ import {
     Order,
     OrderStatus,
     OrderType,
-    PaymentMethod, ProductType,
-    Receipt,
-    ReceiptStatus
+    ProductType,
+    Receipt
 } from "@/pages/user-settings/components/types";
+import {mockReceipts} from "@/pages/user-settings/components/__mocks__/mockReceipts";
 
 export const UserSettings: React.FC = () => {
-    const historial: Receipt[] = [
-        {
-            receiptId: "1a2b3c4d-5e6f-7g8h-9i0j-1k2l3m4n5o6p",
-            orderId: "1a2b3c4d-5e6f-7g8h-9i0j-1k2l3m4n5o6p",
-            clientId: "user-12345-67890-abcde-fghij",
-            storeId: "store-12345-67890-abcde-fghij",
-            paymentDetail: {
-                amount: 15.99,
-                currency: "USD",
-                transactionId: "txn_1234567890",
-                paymentDate: new Date("2025-12-14T12:30:00"),
-                paymentMethod: PaymentMethod.DEBIT_CARD
-            },
-            paymentMethod: PaymentMethod.DEBIT_CARD,
-            receiptStatus: ReceiptStatus.COMPLETED,
-            orderStatus: OrderStatus.COMPLETED,
-            timeStamps: {
-                createdAt: new Date("2025-12-14T12:00:00"),
-                updatedAt: new Date("2025-12-14T12:30:00")
-            }
-        },
-        {
-            receiptId: "2b3c4d5e-6f7g-8h9i-0j1k-2l3m4n5o6p7q",
-            orderId: "2b3c4d5e-6f7g-8h9i-0j1k-2l3m4n5o6p7q",
-            clientId: "user-12345-67890-abcde-fghij",
-            storeId: "store-23456-78901-bcdef-ghijk",
-            paymentDetail: {
-                amount: 12.50,
-                currency: "USD",
-                paymentDate: new Date("2025-12-13T19:15:00"),
-                paymentMethod: PaymentMethod.DEBIT_CARD
-            },
-            paymentMethod: PaymentMethod.DEBIT_CARD,
-            receiptStatus: ReceiptStatus.COMPLETED,
-            orderStatus: OrderStatus.COMPLETED,
-            timeStamps: {
-                createdAt: new Date("2025-12-13T19:00:00"),
-                updatedAt: new Date("2025-12-13T19:15:00")
-            }
-        },
-        {
-            receiptId: "3c4d5e6f-7g8h-9i0j-1k2l-3m4n5o6p7q8r",
-            orderId: "3c4d5e6f-7g8h-9i0j-1k2l-3m4n5o6p7q8r",
-            clientId: "user-12345-67890-abcde-fghij",
-            storeId: "store-34567-89012-cdefg-hijkl",
-            paymentDetail: {
-                amount: 18.75,
-                currency: "USD",
-                paymentDate: new Date("2025-12-12T13:45:00"),
-                paymentMethod: PaymentMethod.CASH
-            },
-            paymentMethod: PaymentMethod.CASH,
-            receiptStatus: ReceiptStatus.REFUNDED,
-            orderStatus: OrderStatus.CANCELLED,
-            timeStamps: {
-                createdAt: new Date("2025-12-12T13:30:00"),
-                updatedAt: new Date("2025-12-12T14:00:00")
-            }
-        }
-    ];
+    const historial: Receipt[] = mockReceipts;
 
     const upcomingOrders: Order[] = [
         {
@@ -104,22 +45,22 @@ export const UserSettings: React.FC = () => {
     return (
         <main className="flex flex-col flex-1 bg-snow rounded-3xl overflow-hidden">
             <UserHeader
-                name="Katherin Silva Granados"
-                role="Estudiante"
+                name="Martin Cantor Urrego"
+                role="Profesor"
                 onSettingsClick={() => console.log('Settings clicked')}
             />
 
-            <div className="flex gap-2.5 p-5 flex-1">
+            <div className="flex gap-2.5 p-5 flex-col lg:flex-row lg:flex-1">
                 {/* Left Column */}
-                <section className="flex flex-col w-[500px] gap-2.5 px-5 py-6">
+                <section className="flex flex-col lg:w-2/5 w-full gap-2.5 px-5 py-6">
                     <WalletCard
                         balance={120000}
-                        cardholderName="Katerine Silva Granados"
+                        cardholderName="Martin Cantor Urrego"
                         cardNumber="100010012083"
                         onAddFunds={() => console.log('Add funds clicked')}
                     />
 
-                    <h2 className="font-['Arial_Rounded_MT_Bold'] text-neutral-800 text-2xl mt-4">
+                    <h2 className=" text-neutral-800 text-2xl mt-4">
                         Proximos pedidos
                     </h2>
 

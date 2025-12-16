@@ -7,7 +7,7 @@ interface ReceiptItemProps {
 }
 
 const HistorialItem: React.FC<ReceiptItemProps> = ({receipt, onViewDetails}) => {
-    const description = "Reggio- Hamburguesa";
+    const description = receipt.receiptName;
     const date = receipt.timeStamps.updatedAt ? new Date(receipt.timeStamps.updatedAt) : null;
 
     return (

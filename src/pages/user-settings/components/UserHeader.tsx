@@ -10,8 +10,8 @@ interface UserHeaderProps {
 const UserHeader: React.FC<UserHeaderProps> = ({ name, role, avatarUrl, onSettingsClick }) => {
     return (
         <header className="flex h-40 h-min-fit items-start gap-5 py-8 p-5 lg:px-12 lg:py-9 bg-snow border-b border-gray-200 shadow-sm">
-            <div className="flex items-center justify-center w-1/5 h-full">
-                <div className="flex items-center justify-center w-full max-w-24 max-h-24 rounded-full overflow-hidden bg-gray-200">
+            <div className="flex items-center justify-center w-1/5 lg:w-1/12 h-full">
+                <div className="flex items-center justify-center w-full max-w-16 max-h-16 rounded-full overflow-hidden bg-gray-200">
                     {avatarUrl ? (
                         <img src={avatarUrl} alt={`Foto de perfil de ${name}`} className="w-full h-full object-cover" />
                     ) : (

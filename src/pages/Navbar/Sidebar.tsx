@@ -11,10 +11,17 @@ import {
     BarChart3,
     Users,
     Tag,
-    CirclePlus,
+    CirclePlus
 } from 'lucide-react';
+
 import {BalanceCard} from "./components/BalanceCard";
-import { useAuth } from '@/lib/context/AuthProvider';
+import {useAuth} from "@/pages/login/hooks/useAuth";
+import NotificationsPanel, { Notification } from "@/pages/Navbar/components/Notifications";
+
+interface SidebarProps {
+    isExpanded: boolean;
+    onToggleExpand: (isExpanded: boolean) => void;
+}
 
 interface MenuItem {
     icon: typeof LayoutDashboard;
@@ -22,16 +29,30 @@ interface MenuItem {
     path: string;
 }
 
-interface SidebarProps {
-    isExpanded: boolean;
-    onToggleExpand: (isExpanded: boolean) => void;
-}
 
 export default function Sidebar({isExpanded, onToggleExpand}: SidebarProps) {
-    const { user, logout } = useAuth(); // Usa tu hook real de autenticación
+    const { user, logout } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
     const [isMobile, setIsMobile] = useState<boolean>(false);
+    const [showNotifications, setShowNotifications] = useState(false);
+
+    const notifications: Notification[] = [
+        {
+            id: "1",
+            icon: 'success',
+            title: "Reserva exitosa",
+            description: "Has reservado combo de hamburguesa",
+            time: "11:30",
+        },
+        {
+            id: "2",
+            icon: 'delivery',
+            title: "Entrega exitosa",
+            description: "Has recibido combo de hamburguesa",
+            time: "11:30",
+        },
+    ];
 
     useEffect(() => {
         const checkIfMobile = () => {
@@ -69,7 +90,6 @@ export default function Sidebar({isExpanded, onToggleExpand}: SidebarProps) {
     const userRole = user?.role || 'user';
     const menuItems = routeConfig[userRole] || routeConfig.user;
     const showBalance = userRole === 'user';
-    const userBalance = user?.balance || 0;
 
     const handleMenuItemClick = (path: string) => {
         navigate(path);
@@ -85,8 +105,24 @@ export default function Sidebar({isExpanded, onToggleExpand}: SidebarProps) {
     };
 
     const handleAddBalance = () => {
-        // Navegar o abrir modal para agregar saldo
-        navigate('/add-balance'); // O implementa un modal
+        navigate('/add-balance');
+    };
+
+    const handleMouseEnter = () => {
+        if (!showNotifications) {
+            onToggleExpand(true);
+        }
+    };
+
+    const handleMouseLeave = () => {
+        if (!showNotifications) {
+            onToggleExpand(false);
+        }
+    };
+
+    const handleNotificationsClose = () => {
+        setShowNotifications(false);
+        onToggleExpand(false);
     };
 
     return (
@@ -99,8 +135,8 @@ export default function Sidebar({isExpanded, onToggleExpand}: SidebarProps) {
                     border-r border-gray-200
                     ${isExpanded ? 'w-72' : 'w-20'}
                 `}
-                onMouseEnter={() => onToggleExpand(true)}
-                onMouseLeave={() => onToggleExpand(false)}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
             >
                 <div className="flex flex-col h-full">
                     {/* Header */}
@@ -109,8 +145,7 @@ export default function Sidebar({isExpanded, onToggleExpand}: SidebarProps) {
                             onClick={handleProfileClick}
                             className={`
                                 flex items-center justify-center transition-all duration-300
-                                ${isExpanded ? 'w-12 h-12' : 'w-12 h-12'}
-                                rounded-full bg-gradient-to-br from-[#FDDF65] to-[#f5d74e] 
+                                w-12 h-12 rounded-full bg-gray-300 
                                 hover:from-[#f5d74e] hover:to-[#FDDF65] 
                                 shadow-md hover:shadow-lg
                             `}
@@ -120,12 +155,15 @@ export default function Sidebar({isExpanded, onToggleExpand}: SidebarProps) {
 
                         {isExpanded && (
                             <button
-                                className="w-10 h-10 rounded-full hover:bg-gray-100 flex items-center justify-center transition-colors relative">
+                                onClick={() => setShowNotifications(!showNotifications)}
+                                className="w-10 h-10 rounded-full hover:bg-gray-100 flex items-center justify-center transition-colors relative"
+                            >
                                 <Bell className="w-5 h-5 text-gray-600"/>
-                                <span
-                                    className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs flex items-center justify-center rounded-full">
-                                    3
-                                </span>
+                                {notifications.length > 0 && (
+                                    <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs flex items-center justify-center rounded-full">
+                                        {notifications.length}
+                                    </span>
+                                )}
                             </button>
                         )}
                     </div>
@@ -176,7 +214,7 @@ export default function Sidebar({isExpanded, onToggleExpand}: SidebarProps) {
                                         className={`w-6 h-6 flex-shrink-0 ${isSelected ? 'text-gray-800' : 'text-gray-500'}`}/>
                                     {isExpanded && (
                                         <span
-                                            className={`text-md font-medium ${isSelected ? 'text-gray-800 font-semibold' : 'text-gray-500'}`}>
+                                            className={`text-base font-medium ${isSelected ? 'text-gray-800 font-semibold' : 'text-gray-500'}`}>
                                             {item.label}
                                         </span>
                                     )}
@@ -197,6 +235,14 @@ export default function Sidebar({isExpanded, onToggleExpand}: SidebarProps) {
                     </div>
                 </div>
             </div>
+
+            {/* Panel de notificaciones */}
+            {showNotifications && (
+                <NotificationsPanel
+                    notifications={notifications}
+                    onClose={handleNotificationsClose}
+                />
+            )}
 
             {/* Sidebar móvil */}
             <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-2xl z-50">
@@ -253,6 +299,24 @@ export default function Sidebar({isExpanded, onToggleExpand}: SidebarProps) {
                             </button>
                         );
                     })}
+
+                    {/* Botón de notificaciones móvil */}
+                    <button
+                        onClick={() => setShowNotifications(!showNotifications)}
+                        className="flex flex-col items-center justify-center gap-1 p-2 rounded-xl transition-all duration-200 min-w-[60px] relative"
+                    >
+                        <div className="w-10 h-10 rounded-full flex items-center justify-center bg-gray-100 relative">
+                            <Bell className="w-5 h-5 text-gray-600"/>
+                            {notifications.length > 0 && (
+                                <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs flex items-center justify-center rounded-full">
+                                    {notifications.length}
+                                </span>
+                            )}
+                        </div>
+                        <span className="text-xs font-medium text-gray-600">
+                            Avisos
+                        </span>
+                    </button>
                 </div>
             </nav>
         </>

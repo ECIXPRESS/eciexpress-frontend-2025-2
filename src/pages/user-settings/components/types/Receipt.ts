@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { OrderStatus } from './Order';
+import {orderItemSchema, OrderStatus} from './Order';
 
 export enum PaymentMethod {
     CREDIT_CARD = 'CREDIT_CARD',
@@ -46,6 +46,7 @@ export const timeStampsSchema = z.object({
 
 export const receiptSchema = z.object({
     receiptId: z.string(),
+    receiptName: z.string(),
     orderId: z.string(),
     clientId: z.string(),
     storeId: z.string(),
@@ -53,7 +54,8 @@ export const receiptSchema = z.object({
     paymentMethod: z.enum(PaymentMethod),
     receiptStatus: z.enum(ReceiptStatus),
     orderStatus: z.enum(OrderStatus),
-    timeStamps: timeStampsSchema
+    timeStamps: timeStampsSchema,
+    items: z.array(orderItemSchema)
 });
 
 export type Receipt = z.infer<typeof receiptSchema>;
