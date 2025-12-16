@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { PedidosList, FiltrosPedidos, EstadoNavigation as EstadoNavigationPedidos } from './index';
+import { PedidosList, FiltrosPedidos, EstadoNavigation as EstadoNavigationPedidos, ValidationModal } from './index';
 import type { Pedido, FiltrosPedidosType, ResumenPedidosType } from './index';
 import { mockPedidos } from './mocks/mockPedidos';
 
@@ -10,11 +10,30 @@ export default function QRValidationSellerPage() {
     estado: undefined
   });
   const [estadoActivo, setEstadoActivo] = useState('todos');
+  const [modalValidacionAbierto, setModalValidacionAbierto] = useState(false);
+  const [pedidoSeleccionado, setPedidoSeleccionado] = useState<string | null>(null);
 
   const handleValidatePedido = (id: string) => {
-    setPedidos(pedidos.map(p =>
-      p.id === id ? { ...p, estado: "completado" } : p
-    ));
+    // Abrir el modal de validación en lugar de completar directamente
+    setPedidoSeleccionado(id);
+    setModalValidacionAbierto(true);
+  };
+
+  const handleValidacionExitosa = (codigo: string) => {
+    console.log("Código validado:", codigo);
+    // Marcar el pedido como completado
+    if (pedidoSeleccionado) {
+      setPedidos(pedidos.map(p =>
+        p.id === pedidoSeleccionado ? { ...p, estado: "completado" } : p
+      ));
+    }
+    setModalValidacionAbierto(false);
+    setPedidoSeleccionado(null);
+  };
+
+  const handleCerrarModal = () => {
+    setModalValidacionAbierto(false);
+    setPedidoSeleccionado(null);
   };
 
   const handleVerDetalles = (id: string) => {
@@ -67,6 +86,14 @@ export default function QRValidationSellerPage() {
         pedidos={pedidosFiltrados}
         onValidarPedido={handleValidatePedido}
         onVerDetalles={handleVerDetalles}
+      />
+
+      {/* Modal de validación */}
+      <ValidationModal
+        isOpen={modalValidacionAbierto}
+        onClose={handleCerrarModal}
+        onSuccess={handleValidacionExitosa}
+        pedidoId={pedidoSeleccionado || ''}
       />
     </div>
   );

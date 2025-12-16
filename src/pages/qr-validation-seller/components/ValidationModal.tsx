@@ -10,7 +10,7 @@ interface ValidationModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSuccess: (code: string) => void;
-  pedidoId: string;
+  pedidoId: string; 
   initialTab?: 'qr' | 'manual';
 }
 
