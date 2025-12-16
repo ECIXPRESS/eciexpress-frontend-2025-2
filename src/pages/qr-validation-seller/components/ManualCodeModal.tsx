@@ -140,8 +140,8 @@ export const ManualCodeModal: React.FC<ManualCodeModalProps> = ({
           {/* Header - igual que QR */}
           <div className="bg-white p-6 border-b border-gray-100">
             <div className="text-center">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-amber-100 rounded-full mb-3">
-                <Hash className="w-8 h-8 text-amber-600" />
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-yellow-50 rounded-full mb-3">
+                <Hash className="w-8 h-8 text-yellow-500" />
               </div>
               <h3 className="font-bold text-xl text-gray-900 mb-1">
                 Escanea el código de validación
@@ -180,7 +180,7 @@ export const ManualCodeModal: React.FC<ManualCodeModalProps> = ({
                     className={`
                       w-full px-4 py-4 bg-gray-50 rounded-xl text-center text-xl font-bold uppercase
                       border-2 transition-all duration-200
-                      focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500
+                      focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400
                       placeholder:text-gray-400 placeholder:font-normal placeholder:normal-case
                       ${error ? 'border-red-400 shake bg-red-50' : 'border-gray-200'}
                     `}

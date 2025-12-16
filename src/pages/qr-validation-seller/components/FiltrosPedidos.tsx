@@ -47,7 +47,7 @@ export const FiltrosPedidos: React.FC<FiltrosPedidosProps> = ({
               placeholder="Buscar por código, cliente o producto..."
               value={filtros.query}
               onChange={handleSearchChange}
-              className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all duration-200"
+              className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-all duration-200"
             />
           </div>
         </div>
@@ -82,8 +82,8 @@ export const FiltrosPedidos: React.FC<FiltrosPedidosProps> = ({
               onClick={() => handleEstadoChange(undefined)}
               className={`px-4 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 ${
                 !filtros.estado 
-                  ? 'bg-amber-500 text-white shadow-md hover:bg-amber-600' 
-                  : 'bg-white text-gray-700 border border-gray-300 hover:border-amber-300 hover:bg-gray-50'
+                  ? 'bg-yellow-400 text-white shadow-md hover:bg-yellow-500' 
+                  : 'bg-white text-gray-700 border border-gray-300 hover:border-yellow-200 hover:bg-gray-50'
               }`}
             >
               Todos

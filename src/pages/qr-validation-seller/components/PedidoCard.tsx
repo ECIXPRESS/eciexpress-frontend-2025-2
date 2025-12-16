@@ -59,17 +59,17 @@ export const PedidoCard: React.FC<PedidoCardProps> = ({ pedido, onValidar, onVer
           </div>
           <div className="flex flex-col items-end gap-1 text-xs text-gray-600">
             <div className="flex items-center gap-1 font-semibold text-gray-800">
-              <CreditCard className="w-4 h-4 text-amber-600" />
+              <CreditCard className="w-4 h-4 text-yellow-500" />
               <span className="capitalize">{pedido.metodoPago}</span>
             </div>
-            <span className={`px-2 py-1 rounded-full text-[11px] font-semibold ${pedido.pagado ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'}`}>
+            <span className={`px-2 py-1 rounded-full text-[11px] font-semibold ${pedido.pagado ? 'bg-green-100 text-green-700' : 'bg-yellow-50 text-yellow-700'}`}>
               {pedido.pagado ? 'Pagado' : 'Pendiente'}
             </span>
           </div>
         </div>
 
         <div className="bg-gray-50 border border-gray-200 rounded-lg p-3 text-sm text-gray-700">
-          <p className="font-semibold text-amber-600 mb-1">{pedido.productos.length} producto(s)</p>
+          <p className="font-semibold text-yellow-500 mb-1">{pedido.productos.length} producto(s)</p>
           <p className="text-gray-600 leading-snug">
             {resumen}
             {restantes > 0 && ` +${restantes} más`}
@@ -85,7 +85,7 @@ export const PedidoCard: React.FC<PedidoCardProps> = ({ pedido, onValidar, onVer
         <div className="mt-auto grid grid-cols-2 gap-2">
           <button
             onClick={handleFlip}
-            className="w-full bg-white border-2 border-amber-500 text-amber-600 hover:bg-amber-50 rounded-lg py-2.5 px-3 text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-2"
+            className="w-full bg-white border-2 border-yellow-400 text-yellow-500 hover:bg-yellow-50 rounded-lg py-2.5 px-3 text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-2"
           >
             <Eye className="w-4 h-4" />
             Ver detalles
@@ -95,7 +95,7 @@ export const PedidoCard: React.FC<PedidoCardProps> = ({ pedido, onValidar, onVer
             disabled={pedido.estado !== 'preparacion'}
             className={`w-full rounded-lg py-2.5 px-3 text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-2 ${
               pedido.estado === 'preparacion'
-                ? 'bg-amber-500 hover:bg-amber-600 text-white shadow-md hover:shadow-lg'
+                ? 'bg-yellow-400 hover:bg-yellow-500 text-white shadow-md hover:shadow-lg'
                 : 'bg-gray-200 text-gray-500 cursor-not-allowed'
             }`}
           >
@@ -111,11 +111,11 @@ export const PedidoCard: React.FC<PedidoCardProps> = ({ pedido, onValidar, onVer
   const CardBack = () => (
     <div className="h-full flex flex-col">
       {/* Header con gradiente */}
-      <div className="bg-gradient-to-r from-amber-500 to-amber-600 text-white p-4 rounded-t-2xl">
+      <div className="bg-gradient-to-r from-yellow-400 to-yellow-500 text-white p-4 rounded-t-2xl">
         <div className="flex justify-between items-start mb-2">
           <div className="flex-1 min-w-0 mr-2">
             <h3 className="font-bold text-lg truncate">{pedido.nombreCliente}</h3>
-            <p className="text-sm text-amber-100">Pedido #{pedido.codigo}</p>
+            <p className="text-sm text-yellow-100">Pedido #{pedido.codigo}</p>
           </div>
           <button 
             onClick={handleFlip}
@@ -126,7 +126,7 @@ export const PedidoCard: React.FC<PedidoCardProps> = ({ pedido, onValidar, onVer
         </div>
         
         <div className="flex items-center justify-between mt-3 pt-3 border-t border-white/20">
-          <span className="text-sm text-amber-100">Total</span>
+          <span className="text-sm text-yellow-100">Total</span>
           <div className="flex items-center text-2xl font-bold">
             <DollarSign className="w-6 h-6" />
             <span>{pedido.total.toLocaleString()}</span>
@@ -171,7 +171,7 @@ export const PedidoCard: React.FC<PedidoCardProps> = ({ pedido, onValidar, onVer
             <div className="flex items-center justify-between">
               <span className="text-sm text-gray-600">Estado pago</span>
               <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
-                pedido.pagado ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'
+                pedido.pagado ? 'bg-green-100 text-green-700' : 'bg-yellow-50 text-yellow-700'
               }`}>
                 {pedido.pagado ? 'Pagado' : 'Pendiente'}
               </span>
@@ -186,7 +186,7 @@ export const PedidoCard: React.FC<PedidoCardProps> = ({ pedido, onValidar, onVer
             {pedido.productos.map((producto, idx) => (
               <div key={idx} className="flex items-center justify-between py-1 border-b border-gray-200 last:border-0">
                 <div className="flex items-center gap-2">
-                  <Package className="w-4 h-4 text-amber-500" />
+                  <Package className="w-4 h-4 text-yellow-400" />
                   <span className="text-sm text-gray-700">{producto.nombre}</span>
                 </div>
                 <span className="text-sm font-semibold text-gray-900">
@@ -213,9 +213,9 @@ export const PedidoCard: React.FC<PedidoCardProps> = ({ pedido, onValidar, onVer
           disabled={pedido.estado !== 'preparacion'}
           className={`w-full py-3 px-4 rounded-xl font-semibold transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg ${
             pedido.estado === 'preparacion'
-              ? 'bg-amber-500 hover:bg-amber-600 text-white'
+              ? 'bg-yellow-400 hover:bg-yellow-500 text-white'
               : 'bg-gray-200 text-gray-500 cursor-not-allowed'
-          }`}
+          }`} 
         >
           <CheckCircle className="w-4 h-4 mr-2" />
           {pedido.estado === 'preparacion' ? 'Entregar Pedido' : 'Pedido Entregado'}

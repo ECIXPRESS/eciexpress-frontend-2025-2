@@ -22,7 +22,7 @@ export const ViewSelector: React.FC<ViewSelectorProps> = ({
         className={`
           flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200
           ${vistaActual === 'grid'
-            ? 'bg-amber-500 text-white shadow-md'
+            ? 'bg-yellow-400 text-white shadow-md'
             : 'text-gray-600 hover:bg-gray-100'
           }
         `}
@@ -38,7 +38,7 @@ export const ViewSelector: React.FC<ViewSelectorProps> = ({
         className={`
           flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200
           ${vistaActual === 'list'
-            ? 'bg-amber-500 text-white shadow-md'
+            ? 'bg-yellow-400 text-white shadow-md'
             : 'text-gray-600 hover:bg-gray-100'
           }
         `}

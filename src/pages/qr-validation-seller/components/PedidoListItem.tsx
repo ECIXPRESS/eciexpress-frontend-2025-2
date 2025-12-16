@@ -57,7 +57,7 @@ export const PedidoListItem: React.FC<PedidoListItemProps> = ({
             </div>
             {/* Total del pedido */}
             <div className="text-right flex-shrink-0">
-              <div className="flex items-center text-xl font-bold text-amber-600">
+              <div className="flex items-center text-xl font-bold text-yellow-500">
                 <DollarSign className="w-5 h-5" />
                 <span>{pedido.total.toLocaleString()}</span>
               </div>
@@ -67,7 +67,7 @@ export const PedidoListItem: React.FC<PedidoListItemProps> = ({
           {/* Hora y teléfono */}
           <div className="flex items-center gap-4 text-sm text-gray-600 mb-2">
             <div className="flex items-center gap-1.5">
-              <Clock className="w-4 h-4 text-amber-500 flex-shrink-0" />
+              <Clock className="w-4 h-4 text-yellow-400 flex-shrink-0" />
               <span className="font-medium">{pedido.horaEntrega}</span>
             </div>
             <div className="flex items-center gap-1.5 min-w-0">
@@ -78,7 +78,7 @@ export const PedidoListItem: React.FC<PedidoListItemProps> = ({
 
           {/* Resumen de productos */}
           <div className="text-sm text-gray-700">
-            <span className="font-semibold text-amber-600">{pedido.productos.length} producto(s): </span>
+            <span className="font-semibold text-yellow-500">{pedido.productos.length} producto(s): </span>
             <span className="text-gray-600">
               {pedido.productos.slice(0, 2).map(p => `${p.cantidad}x ${p.nombre}`).join(', ')}
               {pedido.productos.length > 2 && ` +${pedido.productos.length - 2} más`}
@@ -90,7 +90,7 @@ export const PedidoListItem: React.FC<PedidoListItemProps> = ({
         <div className="flex flex-col gap-2 flex-shrink-0">
           <button
             onClick={() => onVerDetalles(pedido.id)}
-            className="bg-white hover:bg-gray-50 text-amber-600 border-2 border-amber-500 py-2 px-4 rounded-lg text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-2 min-w-[140px]"
+            className="bg-white hover:bg-gray-50 text-yellow-500 border-2 border-yellow-400 py-2 px-4 rounded-lg text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-2 min-w-[140px]"
           >
             <Eye className="w-4 h-4" />
             Ver Detalles
@@ -98,7 +98,7 @@ export const PedidoListItem: React.FC<PedidoListItemProps> = ({
           {pedido.estado === 'preparacion' && (
             <button
               onClick={() => onValidar(pedido.id)}
-              className="bg-amber-500 hover:bg-amber-600 text-white py-2 px-4 rounded-lg text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-2 shadow-md hover:shadow-lg min-w-[140px]"
+              className="bg-yellow-400 hover:bg-yellow-500 text-white py-2 px-4 rounded-lg text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-2 shadow-md hover:shadow-lg min-w-[140px]"
             >
               <CheckCircle className="w-4 h-4" />
               Entregar
