@@ -74,7 +74,7 @@ export default function CartPage() {
     setIsSuccessModalOpen(false);
     // Limpiar carrito y redirigir
     clearCart();
-    navigate('/orders-seller');
+    navigate('/orders');
   };
 
   const handleFilter = () => {
@@ -232,34 +232,34 @@ export default function CartPage() {
               />
             </div>
 
-            {/* Mobile: Resumen flotante mejorado */}
-            {activeTab === 'carrito' && (
-              <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t-2 border-gray-200 shadow-2xl">
-                {/* Barra compacta con total */}
-                <div className="px-4 py-3 flex items-center justify-between">
-                  <div>
-                    <p className="text-xs text-gray-500">Total</p>
-                    <p className="text-xl font-bold text-[#262626]">
-                      $ {cart.summary.total.toLocaleString('es-CO')}
-                    </p>
-                  </div>
-                  <button
-                    onClick={handleContinue}
-                    disabled={cart.items.length === 0}
-                    className={`
-                      px-6 py-3 rounded-xl font-bold text-base
-                      transition-all duration-300 shadow-md
-                      ${cart.items.length === 0
-                        ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                        : 'bg-[#5AC7E1] text-white hover:bg-[#4ab5cf] active:scale-[0.98]'
-                      }
-                    `}
-                  >
-                    Continuar
-                  </button>
+            {/* Mobile: Resumen flotante mejorado - Visible en todas las pestañas */}
+            <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t-2 border-gray-200 shadow-2xl">
+              {/* Barra compacta con total */}
+              <div className="px-4 py-3 flex items-center justify-between">
+                <div>
+                  <p className="text-xs text-gray-500">Total</p>
+                  <p className="text-xl font-bold text-[#262626]">
+                    $ {cart.summary.total.toLocaleString('es-CO')}
+                  </p>
                 </div>
+                <button
+                  onClick={activeTab === 'detalles' ? handleCompletePurchase : handleContinue}
+                  disabled={cart.items.length === 0}
+                  className={`
+                    px-6 py-3 rounded-xl font-bold text-base
+                    transition-all duration-300 shadow-md
+                    ${cart.items.length === 0
+                      ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                      : activeTab === 'detalles'
+                        ? 'bg-[#FDDF65] text-[#262626] hover:bg-[#f5d74e] active:scale-[0.98]'
+                        : 'bg-[#5AC7E1] text-white hover:bg-[#4ab5cf] active:scale-[0.98]'
+                    }
+                  `}
+                >
+                  {activeTab === 'detalles' ? 'Comprar' : 'Continuar'}
+                </button>
               </div>
-            )}
+            </div>
             <div className="lg:hidden h-20" />
           </div>
         </div>

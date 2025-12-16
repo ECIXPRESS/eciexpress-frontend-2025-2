@@ -1,63 +1,98 @@
-import {Routes, Route, Navigate, useLocation} from "react-router-dom";
-import {ProtectedRoute} from "./lib/navegation/ProtectedRoute";
-import Layout from "./lib/navegation/Layout";
-import {AuthProvider} from "@/lib/context/AuthProvider";
-import Auth from "@/pages/login/Auth";
-import {PasswordRecoveryContainer} from "@/pages/password-recovery/passwordRecoveryContainer";
-import {AnimatePresence, motion} from "framer-motion";
-import {UserSettings} from "@/pages/user-settings/UserSettings";
+import { Routes, Route, Navigate } from "react-router-dom";
+import { ProtectedRoute } from "./utils/ProtectedRoute";
+import Layout from "./utils/Layout";
+import { AuthProvider } from "@/utils/context/AuthProvider";
+import { WalletProvider } from "@/utils/context/WalletProvider";
+import { CartProvider } from "@/pages/cart/context/CartContext";
+import Auth from "@/pages/login/hooks/Auth";
+import { PasswordRecoveryContainer } from "@/pages/password-recovery/passwordRecoveryContainer";
+import { useEffect, useState } from "react";
+import { useAuth } from "@/pages/login/hooks/useAuth";
+
 import Home from "@/pages/home/components/Home";
+import StatisticsPage from "@/pages/statistics/StatisticsPage";
+import ProductDetailPage from "@/pages/product-detail/components/ProductDetailPage";
+import CartPage from "@/pages/cart/CartPage";
+import ChatPage from "@/pages/chat/ChatPage";
+import StorePage from "@/pages/store/StorePage";
+import WalletPage from "@/pages/wallet/WalletPage";
+import InventorySellerPage from "@/pages/inventory-seller/InventorySellerPage";
+import QRValidationSellerPage from "@/pages/qr-validation-seller/QRValidationSellerPage";
+import OrdersUserPage from "@/pages/orders-user/OrdersUserPage";
+
+function HomeWithMockUser() {
+  const { login, user } = useAuth();
+
+  useEffect(() => {
+    if (!user) {
+      login(
+        "mock-token-12345", 
+        {
+          userId: "d66d2d30-56cb-410b-a5f0-9191c38f380e",
+          email: "pepitotolitis@gmail.com",
+          role: "user",
+          pfpURL: "",
+          balance: 512000
+        }
+      );
+    }
+  }, [user, login]);
+
+  return (
+    <Routes>
+      {/* Ruta principal */}
+      <Route path="/" element={<Layout />}>
+        <Route index element={<Home />} />
+        
+        {/* Ruta de estadísticas */}
+        <Route path="/statistics" element={<StatisticsPage />} />
+        
+        {/* Ruta de billetera */}
+        <Route path="/wallet" element={<WalletPage />} />
+        
+        {/* Ruta de detalle de producto */}
+        <Route path="/product/:id" element={<ProductDetailPage />} />
+        
+        {/* Ruta de tienda */}
+        <Route path="/store/:storeId" element={<StorePage />} />
+        
+        {/* Ruta de carrito */}
+        <Route path="/cart" element={<CartPage />} />
+        <Route path="/orders" element={<OrdersUserPage />} />
+        {/* Ruta de chat */}
+        <Route path="/chat" element={<ChatPage />} />
+
+        {/* Rutas para seller - Inventario/Catálogo */}
+        <Route path="/catalog" element={<InventorySellerPage />} />
+        
+        {/* Rutas para seller - Pedidos */}
+        <Route path="/orders-seller" element={<QRValidationSellerPage />} />
+
+        <Route path="/dashboard" element={<div className="p-8 text-2xl">Dashboard - Próximamente</div>} />
+        <Route path="/sellers" element={<div className="p-8 text-2xl">Vendedores - Próximamente</div>} />
+        <Route path="/promotions" element={<div className="p-8 text-2xl">Promociones - Próximamente</div>} />
+      </Route>
+
+      {/* Ruta de autenticación */}
+      <Route path="/auth" element={<Auth />} />
+      <Route path="/password-recovery" element={<PasswordRecoveryContainer />} />
+      
+      {/* Redirigir cualquier otra ruta al home */}
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
+  );
+}
 
 function App() {
-    const location = useLocation();
-
-    return (
-        <AuthProvider>
-            <AnimatePresence mode="wait">
-                <Routes location={location} key={location.pathname}>
-                    <Route path="/auth" element={<Auth/>}/>
-                    <Route path="/login" element={<Navigate to="/auth" replace/>}/>
-                    <Route path="/signup" element={<Navigate to="/auth" replace/>}/>
-
-                    <Route
-                        path="/forgot-password"
-                        element={
-                            <motion.div
-                                initial={{opacity: 0}}
-                                animate={{opacity: 1}}
-                                exit={{opacity: 0}}
-                                transition={{duration: 0.5}}
-                            >
-                                <PasswordRecoveryContainer/>
-                            </motion.div>
-                        }
-                    />
-
-                    <Route element={<ProtectedRoute/>}>
-                        <Route element={<Layout/>}>
-                            {/* Rutas comunes */}
-                            <Route path="/home" element={<Home/>}/>
-                            <Route path="/user-settings" element={<UserSettings/>}/>
-                            <Route path="/shoppingCart" element={"shoppingCart"}/>
-                            <Route path="/orders" element={"Orders"}/>
-                            <Route path="/chat" element={"Chat"}/>
-
-                            {/* Rutas para seller */}
-                            <Route path="/stats" element={"Stats"}/>
-
-                            {/* Rutas para admin */}
-                            <Route path="/sellers" element={"Sellers"}/>
-                            <Route path="/promotions" element={"Promotions"}/>
-
-                            <Route path="/" element={<Navigate to="/home" replace/>}/>
-                        </Route>
-                    </Route>
-
-                    <Route path="*" element={<Navigate to="/auth" replace/>}/>
-                </Routes>
-            </AnimatePresence>
-        </AuthProvider>
-    );
+  return (
+    <AuthProvider>
+      <WalletProvider>
+        <CartProvider>
+          <HomeWithMockUser />
+        </CartProvider>
+      </WalletProvider>
+    </AuthProvider>
+  );
 }
 
 export default App;
