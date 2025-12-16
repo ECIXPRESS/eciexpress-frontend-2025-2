@@ -5,9 +5,11 @@ import { toast } from 'react-toastify';
 import bannerImage from '@/assets/home/advertisement.png';
 import Sidebar from '@/utils/Sidebar';
 import { storesByCategoryData, productsByCategoryData, mockProductIds } from '../mock/homeMocks';
+import { useCart } from '@/pages/cart/context/CartContext';
 
 export default function Home() {
   const navigate = useNavigate();
+  const { addToCart } = useCart();
   const [activeCategory, setActiveCategory] = useState('cafeteria');
   const [activeTab, setActiveTab] = useState('populares');
   const [favorites, setFavorites] = useState<Set<number>>(new Set([1])); // Inicialmente el producto 1 es favorito
@@ -40,8 +42,16 @@ export default function Home() {
     });
   };
 
-  const handleAddToCart = (productId: number, productName: string) => {
-    // Aquí se agregaría al carrito real (Context/Redux)
+  const handleAddToCart = (productId: number, productName: string, price: number, image: string) => {
+    addToCart({
+      productId: productId.toString(),
+      name: productName,
+      description: '',
+      price: price,
+      imageUrl: image,
+      maxQuantity: 99
+    }, 1);
+    
     toast.success(`${productName} agregado al carrito`, {
       position: 'bottom-right',
       autoClose: 2000
@@ -245,7 +255,7 @@ export default function Home() {
                     <button 
                       onClick={(e) => {
                         e.stopPropagation();
-                        handleAddToCart(product.id, product.name);
+                        handleAddToCart(product.id, product.name, product.price, product.image);
                       }}
                       className="w-12 h-12 sm:w-14 sm:h-14 bg-[#5AC7E1] hover:bg-cyan-500 rounded-xl flex items-center justify-center transition-colors shadow-md"
                     >

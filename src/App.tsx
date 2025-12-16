@@ -3,6 +3,7 @@ import { ProtectedRoute } from "./utils/ProtectedRoute";
 import Layout from "./utils/Layout";
 import { AuthProvider } from "@/utils/context/AuthProvider";
 import { WalletProvider } from "@/utils/context/WalletProvider";
+import { CartProvider } from "@/pages/cart/context/CartContext";
 import Auth from "@/pages/login/hooks/Auth";
 import { PasswordRecoveryContainer } from "@/pages/password-recovery/passwordRecoveryContainer";
 import { useEffect, useState } from "react";
@@ -28,7 +29,7 @@ function HomeWithMockUser() {
         {
           userId: "d66d2d30-56cb-410b-a5f0-9191c38f380e",
           email: "pepitotolitis@gmail.com",
-          role: "seller",
+          role: "user",
           pfpURL: "",
           balance: 512000
         }
@@ -85,7 +86,9 @@ function App() {
   return (
     <AuthProvider>
       <WalletProvider>
-        <HomeWithMockUser />
+        <CartProvider>
+          <HomeWithMockUser />
+        </CartProvider>
       </WalletProvider>
     </AuthProvider>
   );
