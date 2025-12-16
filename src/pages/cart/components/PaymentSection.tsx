@@ -8,11 +8,11 @@ import { ChevronRight, ChevronDown, Wallet, CreditCard, Building2, Banknote } fr
 type PaymentMethod = 'billetera' | 'tarjeta' | 'pse' | 'efectivo';
 
 interface PaymentSectionProps {
-  onPaymentMethodChange?: (method: PaymentMethod) => void;
+  onPaymentMethodChange?: (method: string, details: string) => void;
 }
 
 export default function PaymentSection({ onPaymentMethodChange }: PaymentSectionProps) {
-  const [activeMethod, setActiveMethod] = useState<PaymentMethod | null>(null);
+  const [activeMethod, setActiveMethod] = useState<PaymentMethod | null>('billetera');
   const [cardInfo, setCardInfo] = useState({
     number: '',
     name: '',
@@ -27,7 +27,27 @@ export default function PaymentSection({ onPaymentMethodChange }: PaymentSection
 
   const handleMethodToggle = (method: PaymentMethod) => {
     setActiveMethod(activeMethod === method ? null : method);
-    onPaymentMethodChange?.(method);
+    
+    // Notificar el cambio con detalles según el método
+    let details = '';
+    if (method === 'billetera') {
+      details = '125.000';
+    } else if (method === 'tarjeta' && cardInfo.number) {
+      details = `**** ${cardInfo.number.slice(-4)}`;
+    } else if (method === 'pse' && pseInfo.bank) {
+      details = pseInfo.bank;
+    } else if (method === 'efectivo') {
+      details = 'Pago en punto de venta';
+    }
+    
+    const methodLabels = {
+      billetera: 'Billetera',
+      tarjeta: 'Tarjeta débito',
+      pse: 'PSE',
+      efectivo: 'Efectivo'
+    };
+    
+    onPaymentMethodChange?.(methodLabels[method], details);
   };
 
   const paymentMethods = [
@@ -92,7 +112,13 @@ export default function PaymentSection({ onPaymentMethodChange }: PaymentSection
                             type="text"
                             placeholder="Ingresa el número de la tarjeta"
                             value={cardInfo.number}
-                            onChange={(e) => setCardInfo({ ...cardInfo, number: e.target.value })}
+                            onChange={(e) => {
+                              const newInfo = { ...cardInfo, number: e.target.value };
+                              setCardInfo(newInfo);
+                              if (newInfo.number.length >= 4) {
+                                onPaymentMethodChange?.('Tarjeta débito', `**** ${newInfo.number.slice(-4)}`);
+                              }
+                            }}
                             maxLength={16}
                             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FDDF65] focus:border-transparent"
                           />
@@ -157,7 +183,14 @@ export default function PaymentSection({ onPaymentMethodChange }: PaymentSection
                           <label className="block text-sm text-gray-600 mb-1">Banco</label>
                           <select
                             value={pseInfo.bank}
-                            onChange={(e) => setPseInfo({ ...pseInfo, bank: e.target.value })}
+                            onChange={(e) => {
+                              const newInfo = { ...pseInfo, bank: e.target.value };
+                              setPseInfo(newInfo);
+                              if (newInfo.bank) {
+                                const bankName = e.target.options[e.target.selectedIndex].text;
+                                onPaymentMethodChange?.('PSE', bankName);
+                              }
+                            }}
                             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FDDF65] focus:border-transparent appearance-none bg-white"
                             style={{
                               backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23262626' d='M6 9L1 4h10z'/%3E%3C/svg%3E")`,

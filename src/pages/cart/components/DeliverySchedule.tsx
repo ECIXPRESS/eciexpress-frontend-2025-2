@@ -2,14 +2,30 @@
  * DeliverySchedule - Sección de programación de entrega
  */
 import { Calendar, Clock } from 'lucide-react';
+import { useState, useEffect } from 'react';
 
-export default function DeliverySchedule() {
+interface DeliveryScheduleProps {
+  onScheduleChange?: (date: string, time: string) => void;
+}
+
+export default function DeliverySchedule({ onScheduleChange }: DeliveryScheduleProps) {
   const today = new Date();
+  const [hour, setHour] = useState('12');
+  const [minute, setMinute] = useState('50');
+  const [period, setPeriod] = useState('pm');
+
   const formattedDate = today.toLocaleDateString('es-CO', { 
     day: 'numeric', 
     month: 'short', 
     year: 'numeric' 
   });
+
+  // Notificar cambios de hora
+  useEffect(() => {
+    const timeString = `${hour}:${minute} ${period}`;
+    const dateString = `${today.getDate()} nov, ${today.getFullYear()}`;
+    onScheduleChange?.(dateString, timeString);
+  }, [hour, minute, period]);
 
   return (
     <div className="bg-white rounded-3xl shadow-sm p-6">
@@ -43,7 +59,8 @@ export default function DeliverySchedule() {
               type="number"
               min="1"
               max="12"
-              defaultValue="12"
+              value={hour}
+              onChange={(e) => setHour(e.target.value)}
               className="w-20 px-3 py-3 bg-gray-100 border border-gray-300 rounded-xl text-center font-medium text-[#262626] focus:outline-none focus:ring-2 focus:ring-[#FDDF65] focus:border-transparent"
             />
             <span className="flex items-center justify-center text-gray-400">:</span>
@@ -51,11 +68,13 @@ export default function DeliverySchedule() {
               type="number"
               min="0"
               max="59"
-              defaultValue="50"
+              value={minute}
+              onChange={(e) => setMinute(e.target.value.padStart(2, '0'))}
               className="w-20 px-3 py-3 bg-gray-100 border border-gray-300 rounded-xl text-center font-medium text-[#262626] focus:outline-none focus:ring-2 focus:ring-[#FDDF65] focus:border-transparent"
             />
             <select
-              defaultValue="pm"
+              value={period}
+              onChange={(e) => setPeriod(e.target.value)}
               className="px-4 py-3 bg-gray-100 border border-gray-300 rounded-xl font-medium text-[#262626] focus:outline-none focus:ring-2 focus:ring-[#FDDF65] focus:border-transparent"
             >
               <option value="am">am</option>

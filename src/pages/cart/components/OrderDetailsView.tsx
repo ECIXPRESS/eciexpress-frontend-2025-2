@@ -6,6 +6,7 @@ import { CreditCard, MapPin, Clock } from 'lucide-react';
 
 interface OrderDetailsViewProps {
   selectedPaymentMethod: string;
+  paymentDetails?: string;
   selectedPickupMethod: string;
   pickupLocation: string;
   deliveryDate: string;
@@ -14,6 +15,7 @@ interface OrderDetailsViewProps {
 
 export default function OrderDetailsView({
   selectedPaymentMethod = 'Billetera',
+  paymentDetails = '125.000',
   selectedPickupMethod = 'Punto de venta',
   pickupLocation = 'Harvies - Costado Oeste del coliseo El otoño',
   deliveryDate = '11 nov, 2025',
@@ -31,8 +33,8 @@ export default function OrderDetailsView({
           </div>
           <div className="flex-1">
             <p className="font-semibold text-[#262626]">{selectedPaymentMethod}</p>
-            {selectedPaymentMethod === 'Billetera' && (
-              <p className="text-sm text-[#262626]">125.000</p>
+            {paymentDetails && (
+              <p className="text-sm text-[#262626]">{paymentDetails}</p>
             )}
           </div>
         </div>

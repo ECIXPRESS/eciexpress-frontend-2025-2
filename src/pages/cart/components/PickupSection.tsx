@@ -3,7 +3,15 @@
  */
 import { MapPin, Truck } from 'lucide-react';
 
-export default function PickupSection() {
+interface PickupSectionProps {
+  onPickupChange?: (method: string, location: string) => void;
+}
+
+export default function PickupSection({ onPickupChange }: PickupSectionProps) {
+  const handlePickupChange = (method: string, location: string) => {
+    onPickupChange?.(method, location);
+  };
+
   return (
     <div className="bg-white rounded-3xl shadow-sm p-6">
       <h2 className="text-xl font-bold text-[#262626] mb-4">Punto de recogida</h2>
@@ -15,6 +23,7 @@ export default function PickupSection() {
             type="radio"
             name="pickup"
             defaultChecked
+            onChange={() => handlePickupChange('Punto de venta', 'Harvies - Costado Oeste del coliseo El otoño')}
             className="w-5 h-5 text-[#FDDF65] focus:ring-[#FDDF65] focus:ring-2"
           />
           <MapPin className="w-5 h-5 text-[#262626]" />

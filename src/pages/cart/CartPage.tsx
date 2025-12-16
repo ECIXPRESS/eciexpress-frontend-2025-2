@@ -21,6 +21,16 @@ export default function CartPage() {
   const { cart, updateQuantity, removeItem, clearCart } = useCart();
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [orderNumber, setOrderNumber] = useState('');
+  
+  // Estado para trackear las selecciones del usuario
+  const [orderData, setOrderData] = useState({
+    paymentMethod: 'Billetera',
+    paymentDetails: '125.000',
+    pickupMethod: 'Punto de venta',
+    pickupLocation: 'Harvies - Costado Oeste del coliseo El otoño',
+    deliveryDate: `${new Date().getDate()} nov, ${new Date().getFullYear()}`,
+    deliveryTime: '12:50 pm'
+  });
 
   const handleQuantityChange = (itemId: string, newQuantity: number) => {
     updateQuantity(itemId, newQuantity);
@@ -180,20 +190,33 @@ export default function CartPage() {
             {/* Tab: Pago */}
             {activeTab === 'pago' && (
               <div className="space-y-4">
-                <PaymentSection />
-                <PickupSection />
-                <DeliverySchedule />
+                <PaymentSection 
+                  onPaymentMethodChange={(method, details) => 
+                    setOrderData({ ...orderData, paymentMethod: method, paymentDetails: details })
+                  }
+                />
+                <PickupSection 
+                  onPickupChange={(method, location) => 
+                    setOrderData({ ...orderData, pickupMethod: method, pickupLocation: location })
+                  }
+                />
+                <DeliverySchedule 
+                  onScheduleChange={(date, time) => 
+                    setOrderData({ ...orderData, deliveryDate: date, deliveryTime: time })
+                  }
+                />
               </div>
             )}
 
             {/* Tab: Detalles */}
             {activeTab === 'detalles' && (
               <OrderDetailsView
-                selectedPaymentMethod="Billetera"
-                selectedPickupMethod="Punto de venta"
-                pickupLocation="Harvies - Costado Oeste del coliseo El otoño"
-                deliveryDate="11 nov, 2025"
-                deliveryTime="12:50 pm"
+                selectedPaymentMethod={orderData.paymentMethod}
+                paymentDetails={orderData.paymentDetails}
+                selectedPickupMethod={orderData.pickupMethod}
+                pickupLocation={orderData.pickupLocation}
+                deliveryDate={orderData.deliveryDate}
+                deliveryTime={orderData.deliveryTime}
               />
             )}
           </div>
