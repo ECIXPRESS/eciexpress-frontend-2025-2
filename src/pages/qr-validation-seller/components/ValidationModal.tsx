@@ -4,7 +4,7 @@
  */
 import React, { useEffect, useRef, useState } from 'react';
 import { X, QrCode, Hash, AlertCircle} from 'lucide-react';
-import { BrowserMultiFormatReader } from '@zxing/library';
+import { BrowserQRCodeReader } from '@zxing/library';
 
 interface ValidationModalProps {
   isOpen: boolean;
@@ -30,7 +30,7 @@ export const ValidationModal: React.FC<ValidationModalProps> = ({
   const [, setIsScanning] = useState(false);
   
   const videoRef = useRef<HTMLVideoElement>(null);
-  const codeReaderRef = useRef<BrowserMultiFormatReader | null>(null);
+  const codeReaderRef = useRef<BrowserQRCodeReader | null>(null);
 
   // Sincroniza la pestaña activa con initialTab cuando el modal se abre
   useEffect(() => {
@@ -75,7 +75,7 @@ export const ValidationModal: React.FC<ValidationModalProps> = ({
       setQrError(null);
       setIsScanning(true);
 
-      const codeReader = new BrowserMultiFormatReader();
+      const codeReader = new BrowserQRCodeReader();
       codeReaderRef.current = codeReader;
 
       const videoInputDevices = await codeReader.listVideoInputDevices();
@@ -220,7 +220,7 @@ export const ValidationModal: React.FC<ValidationModalProps> = ({
                   flex-1 flex items-center justify-center gap-2 py-4 px-4 font-semibold text-sm
                   transition-all duration-200 relative
                   ${activeTab === 'qr'
-                    ? 'text-amber-600 bg-white'
+                    ? 'text-primary-600 bg-white'
                     : 'text-gray-500 bg-gray-50 hover:text-gray-700 hover:bg-gray-100'
                   }
                 `}
@@ -228,7 +228,7 @@ export const ValidationModal: React.FC<ValidationModalProps> = ({
                 <QrCode className="w-5 h-5" />
                 <span>Escanear QR</span>
                 {activeTab === 'qr' && (
-                  <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-amber-600" />
+                  <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary-600" />
                 )}
               </button>
               
@@ -239,7 +239,7 @@ export const ValidationModal: React.FC<ValidationModalProps> = ({
                   flex-1 flex items-center justify-center gap-2 py-4 px-4 font-semibold text-sm
                   transition-all duration-200 relative
                   ${activeTab === 'manual'
-                    ? 'text-amber-600 bg-white'
+                    ? 'text-primary-600 bg-white'
                     : 'text-gray-500 bg-gray-50 hover:text-gray-700 hover:bg-gray-100'
                   }
                 `}
@@ -247,18 +247,18 @@ export const ValidationModal: React.FC<ValidationModalProps> = ({
                 <Hash className="w-5 h-5" />
                 <span>Código Manual</span>
                 {activeTab === 'manual' && (
-                  <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-amber-600" />
+                  <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary-600" />
                 )}
               </button>
             </div>
 
             {/* Título dinámico según pestaña */}
             <div className="text-center p-6">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-amber-100 rounded-full mb-3">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-primary-100 rounded-full mb-3">
                 {activeTab === 'qr' ? (
-                  <QrCode className="w-8 h-8 text-amber-600" />
+                  <QrCode className="w-8 h-8 text-primary-600" />
                 ) : (
-                  <Hash className="w-8 h-8 text-amber-600" />
+                  <Hash className="w-8 h-8 text-primary-600" />
                 )}
               </div>
               <h3 className="font-bold text-xl text-gray-900 mb-1">
@@ -334,7 +334,7 @@ export const ValidationModal: React.FC<ValidationModalProps> = ({
                       <p className="text-gray-300 text-sm mb-6 max-w-xs mx-auto">{qrError}</p>
                       <button
                         onClick={startScanning}
-                        className="bg-amber-500 hover:bg-amber-600 text-white px-6 py-3 rounded-xl text-sm font-semibold transition-all duration-200 shadow-lg"
+                        className="bg-primary-500 hover:bg-primary-600 text-white px-6 py-3 rounded-xl text-sm font-semibold transition-all duration-200 shadow-lg"
                       >
                         Reintentar
                       </button>
@@ -367,7 +367,7 @@ export const ValidationModal: React.FC<ValidationModalProps> = ({
                       className={`
                         w-full px-3 py-3 bg-gray-50 rounded-lg text-center text-base font-bold uppercase
                         border-2 transition-all duration-200
-                        focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500
+                        focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500
                         placeholder:text-gray-400 placeholder:font-normal placeholder:normal-case placeholder:text-sm
                         ${error ? 'border-red-400 shake bg-red-50' : 'border-gray-200'}
                       `}
@@ -436,61 +436,6 @@ export const ValidationModal: React.FC<ValidationModalProps> = ({
                 Validar
               </button>
             )}
-            
-            {/* Botones de prueba para notificaciones */}
-            <div className="border-t border-gray-200 pt-3 mb-3">
-              <p className="text-xs font-semibold text-gray-500 mb-2 text-center">Probar Notificaciones</p>
-              <div className="grid grid-cols-2 gap-2">
-                <button
-                  onClick={() => onSuccess('DEMO12345')}
-                  className="text-xs bg-green-50 hover:bg-green-100 text-green-700 py-2.5 px-3 rounded-lg font-semibold transition-colors duration-200 border border-green-200"
-                >
-                  Validación Exitosa
-                </button>
-                <button
-                  onClick={() => {
-                    onClose();
-                    setTimeout(() => {
-                      const event = new CustomEvent('show-error', { 
-                        detail: { type: 'qr-invalid', code: 'ABC123XYZ' } 
-                      });
-                      window.dispatchEvent(event);
-                    }, 300);
-                  }}
-                  className="text-xs bg-orange-50 hover:bg-orange-100 text-orange-700 py-2.5 px-3 rounded-lg font-semibold transition-colors duration-200 border border-orange-200"
-                >
-                  QR Inválido
-                </button>
-                <button
-                  onClick={() => {
-                    onClose();
-                    setTimeout(() => {
-                      const event = new CustomEvent('show-error', { 
-                        detail: { type: 'order-not-found', code: 'XYZ789' } 
-                      });
-                      window.dispatchEvent(event);
-                    }, 300);
-                  }}
-                  className="text-xs bg-red-50 hover:bg-red-100 text-red-700 py-2.5 px-3 rounded-lg font-semibold transition-colors duration-200 border border-red-200"
-                >
-                  Pedido No Encontrado
-                </button>
-                <button
-                  onClick={() => {
-                    onClose();
-                    setTimeout(() => {
-                      const event = new CustomEvent('show-error', { 
-                        detail: { type: 'camera-unavailable' } 
-                      });
-                      window.dispatchEvent(event);
-                    }, 300);
-                  }}
-                  className="text-xs bg-amber-50 hover:bg-amber-100 text-amber-700 py-2.5 px-3 rounded-lg font-semibold transition-colors duration-200 border border-amber-200"
-                >
-                  Cámara No Disponible
-                </button>
-              </div>
-            </div>
             
             <p className="text-xs text-gray-400 text-center">
               {activeTab === 'qr'
