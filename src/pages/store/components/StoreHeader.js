@@ -1,0 +1,5 @@
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import { Star } from 'lucide-react';
+export default function StoreHeader({ name, rating, image }) {
+    return (_jsxs("div", { className: "flex items-center gap-4 sm:gap-6 mb-6", children: [_jsx("div", { className: "w-40 h-40 sm:w-48 sm:h-48 md:w-56 md:h-56 bg-gray-300 rounded-3xl overflow-hidden shadow-lg flex-shrink-0", children: image ? (_jsx("img", { src: image, alt: name, className: "w-full h-full object-cover" })) : (_jsx("div", { className: "w-full h-full" })) }), _jsx("div", { className: "flex-1", children: _jsxs("div", { className: "flex items-center justify-between", children: [_jsx("h1", { className: "text-3xl sm:text-4xl md:text-5xl font-bold text-[#262626]", children: name }), _jsxs("div", { className: "flex items-center gap-2", children: [_jsx(Star, { className: "w-7 h-7 sm:w-8 sm:h-8 fill-[#FDDF65] text-[#FDDF65]" }), _jsx("span", { className: "text-3xl sm:text-4xl font-bold text-[#FDDF65]", children: rating })] })] }) })] }));
+}

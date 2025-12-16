@@ -1,0 +1,16 @@
+import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-runtime";
+import { Trash2, ChevronDown } from 'lucide-react';
+import { useState } from 'react';
+/**
+ * Componente de item individual del carrito
+ */
+export default function CartItem({ item, onQuantityChange, onRemove }) {
+    const [isQuantityOpen, setIsQuantityOpen] = useState(false);
+    const handleQuantitySelect = (newQuantity) => {
+        onQuantityChange(item.id, newQuantity);
+        setIsQuantityOpen(false);
+    };
+    // Generar opciones de cantidad (1 a maxQuantity o 10)
+    const quantityOptions = Array.from({ length: Math.min(item.maxQuantity || 10, 10) }, (_, i) => i + 1);
+    return (_jsx("div", { className: "bg-white rounded-2xl p-3 md:p-4 shadow-sm hover:shadow-md transition-shadow", children: _jsxs("div", { className: "flex gap-3 md:gap-4", children: [_jsx("div", { className: "w-16 h-16 md:w-20 md:h-20 rounded-xl overflow-hidden bg-gray-100 flex-shrink-0 flex items-center justify-center", children: _jsx("img", { src: item.imageUrl, alt: item.name, className: "w-full h-full object-cover" }) }), _jsxs("div", { className: "flex-1 min-w-0", children: [_jsxs("div", { className: "flex justify-between items-start gap-2 mb-1 md:mb-2", children: [_jsxs("div", { className: "flex-1 min-w-0", children: [_jsx("h3", { className: "font-bold text-[#262626] text-sm md:text-base mb-0.5 md:mb-1 truncate", children: item.name }), item.description && (_jsx("p", { className: "text-xs text-gray-500 line-clamp-1", children: item.description }))] }), _jsx("button", { onClick: () => onRemove(item.id), className: "w-8 h-8 md:w-10 md:h-10 flex items-center justify-center rounded-lg hover:bg-red-50 transition-colors group flex-shrink-0", "aria-label": "Eliminar producto", children: _jsx(Trash2, { className: "w-4 h-4 md:w-5 md:h-5 text-gray-400 group-hover:text-red-500 transition-colors" }) })] }), _jsxs("div", { className: "flex justify-between items-center mt-2 md:mt-3", children: [_jsxs("div", { className: "text-base md:text-lg font-bold text-[#262626]", children: ["$ ", item.price.toLocaleString('es-CO')] }), _jsxs("div", { className: "relative", children: [_jsxs("button", { onClick: () => setIsQuantityOpen(!isQuantityOpen), className: "flex items-center gap-1.5 md:gap-2 px-2.5 md:px-3 py-1.5 md:py-2 border border-gray-300 rounded-lg hover:border-[#5AC7E1] transition-colors bg-white min-w-[70px] md:min-w-[80px] text-sm", children: [_jsxs("span", { className: "font-medium", children: ["Cant. ", item.quantity] }), _jsx(ChevronDown, { className: `w-3 h-3 md:w-4 md:h-4 transition-transform ${isQuantityOpen ? 'rotate-180' : ''}` })] }), isQuantityOpen && (_jsxs(_Fragment, { children: [_jsx("div", { className: "fixed inset-0 z-10", onClick: () => setIsQuantityOpen(false) }), _jsx("div", { className: "absolute right-0 mt-2 w-28 md:w-32 bg-white border border-gray-200 rounded-lg shadow-lg z-20 max-h-60 overflow-y-auto", children: quantityOptions.map(qty => (_jsx("button", { onClick: () => handleQuantitySelect(qty), className: `w-full px-3 md:px-4 py-2 text-left text-sm hover:bg-gray-50 transition-colors ${qty === item.quantity ? 'bg-[#5AC7E1]/10 text-[#5AC7E1] font-semibold' : 'text-gray-700'}`, children: qty }, qty))) })] }))] })] })] })] }) }));
+}

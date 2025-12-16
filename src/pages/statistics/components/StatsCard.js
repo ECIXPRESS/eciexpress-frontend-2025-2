@@ -1,0 +1,4 @@
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+export default function StatsCard({ icon: Icon, iconColor, title, value, subtitle }) {
+    return (_jsx("div", { className: "bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow", children: _jsxs("div", { className: "flex items-start gap-4", children: [_jsx("div", { className: `w-14 h-14 rounded-xl ${iconColor} flex items-center justify-center flex-shrink-0`, children: _jsx(Icon, { className: "w-7 h-7 text-white" }) }), _jsxs("div", { className: "flex-1 min-w-0", children: [_jsx("p", { className: "text-sm text-gray-500 mb-1", children: title }), _jsx("p", { className: "text-2xl font-bold text-[#262626]", children: value }), subtitle && (_jsx("p", { className: "text-xs text-gray-400 mt-1", children: subtitle }))] })] }) }));
+}
