@@ -1,30 +1,49 @@
-import {Link} from "react-router-dom";
-import {Undo2} from "lucide-react";
-import StandardInput from "@/lib/input/standarInput";
+import { Link } from "react-router-dom";
+import { Undo2 } from "lucide-react";
+import StandardInput from "@/lib/input/StandardInput";
 import React from "react";
+import { useSendVerificationCode } from "@/pages/password-recovery/hooks/useSendVerificationCode";
+import {toast} from "react-toastify";
 
-const EmailForm = () => {
+interface EmailFormProps {
+    onEmailSent: (email: string) => void;
+}
+
+const EmailForm: React.FC<EmailFormProps> = ({ onEmailSent }) => {
     const [email, setEmail] = React.useState('');
-    const [loading, setLoading] = React.useState(false);
+    const { loading, sendVerificationCode } = useSendVerificationCode();
 
-    const onSubmit = (e: React.FormEvent) => {
+    const onSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        setLoading(true);
-        setLoading(false);
-    };
+        if (!email) {
+            toast.error("Por favor ingresa tu correo electrónico");
+            return;
+        }
 
+        const result = await sendVerificationCode(email);
+        if (result?.success) {
+            onEmailSent(email);
+        } else if (result?.error) {
+            toast.error(result.error);
+        }
+    };
     return (
-        <div className="w-1/3 h-screen flex flex-col items-center justify-center gap-5 p-16">
-            <Link className="flex items-center gap-3 w-full"
-                  to="/auth">
+        <div className="w-full h-screen flex flex-col items-center justify-center gap-5 p-16">
+            <Link
+                className="flex items-center gap-3 w-full"
+                to="/auth"
+            >
                 <Undo2 className="w-7 h-7 text-[#ffad2a]"/>
                 <span className="font-bold text-[#ffad2a] text-xl">
-                        Volver
-                    </span>
+                    Volver
+                </span>
             </Link>
 
             {/* Form */}
-            <form className="flex flex-col h-[500px] justify-between items-center w-full py-6 rounded-3xl">
+            <form
+                onSubmit={onSubmit}
+                className="flex flex-col h-[500px] justify-between items-center w-full py-6 rounded-3xl"
+            >
                 <div className="flex flex-col gap-10 w-full">
                     <h1 className="text-neutral-800 text-[28px] text-center font-arial-rounded">
                         Recupera tu contraseña
@@ -53,11 +72,12 @@ const EmailForm = () => {
 
                 <button
                     type="submit"
-                    onClick={onSubmit}
                     disabled={loading}
-                    className="w-1/3 h-fit bg-[#5AC7E1] border-none py-4 rounded-lg text-white text-xl rounded-2xl shadow-md cursor-pointer hover:bg-cyan-500 transition-colors font-semibold"
+                    className={`w-1/3 h-fit bg-[#5AC7E1] border-none py-4 rounded-lg text-white text-xl rounded-2xl shadow-md cursor-pointer hover:bg-cyan-500 transition-colors font-semibold ${
+                        loading ? 'opacity-50 cursor-not-allowed' : ''
+                    }`}
                 >
-                    Enviar
+                    {loading ? 'Enviando...' : 'Enviar'}
                 </button>
             </form>
         </div>

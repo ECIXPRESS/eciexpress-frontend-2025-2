@@ -7,10 +7,11 @@ import apiClient from "@/lib/interceptors/apiClient";
 export const useSignUp = () => {
     const {login} = useAuth();
     const navigate = useNavigate();
-    const [name, setName] = useState("");
+    const [fullName, setFullName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+    const [identityDocument, setIdentityDocument] = useState("");
     const [loading, setLoading] = useState(false);
 
     const validateEmail = (email: string): boolean => {
@@ -22,8 +23,14 @@ export const useSignUp = () => {
         e.preventDefault();
         setLoading(true);
 
-        if (!name || !email || !password || !confirmPassword) {
-            toast.error("Por favor completa todos los campos");
+        if (!fullName || !email || !password || !confirmPassword || !identityDocument) {
+            toast.error("Por favor completa todos los campos obligatorios");
+            setLoading(false);
+            return;
+        }
+
+        if (identityDocument.length < 8 || identityDocument.length > 15) {
+            toast.error("El documento de identidad debe tener entre 8 y 15 caracteres");
             setLoading(false);
             return;
         }
@@ -47,25 +54,32 @@ export const useSignUp = () => {
         }
 
         try {
-            const response = await apiClient.post("/auth/register", {
-                name,
+            const phoneNumber = 1234567890;
+            const response = await apiClient.post("/users/customers", {
                 email,
-                password
+                fullName,
+                password,
+                identityDocument,
+                phoneNumber
             });
+            console.log("Número de teléfono generado para el registro:", phoneNumber);
             const {token, user} = response.data;
 
             login(token, user);
             navigate("/dashboard", {replace: true});
-        } catch (err: any) {
-            toast.error(err.response?.data?.message || "Error al crear la cuenta");
+        } catch (err: unknown) {
+            const error = err as { response?: { data?: { message?: string } }};
+            toast.error(error.response?.data?.message || "Error al crear la cuenta");
         } finally {
             setLoading(false);
         }
     };
 
     return {
-        name,
-        setName,
+        fullName,
+        setFullName,
+        identityDocument,
+        setIdentityDocument,
         email,
         setEmail,
         password,

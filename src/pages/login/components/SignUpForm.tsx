@@ -1,12 +1,14 @@
 import React from 'react';
 import logotipo from '@/assets/logotipo.svg';
-import StandardInput from '@/lib/input/standarInput';
+import StandardInput from "@/lib/input/StandardInput";
 
 interface SignUpFormProps {
-    name: string;
-    setName: (name: string) => void;
+    fullName: string;
+    setFullName: (name: string) => void;
     email: string;
     setEmail: (email: string) => void;
+    identityDocument: string;
+    setIdentityDocument: (identityDocument: string) => void;
     password: string;
     setPassword: (password: string) => void;
     confirmPassword: string;
@@ -17,10 +19,12 @@ interface SignUpFormProps {
 }
 
 const SignUpForm: React.FC<SignUpFormProps> = ({
-                                                   name,
-                                                   setName,
+                                                   fullName,
+                                                   setFullName,
                                                    email,
                                                    setEmail,
+                                                   identityDocument,
+                                                   setIdentityDocument,
                                                    password,
                                                    setPassword,
                                                    confirmPassword,
@@ -30,9 +34,9 @@ const SignUpForm: React.FC<SignUpFormProps> = ({
                                                    onSwitchToLogin
                                                }) => {
     return (
-        <div className="w-full flex flex-col items-center justify-center">
+        <div className="w-full max-w-md flex flex-col items-center justify-center">
             <div
-                className="w-full max-w-lg h-screen flex flex-col justify-center items-center gap-2 px-6">
+                className="w-full h-full flex flex-col justify-center items-center px-2">
                 {/* Logo */}
                 <div className="flex items-center justify-center mb-4">
                     <img
@@ -43,55 +47,73 @@ const SignUpForm: React.FC<SignUpFormProps> = ({
                 </div>
 
                 {/* Header */}
-                <h1 className="text-3xl font-arial-rounded text-center mb-2">
+                <h1 className="text-2xl md:text-3xl font-arial-rounded text-center mb-2">
                     Crear cuenta
                 </h1>
 
                 {/* Form */}
                 <form
                     onSubmit={onSubmit}
-                    className="w-full flex flex-col gap-[15px] items-center p-4"
+                    className="w-full flex flex-col gap-2 items-cente   r p-4"
                 >
-                    <div className="w-full flex flex-col gap-3">
+                    <div className="w-full flex flex-col gap-1 md:gap-1.5">
                         <label
                             htmlFor="signup-name"
-                            className="text-gray-600 font-semibold text-lg"
+                            className="text-gray-600 font-semibold md:text-lg"
                         >
                             Nombre completo
                         </label>
                         <StandardInput
                             id="signup-name"
-                            value={name}
-                            onChange={setName}
+                            value={fullName}
+                            onChange={setFullName}
                             required
-                            placeholder="Ingresa tu nombre completo"
+                            placeholder="Ej: John Doe"
                             type="text"
                             name="name"
                         />
                     </div>
 
-                    <div className="w-full flex flex-col gap-3">
+                    <div className="w-full flex flex-col gap-1 md:gap-1.5">
                         <label
                             htmlFor="signup-email"
-                            className="text-gray-600 font-semibold text-lg"
+                            className="text-gray-600 font-semibold md:text-lg"
                         >
-                            Email institucional
+                            Correo institucional
                         </label>
                         <StandardInput
                             id="signup-email"
                             value={email}
                             onChange={setEmail}
                             required
-                            placeholder="usuario@mail.escuelaing.edu.co"
+                            placeholder="Ej: john.Doe@mail.escuelaing.edu.co"
                             type="email"
                             name="email"
                         />
                     </div>
 
-                    <div className="w-full flex flex-col gap-3">
+                    <div className="w-full flex flex-col gap-1 md:gap-1.5">
+                        <label
+                            htmlFor="signup-email"
+                            className="text-gray-600 font-semibold md:text-lg"
+                        >
+                            Documento institucional
+                        </label>
+                        <StandardInput
+                            id="identity-document"
+                            value={identityDocument}
+                            onChange={setIdentityDocument}
+                            required
+                            placeholder="Ej: 1000000123"
+                            type="text"
+                            name="identityDocument"
+                        />
+                    </div>
+
+                    <div className="w-full flex flex-col gap-1 md:gap-1.5">
                         <label
                             htmlFor="signup-password"
-                            className="text-gray-600 font-semibold text-lg"
+                            className="text-gray-600 font-semibold md:text-lg"
                         >
                             Contraseña
                         </label>
@@ -100,16 +122,16 @@ const SignUpForm: React.FC<SignUpFormProps> = ({
                             value={password}
                             onChange={setPassword}
                             required
-                            placeholder="Crea una contraseña segura"
+                            placeholder="**********"
                             type="password"
                             name="password"
                         />
                     </div>
 
-                    <div className="w-full flex flex-col gap-3">
+                    <div className="w-full flex flex-col gap-1 md:gap-1.5">
                         <label
                             htmlFor="signup-confirm-password"
-                            className="text-gray-600 font-semibold text-lg"
+                            className="text-gray-600 font-semibold md:text-lg"
                         >
                             Confirmar contraseña
                         </label>
@@ -118,7 +140,7 @@ const SignUpForm: React.FC<SignUpFormProps> = ({
                             value={confirmPassword}
                             onChange={setConfirmPassword}
                             required
-                            placeholder="Repite tu contraseña"
+                            placeholder="**********"
                             type="password"
                             name="confirmPassword"
                         />
@@ -128,7 +150,7 @@ const SignUpForm: React.FC<SignUpFormProps> = ({
                     <button
                         type="submit"
                         disabled={loading}
-                        className="w-1/3 h-[40px] bg-[#5AC7E1] border-none text-black rounded-2xl shadow-md cursor-pointer hover:bg-cyan-500 transition-colors text-white text-xl font-semibold mt-4"
+                        className="w-1/3 h-[40px] bg-[#5AC7E1] mx-auto border-none text-black rounded-2xl shadow-md cursor-pointer hover:bg-cyan-500 transition-colors text-white text-xl font-semibold mt-4"
                     >
                         {loading ? "Creando..." : "Registrar"}
                     </button>

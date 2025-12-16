@@ -1,13 +1,10 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import { lazy, Suspense, useEffect } from "react";
-import { ProtectedRoute } from "./utils/ProtectedRoute";
+import { lazy, Suspense } from "react";
 import Layout from "./utils/Layout";
 import { AuthProvider } from "@/utils/context/AuthProvider";
 import { WalletProvider } from "@/utils/context/WalletProvider";
 import { CartProvider } from "@/pages/cart/context/CartContext";
-import { useAuth } from "@/pages/login/hooks/useAuth";
 
-// Lazy imports para code splitting
 const Auth = lazy(() => import("@/pages/login/hooks/Auth"));
 const PasswordRecoveryContainer = lazy(() => import("@/pages/password-recovery/passwordRecoveryContainer").then(m => ({ default: m.PasswordRecoveryContainer })));
 const Home = lazy(() => import("@/pages/home/components/Home"));
@@ -20,51 +17,46 @@ const WalletPage = lazy(() => import("@/pages/wallet/WalletPage"));
 const InventorySellerPage = lazy(() => import("@/pages/inventory-seller/InventorySellerPage"));
 const QRValidationSellerPage = lazy(() => import("@/pages/qr-validation-seller/QRValidationSellerPage"));
 const OrdersUserPage = lazy(() => import("@/pages/orders-user/OrdersUserPage"));
+const PasswordRecoveryContainer = lazy(() => import("@/pages/password-recovery/passwordRecoveryContainer")) ;
 
-// Loading component
+
 const LoadingFallback = () => (
-  <div className="flex items-center justify-center min-h-screen">
-    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-  </div>
+    <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+    </div>
 );
 
-function HomeWithMockUser() {
-  const { login, user } = useAuth();
-
-  useEffect(() => {
-    if (!user) {
-      login(
-        "mock-token-12345", 
-        {
-          userId: "d66d2d30-56cb-410b-a5f0-9191c38f380e",
-          email: "pepitotolitis@gmail.com",
-          role: "user",
-          pfpURL: "",
-          balance: 512000
-        }
-      );
-    }
-  }, [user, login]);
-
+function App() {
   return (
+      <AuthProvider>
+          <WalletProvider>
+              <CartProvider>
     <Suspense fallback={<LoadingFallback />}>
       <Routes>
+          <Route path="/auth" element={<Auth/>}/>
+          <Route path="/login" element={<Navigate to="/auth" replace/>}/>
+          <Route path="/signup" element={<Navigate to="/auth" replace/>}/>
+
+          <Route
+              path="/forgot-password"
+              element={<PasswordRecoveryContainer/>}
+          />
         {/* Ruta principal */}
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
-          
+
           {/* Ruta de estadísticas */}
           <Route path="/statistics" element={<StatisticsPage />} />
-          
+
           {/* Ruta de billetera */}
           <Route path="/wallet" element={<WalletPage />} />
-          
+
           {/* Ruta de detalle de producto */}
           <Route path="/product/:id" element={<ProductDetailPage />} />
-          
+
           {/* Ruta de tienda */}
           <Route path="/store/:storeId" element={<StorePage />} />
-          
+
           {/* Ruta de carrito */}
           <Route path="/cart" element={<CartPage />} />
           <Route path="/orders" element={<OrdersUserPage />} />
@@ -73,7 +65,7 @@ function HomeWithMockUser() {
 
           {/* Rutas para seller - Inventario/Catálogo */}
           <Route path="/catalog" element={<InventorySellerPage />} />
-          
+
           {/* Rutas para seller - Pedidos */}
           <Route path="/orders-seller" element={<QRValidationSellerPage />} />
 
@@ -85,24 +77,16 @@ function HomeWithMockUser() {
         {/* Ruta de autenticación */}
         <Route path="/auth" element={<Auth />} />
         <Route path="/password-recovery" element={<PasswordRecoveryContainer />} />
-        
+
         {/* Redirigir cualquier otra ruta al home */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Suspense>
+              </CartProvider>
+          </WalletProvider>
+      </AuthProvider>
   );
 }
 
-function App() {
-  return (
-    <AuthProvider>
-      <WalletProvider>
-        <CartProvider>
-          <HomeWithMockUser />
-        </CartProvider>
-      </WalletProvider>
-    </AuthProvider>
-  );
-}
 
 export default App;
