@@ -73,10 +73,12 @@ export const PedidosList: React.FC<PedidosListProps> = ({
     }
   };
 
-  // Abre el modal de detalles
+  // Abre el modal de detalles (solo en vista lista)
   const handleVerDetalles = (pedido: Pedido) => {
-    setPedidoSeleccionado(pedido);
-    setModalAbierto(true);
+    if (vistaActual === 'list') {
+      setPedidoSeleccionado(pedido);
+      setModalAbierto(true);
+    }
     onVerDetalles(pedido.id);
   };
 

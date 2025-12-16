@@ -36,7 +36,6 @@ export const mockPedidos: Pedido[] = [
     metodoPago: 'efectivo',
     pagado: false,
     fechaCreacion: '2024-01-20',
-    observaciones: 'Sin picante en las alitas, por favor',
   },
   {
     id: '3',
@@ -135,7 +134,6 @@ export const mockPedidos: Pedido[] = [
     metodoPago: 'digital',
     pagado: true,
     fechaCreacion: '2024-01-20',
-    observaciones: 'La hamburguesa sin tomate, por favor',
   },
   {
     id: '9',
