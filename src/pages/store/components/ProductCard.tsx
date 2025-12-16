@@ -19,7 +19,7 @@ export default function ProductCard({ product, onProductClick }: ProductCardProp
         name: product.name,
         description: product.description,
         price: product.price,
-        imageUrl: '',
+        imageUrl: product.image || '',
         maxQuantity: 99
       },
       1
@@ -36,7 +36,15 @@ export default function ProductCard({ product, onProductClick }: ProductCardProp
       className="bg-white rounded-[20px] shadow-lg overflow-hidden hover:shadow-xl transition-shadow cursor-pointer"
     >
       <div className="relative">
-        <div className="w-full h-48 sm:h-56 bg-gray-300"></div>
+        {product.image ? (
+          <img
+            src={product.image}
+            alt={product.name}
+            className="w-full h-48 sm:h-56 object-cover"
+          />
+        ) : (
+          <div className="w-full h-48 sm:h-56 bg-gray-300"></div>
+        )}
       </div>
 
       <div className="p-4 sm:p-6">

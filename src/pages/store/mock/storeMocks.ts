@@ -34,6 +34,7 @@ export const storesMockData: Record<number, Store> = {
         price: 15400,
         rating: 4.0,
         time: 15,
+        image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=600&h=400&fit=crop',
       },
       {
         id: 2,
@@ -42,6 +43,7 @@ export const storesMockData: Record<number, Store> = {
         price: 17800,
         rating: 4.1,
         time: 15,
+        image: 'https://images.unsplash.com/photo-1598103442097-8b74394b95c6?w=600&h=400&fit=crop',
       },
       {
         id: 3,
@@ -50,6 +52,7 @@ export const storesMockData: Record<number, Store> = {
         price: 17800,
         rating: 4.4,
         time: 15,
+        image: 'https://images.unsplash.com/photo-1558030006-450675393462?w=600&h=400&fit=crop',
       },
       {
         id: 4,
@@ -58,6 +61,7 @@ export const storesMockData: Record<number, Store> = {
         price: 10400,
         rating: 4.0,
         time: 15,
+        image: 'https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=600&h=400&fit=crop',
       },
       {
         id: 5,
@@ -66,6 +70,7 @@ export const storesMockData: Record<number, Store> = {
         price: 8500,
         rating: 3.8,
         time: 10,
+        image: 'https://images.unsplash.com/photo-1558030006-450675393462?w=600&h=400&fit=crop',
       },
       {
         id: 6,
@@ -74,6 +79,7 @@ export const storesMockData: Record<number, Store> = {
         price: 6000,
         rating: 5.0,
         time: 8,
+        image: 'https://images.unsplash.com/photo-1600891964092-4316c288032e?w=600&h=400&fit=crop',
       },
       {
         id: 7,
@@ -82,6 +88,7 @@ export const storesMockData: Record<number, Store> = {
         price: 5500,
         rating: 4.0,
         time: 5,
+        image: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=600&h=400&fit=crop',
       },
       {
         id: 8,
@@ -90,6 +97,7 @@ export const storesMockData: Record<number, Store> = {
         price: 3000,
         rating: 3.7,
         time: 5,
+        image: 'https://images.unsplash.com/photo-1601050690597-df0568f70950?w=600&h=400&fit=crop',
       },
     ],
   },
@@ -120,6 +128,7 @@ export const storesMockData: Record<number, Store> = {
         price: 16400,
         rating: 4.2,
         time: 10,
+        image: 'https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=600&h=400&fit=crop',
       },
       {
         id: 10,
@@ -128,6 +137,7 @@ export const storesMockData: Record<number, Store> = {
         price: 13200,
         rating: 4.5,
         time: 15,
+        image: 'https://images.unsplash.com/photo-1598866594230-a7c12756260f?w=600&h=400&fit=crop',
       },
     ],
   },
@@ -175,6 +185,7 @@ export const storesMockData: Record<number, Store> = {
         price: 7000,
         rating: 5.0,
         time: null,
+        image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=600&h=400&fit=crop',
       },
     ],
   },
@@ -201,6 +212,7 @@ export const storesMockData: Record<number, Store> = {
         price: 16000,
         rating: 4.0,
         time: null,
+        image: 'https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=600&h=400&fit=crop',
       },
       {
         id: 13,
@@ -209,6 +221,7 @@ export const storesMockData: Record<number, Store> = {
         price: 1000,
         rating: 4.0,
         time: null,
+        image: 'https://images.unsplash.com/photo-1612198188060-c7c2a3b66eae?w=600&h=400&fit=crop',
       },
       {
         id: 14,
@@ -217,6 +230,7 @@ export const storesMockData: Record<number, Store> = {
         price: 17800,
         rating: 4.4,
         time: null,
+        image: 'https://images.unsplash.com/photo-1558030006-450675393462?w=600&h=400&fit=crop',
       },
       {
         id: 15,
@@ -225,6 +239,7 @@ export const storesMockData: Record<number, Store> = {
         price: 10400,
         rating: 4.0,
         time: null,
+        image: 'https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=600&h=400&fit=crop',
       },
       {
         id: 16,
@@ -233,6 +248,7 @@ export const storesMockData: Record<number, Store> = {
         price: 8500,
         rating: 3.8,
         time: null,
+        image: 'https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=600&h=400&fit=crop',
       },
       {
         id: 17,
@@ -241,6 +257,7 @@ export const storesMockData: Record<number, Store> = {
         price: 6000,
         rating: 5.0,
         time: null,
+        image: 'https://images.unsplash.com/photo-1600891964092-4316c288032e?w=600&h=400&fit=crop',
       },
       {
         id: 18,
@@ -249,6 +266,7 @@ export const storesMockData: Record<number, Store> = {
         price: 5500,
         rating: 4.0,
         time: null,
+        image: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=600&h=400&fit=crop',
       },
       {
         id: 19,
@@ -257,6 +275,7 @@ export const storesMockData: Record<number, Store> = {
         price: 3000,
         rating: 3.7,
         time: null,
+        image: 'https://images.unsplash.com/photo-1601050690597-df0568f70950?w=600&h=400&fit=crop',
       },
     ],
   },
@@ -283,6 +302,7 @@ export const storesMockData: Record<number, Store> = {
         price: 1000,
         rating: 4.4,
         time: null,
+        image: 'https://images.unsplash.com/photo-1612198188060-c7c2a3b66eae?w=600&h=400&fit=crop',
       },
     ],
   },
